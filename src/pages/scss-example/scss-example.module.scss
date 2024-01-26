@@ -11,11 +11,6 @@
   padding: 1rem;
 }
 
-// reset.scss file test
-.reset {
-  //h1 태그의 margin이 0이고 폰트가 pretendard이면 됨
-}
-
 // color.scss file test
 .color {
   color: $blue;
@@ -108,11 +103,11 @@
   width: 3rem;
   height: 3rem;
 
-  @include responsive('T') {
+  @include responsive("T") {
     background-color: $red;
   }
 
-  @include responsive('M') {
+  @include responsive("M") {
     background-color: $gray-500;
   }
 }
