@@ -1,0 +1,47 @@
+.container {
+  @include flexbox(between);
+  position: fixed;
+  right: 0;
+  top: 0;
+  background-color: $black;
+  width: 100%;
+  padding: 2rem 2.6rem;
+  margin: 0 auto;
+  max-width: 1920px;
+  z-index: 99;
+
+  @include responsive("M") {
+    padding: 1.6rem 2.4rem;
+  }
+}
+
+.right-content {
+  @include flexbox();
+  @include text-style(1.6, 400, $white);
+  gap: 3.6rem;
+  padding: 0 5.4rem;
+
+  @include responsive("T") {
+    padding: 0 1.4rem;
+  }
+}
+
+.logo-container {
+  @include flexbox();
+}
+
+.logo-img {
+  position: relative;
+  width: 2.9rem;
+  height: 3.3rem;
+}
+
+.logo-text {
+  position: relative;
+  width: 8.8rem;
+  height: 2.2rem;
+
+  @include responsive("M") {
+    display: none;
+  }
+}

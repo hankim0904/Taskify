@@ -1,0 +1,45 @@
+.container {
+  width: 100%;
+  max-width: 54rem;
+  min-width: 32rem;
+  padding: 3.2rem 2.8rem 2.8rem;
+  border-radius: 8px;
+  background-color: $white;
+
+  & h2 {
+    color: $black-200;
+    font-size: 2.4rem;
+    font-weight: 700;
+    margin-bottom: 3.2rem;
+
+    @include responsive("M") {
+      font-size: 2rem;
+    }
+  }
+}
+
+.form-container {
+  @include column-flexbox(normal, normal);
+  gap: 2.8rem;
+
+  @include responsive("M") {
+    gap: 2.4rem;
+  }
+}
+
+.button-container {
+  @include flexbox(end, center);
+  gap: 1.2rem;
+
+  @include responsive("M") {
+    justify-content: center;
+  }
+}
+
+.button-item-container {
+  width: 11rem;
+
+  @include responsive("M") {
+    width: 12.8rem;
+  }
+}

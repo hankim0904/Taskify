@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import Logo from "@/components/commons/Logo/Logo";
+import Logo from "@/components/commons/logo/Logo";
 import Input from "@/components/commons/Input/Input";
 import { SignButton } from "@/components/commons/button/SignButton";
 
