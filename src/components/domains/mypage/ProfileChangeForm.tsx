@@ -28,17 +28,8 @@ export default function ProfileChangeForm() {
           <input type="file" id="fileInput" style={{ display: "none" }} />
           <div className={cx("contents-input-area")}>
             <div className={cx("contents-input-area-email")}>
-              <Input
-                name="email"
-                labelName="이메일"
-                type="email"
-                control={control}
-                placeholder="이메일을 입력해 주세요"
-                rules={{
-                  required: "이메일을 입력해 주세요",
-                  pattern: { value: /^\S+@\S+$/i, message: "이메일 형식이어야 합니다" },
-                }}
-              />
+              <span className={cx("label")}>이메일</span>
+              <input className={cx("input-box")} value="dhfma3394@naver.com" disabled />
             </div>
             <div className={cx("contents-input-area-nickname")}>
               <Input
