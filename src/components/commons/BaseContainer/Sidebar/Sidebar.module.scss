@@ -1,0 +1,99 @@
+.sidebar {
+  width: 30rem;
+  border-right: 0.1rem solid #d9d9d9;
+
+  @include responsive("T") {
+    width: 16.8rem;
+  }
+
+  @include responsive("M") {
+    width: 6.7rem;
+  }
+
+  .logo {
+    @include flexbox(start, center);
+    padding-top: 2rem;
+    padding-left: 2rem;
+
+    &-symbol {
+      position: relative;
+      width: 2.8815rem;
+      height: 3.3069rem;
+
+      @include responsive("M") {
+        width: 2.3629rem;
+        height: 2.7133rem;
+      }
+    }
+
+    &-typo {
+      position: relative;
+      width: 8rem;
+      height: 2.2rem;
+
+      @include responsive("M") {
+        display: none;
+      }
+    }
+
+    @include responsive("T") {
+      @include flexbox(center, center);
+      padding-left: 0;
+    }
+
+    @include responsive("M") {
+      padding-left: 0;
+    }
+  }
+
+  .dash-boards {
+    margin-top: 4rem;
+
+    @include responsive("M") {
+      margin-top: 3.89rem;
+    }
+
+    .header {
+      @include flexbox(between, center);
+      margin: 0 2.4rem;
+
+      .title {
+        @include text-style(1.2, 700, $gray-500);
+
+        @include responsive("M") {
+          display: none;
+        }
+      }
+      .create-btn {
+        position: relative;
+        width: 2rem;
+        height: 2rem;
+      }
+    }
+
+    .contents {
+      margin: 1.8rem 1.2rem 0 1.2rem;
+
+      .board-list {
+        @include flexbox;
+        padding: 1.2rem;
+        width: 100%;
+        border-radius: 0.4rem;
+        cursor: pointer;
+
+        &.selected {
+          background-color: #f1effd;
+        }
+
+        @include responsive("T") {
+          width: 13.4rem;
+        }
+
+        @include responsive("M") {
+          width: 4rem;
+          height: 4rem;
+        }
+      }
+    }
+  }
+}

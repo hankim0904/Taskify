@@ -1,0 +1,8 @@
+.column-list {
+  @include flexbox(start, start);
+
+  @include responsive("T") {
+    @include column-flexbox(start, start);
+    width: 100%;
+  }
+}

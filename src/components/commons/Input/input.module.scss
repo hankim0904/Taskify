@@ -2,6 +2,7 @@
   @include column-flexbox(start, start);
   gap: 0.8rem;
   position: relative;
+  width: 100%;
 
   .eye {
     position: absolute;
@@ -18,11 +19,27 @@
 }
 
 .label {
-  @include text-style(1.6, $color: $black-200);
+  @include text-style(1.6, 400, $black-200);
   cursor: pointer;
 
   .modalRequired {
     color: $violet;
+  }
+
+  .file-type-lable {
+    @include flexbox(center, center);
+    @include text-style(2, 700, $violet);
+    //padding-bottom: 0.3 rem;
+    position: absolute;
+    top: 2.7rem;
+    background-color: rgba(245, 245, 245, 1);
+    width: 7.6rem;
+    height: 7.6rem;
+    border-radius: 0.6rem;
+  }
+
+  &.modal {
+    @include text-style(1.8, 500, $black-200);
   }
 }
 
@@ -48,10 +65,21 @@
   &.search {
     padding-left: 4.8rem;
   }
+
+  &.file {
+    margin-left: 1rem;
+    width: 1rem;
+  }
 }
 
 .input::placeholder {
   color: $gray-400;
+}
+
+.input[type="date"]::before {
+  content: attr(placeholder);
+  color: $gray-400;
+  width: 100%;
 }
 
 .error-message {

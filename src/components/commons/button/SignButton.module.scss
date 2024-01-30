@@ -14,8 +14,9 @@
   &.disabled {
     background-color: $gray-400;
 
-    &:hover {
-      background-color: $gray-500;
+    &:disabled {
+      opacity: 0.5;
+      pointer-events: none;
     }
   }
 }
