@@ -1,0 +1,25 @@
+.title {
+  @include text-style(2.4, 700, $black-200);
+  margin-bottom: 3.2rem;
+}
+
+.form {
+  @include column-flexbox(start, end);
+  width: 44rem;
+  gap: 3.2rem;
+
+  @media screen and (max-width: $mobile-breakpoint) {
+    width: 100%;
+  }
+}
+
+.dropdown-line {
+  @include flexbox(start);
+  width: 100%;
+  gap: 1.6rem;
+}
+
+.btn-line {
+  @include flexbox(end, end);
+  gap: 1.2rem;
+}

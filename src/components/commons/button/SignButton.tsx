@@ -12,7 +12,7 @@ interface SignButtonProps {
 
 export const SignButton = ({ children, type = "button", isDisabled = false }: SignButtonProps) => {
   return (
-    <button className={cx("btn", { disabled: isDisabled })} type={type}>
+    <button className={cx("btn", { disabled: isDisabled })} disabled={isDisabled} type={type}>
       <span>{children}</span>
     </button>
   );

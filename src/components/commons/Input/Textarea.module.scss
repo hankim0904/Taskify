@@ -1,0 +1,43 @@
+.textarea-area {
+  @include column-flexbox(start, start);
+  gap: 0.8rem;
+  position: relative;
+  width: 100%;
+}
+
+.label {
+  @include text-style(1.8, 500, $black-200);
+  cursor: pointer;
+
+  .modalRequired {
+    color: $violet;
+  }
+}
+
+.textarea {
+  @include flexbox(start, center);
+  @include text-style(1.6);
+
+  width: 100%;
+  height: 9.6rem;
+  padding: 1.5rem 1.6rem;
+  border-radius: 0.8rem;
+  border: 0.1rem solid $gray-300;
+
+  &:focus {
+    outline: none;
+    border: 0.1rem solid $violet;
+  }
+
+  &.error {
+    border: 0.1rem solid $red;
+  }
+}
+
+.textarea::placeholder {
+  color: $gray-400;
+}
+
+.error-message {
+  @include text-style(1.4, 400, $red);
+}
