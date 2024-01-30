@@ -1,7 +1,7 @@
-import ResponseBtn from "@/components/commons/button/ResponseButton";
+import ResponseBtn from "@/components/commons/Button/ResponseButton";
 import styles from "./DashboradEditMemberBox.module.scss";
 import classNames from "classnames/bind";
-import PageChangeButton from "@/components/commons/button/PageChangeButton";
+import PageChangeButton from "@/components/commons/Button/PageChangeButton";
 import Image from "next/image";
 
 const cx = classNames.bind(styles);

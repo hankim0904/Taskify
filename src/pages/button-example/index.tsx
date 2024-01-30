@@ -1,6 +1,6 @@
-import ResponseBtn from "@/components/commons/button/ResponseButton";
-import { SignButton } from "@/components/commons/button/SignButton";
-import { MixButton } from "@/components/commons/button/MixButton";
+import ResponseBtn from "@/components/commons/Button/ResponseButton";
+import { SignButton } from "@/components/commons/Button/SignButton";
+import { MixButton } from "@/components/commons/Button/MixButton";
 import Image from "next/image";
 
 export default function Index() {

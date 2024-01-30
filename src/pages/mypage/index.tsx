@@ -1,5 +1,5 @@
 import BaseContainer from "@/components/commons/BaseContainer/BaseContainer";
-import ResponseBtn from "@/components/commons/button/ResponseButton";
+import ResponseBtn from "@/components/commons/Button/ResponseButton";
 import Image from "next/image";
 import Link from "next/link";
 import styles from "./mypage.module.scss";
@@ -32,7 +32,12 @@ export default function Mypage() {
             <div className={cx("contents")}>
               <label htmlFor="fileInput">
                 <div className={cx("contents-upload-image")}>
-                  <Image width={30} height={30} src="/assets/icons/ic-plus-without-background.svg" alt="이미지 업로드" />
+                  <Image
+                    width={30}
+                    height={30}
+                    src="/assets/icons/ic-plus-without-background.svg"
+                    alt="이미지 업로드"
+                  />
                 </div>
               </label>
               <input type="file" id="fileInput" style={{ display: "none" }} />

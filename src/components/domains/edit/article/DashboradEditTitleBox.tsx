@@ -2,7 +2,7 @@ import Input from "@/components/commons/Input/Input";
 import styles from "./DashboradEditTitleBox.module.scss";
 import classNames from "classnames/bind";
 import { ReactNode, useState } from "react";
-import ResponseBtn from "@/components/commons/button/ResponseButton";
+import ResponseBtn from "@/components/commons/Button/ResponseButton";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import ColorList from "@/components/commons/colorList/ColorList";
 

@@ -3,9 +3,9 @@ import { useState } from "react";
 import styles from "./DashboardList.module.scss";
 import classNames from "classnames/bind";
 
-import { MixButton } from "@/components/commons/button/MixButton";
+import { MixButton } from "@/components/commons/Button/MixButton";
 import DashboardButton from "./ui/DashboardButton";
-import PageChangeButton from "../../commons/button/PageChangeButton";
+import PageChangeButton from "../../commons/Button/PageChangeButton";
 
 import { dashboardListData } from "./mock/dashboard-list";
 

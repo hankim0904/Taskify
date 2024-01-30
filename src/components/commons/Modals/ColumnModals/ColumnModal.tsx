@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import Input from "../../Input/Input";
 import styles from "./ColumnModal.module.scss";
 import classNames from "classnames/bind";
-import ResponseBtn from "../../button/ResponseButton";
+import ResponseBtn from "../../Button/ResponseButton";
 
 const cx = classNames.bind(styles);
 

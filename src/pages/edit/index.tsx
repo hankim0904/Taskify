@@ -3,7 +3,7 @@ import classNames from "classnames/bind";
 import DashboradEditTitleBox from "@/components/domains/edit/article/DashboradEditTitleBox";
 import DashboradEditMemberBox from "@/components/domains/edit/article/DashboradEditMemberBox";
 import Image from "next/image";
-import ResponseBtn from "@/components/commons/button/ResponseButton";
+import ResponseBtn from "@/components/commons/Button/ResponseButton";
 import ModalLayout from "@/components/commons/Modals/ModalLayout";
 import BaseContainer from "@/components/commons/BaseContainer/BaseContainer";
 
