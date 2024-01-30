@@ -1,6 +1,6 @@
 import React from "react";
 import classNames from "classnames/bind";
-import styles from "@/components/commons/Button/MixButton.module.scss";
+import styles from "@/components/commons/Buttons/MixButton.module.scss";
 import Image from "next/image";
 
 const cx = classNames.bind(styles);

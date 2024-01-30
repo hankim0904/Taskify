@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Button from "@/components/commons/Button/ResponseButton";
+import Button from "@/components/commons/Buttons/ResponseButton";
 
 export default function Home() {
   return (
@@ -43,11 +43,6 @@ export default function Home() {
         <div>
           <Link href="/landing">
             <Button state="reject">landing</Button>
-          </Link>
-        </div>
-        <div>
-          <Link href="/modal-wh">
-            <Button state="reject">modal-wh</Button>
           </Link>
         </div>
 

@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import Input from "../../Input/Input";
 import styles from "./InviteModal.module.scss";
 import classNames from "classnames/bind";
-import ResponseBtn from "../../Button/ResponseButton";
+import ResponseBtn from "../../Buttons/ResponseButton";
 
 const cx = classNames.bind(styles);
 

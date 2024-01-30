@@ -2,7 +2,7 @@ import styles from "./CardList.module.scss";
 import classNames from "classnames/bind";
 
 import Image from "next/image";
-import DescriptionTag from "@/components/commons/tag/descriptionTag/DescriptionTag";
+import DescriptionTag from "@/components/commons/tag/DescriptionTag/DescriptionTag";
 import { formatDate } from "../utils/formatDate";
 
 const cx = classNames.bind(styles);

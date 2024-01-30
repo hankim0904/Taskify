@@ -1,7 +1,7 @@
 import styles from "./Invitation.module.scss";
 import classNames from "classnames/bind";
 
-import ResponseBtn from "@/components/commons/Button/ResponseButton";
+import ResponseBtn from "@/components/commons/Buttons/ResponseButton";
 
 const cx = classNames.bind(styles);
 

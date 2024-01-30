@@ -3,7 +3,7 @@ import classNames from "classnames/bind";
 
 import ColumnHeader from "./ColumnHeader";
 import CardList from "./CardList";
-import { MixButton } from "@/components/commons/Button/MixButton";
+import { MixButton } from "@/components/commons/Buttons/MixButton";
 
 import { cardListToDo } from "../mock/card-list-todo";
 import { cardListOnProgress } from "../mock/card-list-onprogress";

@@ -1,7 +1,7 @@
 import styles from "./AddColumn.module.scss";
 import classNames from "classnames/bind";
 
-import { MixButton } from "@/components/commons/Button/MixButton";
+import { MixButton } from "@/components/commons/Buttons/MixButton";
 
 const cx = classNames.bind(styles);
 

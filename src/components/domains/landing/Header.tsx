@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React, { useEffect } from "react";
 import HeaderImg from "./Header-assets/section.png";
-import ResponseBtn from "@/components/commons/Button/ResponseButton";
+import ResponseBtn from "@/components/commons/Buttons/ResponseButton";
 import styles from "./Header.module.scss";
 import classNames from "classnames/bind";
 import { motion } from "framer-motion";

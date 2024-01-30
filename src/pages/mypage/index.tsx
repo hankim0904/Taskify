@@ -1,5 +1,5 @@
 import BaseContainer from "@/components/commons/BaseContainer/BaseContainer";
-import ResponseBtn from "@/components/commons/Button/ResponseButton";
+import ResponseBtn from "@/components/commons/Buttons/ResponseButton";
 import Image from "next/image";
 import Link from "next/link";
 import styles from "./mypage.module.scss";
