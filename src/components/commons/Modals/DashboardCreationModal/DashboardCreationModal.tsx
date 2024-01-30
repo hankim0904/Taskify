@@ -3,7 +3,7 @@ import ModalBackground from "./ModalBackground";
 import classNames from "classnames/bind";
 import { FieldValues, SubmitHandler, useForm, useWatch } from "react-hook-form";
 import styles from "./DashboardCreationModal.module.scss";
-import ColorList from "@/components/commons/colorList";
+import ColorList from "@/components/commons/ColorList/ColorList";
 import ResponseBtn from "@/components/commons/Buttons/ResponseButton";
 import Input from "@/components/commons/Input/Input";
 

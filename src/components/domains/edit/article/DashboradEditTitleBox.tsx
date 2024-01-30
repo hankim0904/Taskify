@@ -3,7 +3,7 @@ import styles from "./DashboradEditTitleBox.module.scss";
 import classNames from "classnames/bind";
 import { ReactNode, useState } from "react";
 import ResponseBtn from "@/components/commons/Buttons/ResponseButton";
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { FieldValues, SubmitHandler, useForm, useWatch } from "react-hook-form";
 import ColorList from "@/components/commons/ColorList/ColorList";
 
 const cx = classNames.bind(styles);
@@ -20,6 +20,11 @@ export default function DashboradEditTitleBox({ children }: porps) {
     console.log(data);
   }
 
+  const inputValue = useWatch({
+    name: "dashboardName",
+    control,
+  });
+
   return (
     <section className={cx("dashborad-edit-box")}>
       <article className={cx("title-line")}>
@@ -33,8 +38,11 @@ export default function DashboradEditTitleBox({ children }: porps) {
           labelName="대시보드 이름"
           type="text"
           control={control}
+          rules={{ required: "제목을 입력해 주세요" }}
         />
-        <ResponseBtn state="accept">변경</ResponseBtn>
+        <ResponseBtn disabled={!inputValue} type="submit" state="accept">
+          변경
+        </ResponseBtn>
       </form>
     </section>
   );

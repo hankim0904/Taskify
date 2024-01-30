@@ -2,6 +2,7 @@
   @include column-flexbox(start, start);
   gap: 0.5rem;
   width: 62.5rem;
+  position: relative;
 
   border-radius: 0.8rem;
   background: $white;
@@ -28,25 +29,42 @@
   padding: 0 2.8rem 1.35rem;
 }
 
-.page-nation {
+.title-right-contents {
   @include text-style(1.4, 400, $black-200);
   @include flexbox(end, center);
 
   > p {
     margin-right: 1.6rem;
   }
+
+  & button {
+    width: 4rem;
+
+    @media screen and (max-width: $mobile-breakpoint) {
+      width: 3.6rem;
+      height: 3.6rem;
+    }
+  }
 }
 
 .invite-btn {
   margin-left: 1.2rem;
-  & button img {
-    filter: brightness(500%);
+
+  & button {
+    width: 10.5rem;
+    & img {
+      filter: brightness(500%);
+    }
   }
 
   @media screen and (max-width: $mobile-breakpoint) {
     position: absolute;
-    top: 10rem;
-    right: 2.8rem;
+    top: 9.8rem;
+    right: 2.6rem;
+
+    & button {
+      width: 8.6rem;
+    }
   }
 }
 
@@ -66,13 +84,18 @@
   width: 100%;
   border-bottom: 1px solid $gray-200;
 
-  &:last-child {
-    border: none;
+  & button {
+    width: 8.4rem;
+
+    @media screen and (max-width: $mobile-breakpoint) {
+      width: 5.2rem;
+    }
   }
 }
 
 .profileImg {
   border-radius: 99rem;
+  overflow: hidden;
 }
 
 .member-name {

@@ -4,16 +4,22 @@ import DashboradEditTitleBox from "@/components/domains/edit/article/DashboradEd
 import DashboradEditMemberBox from "@/components/domains/edit/article/DashboradEditMemberBox";
 import Image from "next/image";
 import ResponseBtn from "@/components/commons/Buttons/ResponseButton";
-import ModalLayout from "@/components/commons/Modals/ModalLayout";
 import BaseContainer from "@/components/commons/BaseContainer/BaseContainer";
+import { useRouter } from "next/router";
 
 const cx = classNames.bind(styles);
 
 export default function Edit() {
+  const router = useRouter();
+
+  function gobackButton() {
+    router.back();
+  }
+
   return (
     <BaseContainer currentPath="test">
       <main className={cx("main")}>
-        <button className={cx("backforward")}>
+        <button type="button" onClick={gobackButton} className={cx("backforward")}>
           <Image src="/assets/icons/ic-arrow-forward.svg" width={20} height={20} alt="뒤로가기" />
           돌아가기
         </button>

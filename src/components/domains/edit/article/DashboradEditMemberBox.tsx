@@ -55,7 +55,7 @@ export default function DashboradEditMemberBox({ title, isUserNameEdit }: Props)
     <section className={cx("dashborad-edit-box", { last: !isUserNameEdit })}>
       <article className={cx("title-line")}>
         <h2 className={cx("title")}>{title}</h2>
-        <div className={cx("page-nation")}>
+        <div className={cx("title-right-contents")}>
           <p>1 페이지 중 1</p>
           <PageChangeButton isForward={false} onClick={handleBackwardPageClick}></PageChangeButton>
           <PageChangeButton isForward={true} onClick={handleBackwardPageClick}></PageChangeButton>
