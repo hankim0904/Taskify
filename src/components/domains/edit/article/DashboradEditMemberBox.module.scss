@@ -1,0 +1,81 @@
+.dashborad-edit-box {
+  @include column-flexbox(start, start);
+  gap: 0.5rem;
+  width: 62.5rem;
+
+  border-radius: 0.8rem;
+  background: $white;
+  margin-bottom: 1.2rem;
+
+  @media screen and (max-width: $tablet-breakpoint) {
+    width: 100%;
+  }
+}
+
+.title-line {
+  @include flexbox(between, center);
+  padding: 3.2rem 2.8rem;
+  width: 100%;
+  position: relative;
+}
+
+.title {
+  @include text-style(2, 700, $black-200);
+}
+
+.little-title {
+  @include text-style(1.6, 400, $gray-400);
+  padding: 0 2.8rem 1.35rem;
+}
+
+.page-nation {
+  @include text-style(1.4, 400, $black-200);
+  @include flexbox(end, center);
+
+  > p {
+    margin-right: 1.6rem;
+  }
+}
+
+.invite-btn {
+  margin-left: 1.2rem;
+  & button img {
+    filter: brightness(500%);
+  }
+
+  @media screen and (max-width: $mobile-breakpoint) {
+    position: absolute;
+    top: 10rem;
+    right: 2.8rem;
+  }
+}
+
+.last {
+  margin-bottom: 4.4rem;
+}
+
+.list {
+  width: 100%;
+}
+
+.list-item {
+  @include inline-flexbox(between, center);
+  @include text-style(1.6, 400, $black-200);
+
+  padding: 1.6rem 2.8rem;
+  width: 100%;
+  border-bottom: 1px solid $gray-200;
+
+  &:last-child {
+    border: none;
+  }
+}
+
+.profileImg {
+  border-radius: 99rem;
+}
+
+.member-name {
+  @include inline-flexbox(start, center);
+  gap: 1.2rem;
+}

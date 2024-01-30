@@ -1,0 +1,63 @@
+.dashboard {
+  @include flexbox(stretch, center);
+  width: 100%;
+
+  &-dot {
+    display: inline-block;
+    width: 0.8rem;
+    height: 0.8rem;
+    border-radius: 50%;
+    background-color: var(--color);
+  }
+
+  &-title {
+    @include text-style(1.6, 600, $black-200);
+    padding-left: 1.6rem;
+    padding-right: 0.8rem;
+
+    @include responsive("T") {
+      padding-left: 1.2rem;
+      padding-right: 0.6rem;
+    }
+
+    @include responsive("M") {
+      @include text-style(1.4, 600, $black-200);
+      padding-right: 0.4rem;
+    }
+
+    &.sidebar {
+      @include text-style(1.8, 500, $gray-500);
+      padding-right: 0.6rem;
+
+      @include responsive("T") {
+        @include text-style(1.6, 500, $gray-500);
+        padding-right: 0.4rem;
+      }
+
+      @include responsive("M") {
+        display: none;
+      }
+    }
+  }
+
+  &-icon {
+    display: inline-block;
+    width: 2rem;
+    height: 1.6rem;
+    position: relative;
+
+    &.sidebar {
+      width: 1.75rem;
+      height: 1.4rem;
+
+      @include responsive("T") {
+        width: 1.5rem;
+        height: 1.2rem;
+      }
+
+      @include responsive("M") {
+        display: none;
+      }
+    }
+  }
+}

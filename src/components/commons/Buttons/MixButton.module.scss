@@ -1,0 +1,23 @@
+.btn {
+  @include flexbox();
+  @include text-style(1.6, 600, $black-200);
+  width: 100%;
+  padding: 0.9rem;
+  border-radius: 0.8rem;
+  border: 0.1rem solid $gray-300;
+  gap: 1.2rem;
+
+  &.isChildren {
+    padding: 2.55rem;
+  }
+
+  &:hover {
+    background-color: $gray-100;
+  }
+}
+
+.icon-container {
+  position: relative;
+  width: 2.2rem;
+  height: 2.2rem;
+}

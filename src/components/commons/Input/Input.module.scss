@@ -1,0 +1,87 @@
+.input-area {
+  @include column-flexbox(start, start);
+  gap: 0.8rem;
+  position: relative;
+  width: 100%;
+
+  .eye {
+    position: absolute;
+    right: 1.6rem;
+    top: 4.5rem;
+    cursor: pointer;
+  }
+
+  .searchIcon {
+    position: absolute;
+    left: 1.6rem;
+    top: 2.15rem;
+  }
+}
+
+.label {
+  @include text-style(1.6, 400, $black-200);
+  cursor: pointer;
+
+  .modalRequired {
+    color: $violet;
+  }
+
+  .file-type-lable {
+    @include flexbox(center, center);
+    @include text-style(2, 700, $violet);
+    //padding-bottom: 0.3 rem;
+    position: absolute;
+    top: 2.7rem;
+    background-color: rgba(245, 245, 245, 1);
+    width: 7.6rem;
+    height: 7.6rem;
+    border-radius: 0.6rem;
+  }
+
+  &.modal {
+    @include text-style(1.8, 500, $black-200);
+  }
+}
+
+.input {
+  @include flexbox(start, center);
+  @include text-style(1.6);
+
+  width: 100%;
+  height: 5rem;
+  padding: 1.5rem 1.6rem;
+  border-radius: 0.8rem;
+  border: 0.1rem solid $gray-300;
+
+  &:focus {
+    outline: none;
+    border: 0.1rem solid $violet;
+  }
+
+  &.error {
+    border: 0.1rem solid $red;
+  }
+
+  &.search {
+    padding-left: 4.8rem;
+  }
+
+  &.file {
+    margin-left: 1rem;
+    width: 1rem;
+  }
+}
+
+.input::placeholder {
+  color: $gray-400;
+}
+
+.input[type="date"]::before {
+  content: attr(placeholder);
+  color: $gray-400;
+  width: 100%;
+}
+
+.error-message {
+  @include text-style(1.4, 400, $red);
+}

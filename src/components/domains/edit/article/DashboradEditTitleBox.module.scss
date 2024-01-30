@@ -1,0 +1,34 @@
+.dashborad-edit-box {
+  @include column-flexbox(start, start);
+  gap: 0.5rem;
+  width: 62.5rem;
+
+  border-radius: 0.8rem;
+  background: $white;
+  margin-bottom: 1.2rem;
+
+  @media screen and (max-width: $tablet-breakpoint) {
+    width: 100%;
+  }
+}
+
+.title-line {
+  @include flexbox(between, center);
+  padding: 3.2rem 2.8rem;
+  width: 100%;
+}
+
+.title {
+  @include text-style(2, 700, $black-200);
+}
+
+.edit-form {
+  @include flexbox(start, start);
+  padding: 0 2.8rem 3.2rem;
+  gap: 2.2rem;
+  width: 100%;
+
+  &:last-child {
+    @include column-flexbox(end, end);
+  }
+}

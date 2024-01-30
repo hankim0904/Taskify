@@ -1,0 +1,22 @@
+.main {
+  background-color: $gray-100;
+  height: auto;
+  padding: 2rem 2rem 5.6rem;
+
+  @media screen and (max-width: $tablet-breakpoint) {
+    padding-bottom: 4.8rem;
+  }
+  @media screen and (max-width: $mobile-breakpoint) {
+    padding-bottom: 2rem;
+  }
+}
+
+.backforward {
+  @include flexbox(start, center);
+  @include text-style(1.6, 400, $black-200);
+  margin-bottom: 2.5rem;
+
+  > :first-child {
+    transform: scaleX(-1);
+  }
+}

@@ -1,0 +1,18 @@
+.title {
+  @include text-style(2.4, 700, $black-200);
+  margin-bottom: 3.2rem;
+}
+
+.form {
+  width: 48.4rem;
+
+  @media screen and (max-width: $mobile-breakpoint) {
+    width: 100%;
+  }
+}
+
+.btn-line {
+  @include flexbox(end, end);
+  margin-top: 2.8rem;
+  gap: 1.2rem;
+}

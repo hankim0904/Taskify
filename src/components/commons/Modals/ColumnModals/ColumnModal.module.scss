@@ -1,0 +1,36 @@
+.title {
+  @include text-style(2.4, 700, $black-200);
+  margin-bottom: 3.2rem;
+}
+
+.form {
+  width: 48.4rem;
+
+  @media screen and (max-width: $mobile-breakpoint) {
+    width: 100%;
+  }
+}
+
+.btn-line {
+  @include flexbox(end, end);
+  margin-top: 2.8rem;
+  gap: 1.2rem;
+
+  &.edit {
+    @media screen and (max-width: $mobile-breakpoint) {
+      margin-top: 5.7rem;
+    }
+  }
+}
+
+.delete-column-btn {
+  @include text-style(1.4, 400, $gray-400);
+
+  position: absolute;
+  bottom: 3.5rem;
+  text-decoration: underline;
+
+  @media screen and (max-width: $mobile-breakpoint) {
+    bottom: 10rem;
+  }
+}

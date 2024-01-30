@@ -1,0 +1,13 @@
+.container {
+  max-width: 1200px;
+  padding-top: 7rem;
+  margin: 0 auto;
+
+  @include responsive("T") {
+    padding: 0 4rem;
+  }
+
+  @include responsive("M") {
+    padding: 0 1.6rem;
+  }
+}
