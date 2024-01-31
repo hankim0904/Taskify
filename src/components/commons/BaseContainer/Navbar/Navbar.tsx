@@ -3,10 +3,16 @@ import styles from "./Navbar.module.scss";
 import classNames from "classnames/bind";
 import { membersMockData } from "./navbarMembersMockData";
 import { useState, useEffect, useRef } from "react";
+import Dashboard from "../../Dashboard/Dashboard";
+import dashboardListData from "../Sidebar/dashboardListMockData";
 
 const cx = classNames.bind(styles);
+
 const MAX_DISPLAY_PC = 4;
 const MAX_DISPLAY_TABLET = 2;
+
+//mock 데이터를 사용했으니 실제 데이터로 변경해 주세요.
+const dashboardData = dashboardListData.dashboards;
 
 interface NavbarProps {
   currentPath: string;
@@ -58,7 +64,9 @@ export default function Navbar({ currentPath }: NavbarProps) {
 
   return (
     <div className={cx("navbar")}>
-      <div className={cx("navbar-title")}>비브리지</div>
+      <div className={cx("navbar-title")}>
+        <Dashboard isHost={true}>3분기 계획</Dashboard>
+      </div>
 
       {currentPath.includes("/dashboard") && (
         <div className={cx("navbar-utils")}>
