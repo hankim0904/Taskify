@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useAuth } from "@/contexts/AuthContext";
 import { axiosInstance } from "@/api/axiosInstance";
 
-const withAuthExsit = (WrappedComponent: React.ComponentType) => {
+const withAuthExist = (WrappedComponent: React.ComponentType) => {
   const AuthenticatedComponent = () => {
     const router = useRouter();
     const { accessToken } = useAuth();
@@ -38,4 +38,4 @@ const withAuthExsit = (WrappedComponent: React.ComponentType) => {
   return AuthenticatedComponent;
 };
 
-export default withAuthExsit;
+export default withAuthExist;
