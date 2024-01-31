@@ -11,7 +11,7 @@ const withAuth = (WrappedComponent: React.ComponentType) => {
       const checkAuth = async () => {
         try {
           if (!accessToken) {
-            router.push("signIn");
+            router.push("signin");
           }
         } catch (error) {
           console.log(error);
