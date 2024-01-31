@@ -4,7 +4,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { axiosInstance } from "@/api/axiosInstance";
 
 const withAuthForLanding = (WrappedComponent: React.ComponentType) => {
-  const AuthenticatedComponent: React.FC = () => {
+  const AuthenticatedComponent = () => {
     const router = useRouter();
     const { accessToken } = useAuth();
 

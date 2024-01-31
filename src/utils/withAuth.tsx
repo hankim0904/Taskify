@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useAuth } from "@/contexts/AuthContext";
 
 const withAuth = (WrappedComponent: React.ComponentType) => {
-  const AuthenticatedComponent: React.FC = () => {
+  const AuthenticatedComponent = () => {
     const router = useRouter();
     const { accessToken } = useAuth();
 
