@@ -1,15 +1,19 @@
 .dashboard {
   @include flexbox(stretch, center);
+  flex: 0 0 auto;
   width: 100%;
 
   &.sidebar {
-    @include flexbox(center, center);
+    @include responsive("M") {
+      @include flexbox(center, center);
+    }
   }
 
   &-dot {
     display: inline-block;
     width: 0.8rem;
     height: 0.8rem;
+    flex: inherit;
     border-radius: 50%;
     background-color: var(--color);
   }
@@ -22,6 +26,9 @@
     @include responsive("T") {
       padding-left: 1.2rem;
       padding-right: 0.6rem;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
     }
 
     @include responsive("M") {
@@ -48,6 +55,7 @@
     display: inline-block;
     width: 2rem;
     height: 1.6rem;
+    flex: inherit;
     position: relative;
 
     &.sidebar {
