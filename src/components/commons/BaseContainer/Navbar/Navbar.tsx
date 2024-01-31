@@ -23,6 +23,7 @@ export default function Navbar({ currentPath }: NavbarProps) {
   function handleDropDownMenu() {
     setIsDropdownOpen(!isDropdownOpen);
   }
+
   function extractInitial(nickname: string) {
     return nickname[0].toUpperCase();
   }
@@ -59,7 +60,7 @@ export default function Navbar({ currentPath }: NavbarProps) {
     <div className={cx("navbar")}>
       <div className={cx("navbar-title")}>비브리지</div>
 
-      {currentPath.includes("/mypage") && (
+      {currentPath.includes("/dashboard") && (
         <div className={cx("navbar-utils")}>
           <div className={cx("navbar-action-btns")}>
             <button className={cx("manage")}>
@@ -84,8 +85,7 @@ export default function Navbar({ currentPath }: NavbarProps) {
                 member.profileImageUrl ? (
                   <div
                     className={cx("navbar-member-list")}
-                    style={{ position: "relative", right: `${index}rem`, backgroundColor: "white" }}
-                  >
+                    style={{ position: "relative", right: `${index}rem`, backgroundColor: "white" }}>
                     <Image
                       fill
                       src={member.profileImageUrl}
@@ -97,13 +97,12 @@ export default function Navbar({ currentPath }: NavbarProps) {
                   <div className={cx("navbar-member-list")} style={{ position: "relative", right: `${index}rem` }}>
                     <span className={cx("navbar-member-list-nickname")}>{extractInitial(member.nickname)}</span>
                   </div>
-                )
+                ),
               )}
             {membersMockData.totalCount > displayedMembers.length && (
               <div
                 className={cx("navbar-member-list")}
-                style={{ position: "relative", right: `${displayedMembers.length}rem` }}
-              >
+                style={{ position: "relative", right: `${displayedMembers.length}rem` }}>
                 <span className={cx("navbar-member-list-count")}>+{remainingMembersCount}</span>
               </div>
             )}
@@ -120,10 +119,9 @@ export default function Navbar({ currentPath }: NavbarProps) {
         {isDropdownOpen && (
           <div
             className={cx("navbar-user-dropdown-menu")}
-            onClick={(e) => {
+            onClick={e => {
               e.stopPropagation();
-            }}
-          >
+            }}>
             <button>
               <span className={cx("text")}>
                 <button>로그아웃</button>
