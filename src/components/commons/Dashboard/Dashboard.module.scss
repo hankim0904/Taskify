@@ -2,6 +2,10 @@
   @include flexbox(stretch, center);
   width: 100%;
 
+  &.sidebar {
+    @include flexbox(center, center);
+  }
+
   &-dot {
     display: inline-block;
     width: 0.8rem;

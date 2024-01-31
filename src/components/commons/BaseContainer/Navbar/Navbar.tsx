@@ -1,10 +1,9 @@
 import Image from "next/image";
 import styles from "./Navbar.module.scss";
 import classNames from "classnames/bind";
-import { membersMockData } from "./navbarMembersMockData";
+import { membersMockData } from "../mock/MembersMockData";
 import { useState, useEffect, useRef } from "react";
-import Dashboard from "../../Dashboard/Dashboard";
-import dashboardListData from "../Sidebar/dashboardListMockData";
+import dashboardListData from "../mock/DashboardListMockData";
 
 const cx = classNames.bind(styles);
 
@@ -16,9 +15,11 @@ const dashboardData = dashboardListData.dashboards;
 
 interface NavbarProps {
   currentPath: string;
+  dashBoardTilte: string;
+  isCreatedByMe: boolean;
 }
 
-export default function Navbar({ currentPath }: NavbarProps) {
+export default function Navbar({ currentPath, dashBoardTilte, isCreatedByMe }: NavbarProps) {
   const dropMenuRef = useRef<HTMLDivElement | null>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isTablet, setIsTablet] = useState(false);
@@ -65,7 +66,10 @@ export default function Navbar({ currentPath }: NavbarProps) {
   return (
     <div className={cx("navbar")}>
       <div className={cx("navbar-title")}>
-        <Dashboard isHost={true}>3분기 계획</Dashboard>
+        <span className={cx("dashboard-name")}>{dashBoardTilte}</span>
+        <span className={cx("created-icon")}>
+          {isCreatedByMe && <Image fill src="/assets/icons/ic-crown.svg" alt="왕관 모양 아이콘" />}
+        </span>
       </div>
 
       {currentPath.includes("/dashboard") && (
@@ -92,6 +96,7 @@ export default function Navbar({ currentPath }: NavbarProps) {
               displayedMembers.map((member, index) =>
                 member.profileImageUrl ? (
                   <div
+                    key={member.id}
                     className={cx("navbar-member-list")}
                     style={{ position: "relative", right: `${index}rem`, backgroundColor: "white" }}>
                     <Image

@@ -79,6 +79,10 @@
 
       &-btn {
         @include flexbox(end, center);
+
+        button {
+          width: 8.4rem;
+        }
       }
     }
   }
