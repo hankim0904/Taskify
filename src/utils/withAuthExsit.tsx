@@ -38,4 +38,4 @@ const withAuthExsit = (WrappedComponent: React.ComponentType) => {
   return AuthenticatedComponent;
 };
 
-export default withAuthForLanding;
+export default withAuthExsit;
