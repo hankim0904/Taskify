@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useAuth } from "@/contexts/AuthContext";
 
-const withAuth = (WrappedComponent: React.ComponentType) => {
+const withAuthNoneExist = (WrappedComponent: React.ComponentType) => {
   const AuthenticatedComponent = () => {
     const router = useRouter();
     const { accessToken } = useAuth();

@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useAuth } from "@/contexts/AuthContext";
 import { axiosInstance } from "@/api/axiosInstance";
 
-const withAuthForLanding = (WrappedComponent: React.ComponentType) => {
+const withAuthExsit = (WrappedComponent: React.ComponentType) => {
   const AuthenticatedComponent = () => {
     const router = useRouter();
     const { accessToken } = useAuth();
@@ -18,7 +18,11 @@ const withAuthForLanding = (WrappedComponent: React.ComponentType) => {
               },
             });
             const firstDashboardId = response.data.dashboards[0].id;
-            router.push(`dashboard/${firstDashboardId}`);
+            if (firstDashboardId) {
+              router.push(`dashboard/${firstDashboardId}`);
+            } else {
+              router.push("mydashboard");
+            }
           }
         } catch (error) {
           console.log(error);
