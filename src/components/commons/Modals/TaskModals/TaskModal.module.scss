@@ -6,7 +6,7 @@
 .form {
   @include column-flexbox(start, end);
   width: 44rem;
-  gap: 3.2rem;
+  gap: 1.8rem;
 
   @media screen and (max-width: $mobile-breakpoint) {
     width: 100%;
@@ -22,4 +22,13 @@
 .btn-line {
   @include flexbox(end, end);
   gap: 1.2rem;
+  width: 100%;
+
+  & button {
+    width: 12rem;
+
+    @media screen and (max-width: $mobile-breakpoint) {
+      width: 100%;
+    }
+  }
 }

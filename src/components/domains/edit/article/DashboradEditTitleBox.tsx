@@ -10,11 +10,12 @@ const cx = classNames.bind(styles);
 
 interface porps {
   children: ReactNode;
+  selectedColor?: string;
 }
 
-export default function DashboradEditTitleBox({ children }: porps) {
+export default function DashboradEditTitleBox({ selectedColor, children }: porps) {
   const { control, handleSubmit } = useForm();
-  const [color, setColor] = useState("");
+  const [color, setColor] = useState(selectedColor);
 
   function handleOnsubmit(data: FieldValues): void {
     console.log(data);
