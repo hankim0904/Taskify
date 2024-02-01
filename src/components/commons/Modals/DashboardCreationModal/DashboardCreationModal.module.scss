@@ -1,4 +1,6 @@
 .container {
+  @include pos-center();
+  z-index: $modal;
   width: 100%;
   max-width: 54rem;
   min-width: 32rem;

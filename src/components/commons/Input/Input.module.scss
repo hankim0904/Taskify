@@ -76,12 +76,7 @@
   color: $gray-400;
 }
 
-.input[type="date"]::before {
-  content: attr(placeholder);
-  color: $gray-400;
-  width: 100%;
-}
-
 .error-message {
+  height: 1.4rem;
   @include text-style(1.4, 400, $red);
 }

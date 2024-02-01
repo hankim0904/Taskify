@@ -16,9 +16,10 @@
   margin-top: 2.8rem;
   gap: 1.2rem;
 
-  &.edit {
+  & button {
+    width: 12rem;
     @media screen and (max-width: $mobile-breakpoint) {
-      margin-top: 5.7rem;
+      width: 100%;
     }
   }
 }
@@ -33,4 +34,11 @@
   @media screen and (max-width: $mobile-breakpoint) {
     bottom: 10rem;
   }
+}
+
+.delete-message {
+  @include flexbox(center);
+  @include text-style(1.8, 500, $black-200);
+  width: 48.4rem;
+  padding: 8rem 0 4rem;
 }

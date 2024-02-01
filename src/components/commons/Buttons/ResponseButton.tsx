@@ -9,17 +9,19 @@ interface Props {
   disabled?: boolean;
   ph?: number;
   fs?: number;
+  onClick?: () => void;
 }
 
 const cx = classNames.bind(styles);
 
-export default function ResponseBtn({ children, state, type = "button", disabled = false, ph, fs }: Props) {
+export default function ResponseBtn({ children, state, type = "button", disabled = false, ph, fs, onClick }: Props) {
   return (
     <button
       className={cx(`${state}`)}
       type={type}
       disabled={disabled}
       style={{ paddingBlock: `${ph}rem`, fontSize: `${fs}rem` }}
+      onClick={onClick}
     >
       {children}
     </button>

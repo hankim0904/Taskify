@@ -6,6 +6,25 @@
   border-radius: 0.8rem;
   background-color: $white;
 
+  @keyframes moveX {
+    0% {
+      transform: translateX(0);
+    }
+    50% {
+      transform: translateX(5px);
+    }
+    100% {
+      transform: translateX(0);
+    }
+  }
+
+  &:hover {
+    & > img {
+      animation: moveX 0.8s ease-in-out infinite;
+    }
+    background-color: $violet-100;
+  }
+
   @include responsive("T") {
     padding: 2.5rem 2rem;
   }

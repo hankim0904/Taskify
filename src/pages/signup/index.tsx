@@ -5,11 +5,11 @@ import Input from "@/components/commons/Input/Input";
 import { SignButton } from "@/components/commons/Buttons/SignButton";
 
 import classNames from "classnames/bind";
-import styles from "./signUp.module.scss";
+import styles from "./signup.module.scss";
 
 const cx = classNames.bind(styles);
 
-export default function SignUp() {
+export default function Signup() {
   const { control, handleSubmit } = useForm({ mode: "onChange" });
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {

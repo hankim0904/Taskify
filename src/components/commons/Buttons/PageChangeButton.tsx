@@ -6,13 +6,14 @@ import Image from "next/image";
 const cx = classNames.bind(styles);
 
 interface PageChangeButtonProps {
-  onClick: () => void;
+  onClick?: () => void;
   isForward?: boolean;
+  disabled?: boolean;
 }
 
-export default function PageChangeButton({ onClick, isForward = true }: PageChangeButtonProps) {
+export default function PageChangeButton({ onClick, isForward = true, disabled }: PageChangeButtonProps) {
   return (
-    <button className={cx("page-change-btn", { forward: isForward })} onClick={onClick}>
+    <button className={cx("page-change-btn", { forward: isForward })} onClick={onClick} disabled={disabled}>
       <Image
         src={isForward ? "/assets/icons/ic-arrow-page-forward.svg" : "/assets/icons/ic-arrow-page-backward.svg"}
         alt="페이지 넘김 방향 표시 아이콘"
