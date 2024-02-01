@@ -59,7 +59,7 @@ export default function Navbar({ currentPath }: NavbarProps) {
     <div className={cx("navbar")}>
       <div className={cx("navbar-title")}>비브리지</div>
 
-      {currentPath.includes("/mypage") && (
+      {currentPath.includes("/dashboard") && (
         <div className={cx("navbar-utils")}>
           <div className={cx("navbar-action-btns")}>
             <button className={cx("manage")}>
