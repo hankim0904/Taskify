@@ -2,6 +2,7 @@ import MydashboardLayout from "@/components/domains/mydashboard/MydashboardLayou
 import DashboardList from "@/components/domains/mydashboard/DashboardList";
 import InvitedDashboardList from "@/components/domains/mydashboard/InvitationList";
 import BaseContainer from "@/components/commons/BaseContainer/BaseContainer";
+import { useRouter } from "next/router";
 import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
 import getDashBoards from "@/api/getDashBoards";
 
@@ -21,9 +22,12 @@ export async function getServerSideProps() {
 }
 
 export default function MydashboardPage({ dehydratedState }: any) {
+  const router = useRouter();
+  const currentPath = router.pathname;
+
   return (
     <HydrationBoundary state={dehydratedState}>
-      <BaseContainer currentPath="test">
+      <BaseContainer currentPath={currentPath}>
         <MydashboardLayout dashboardList={<DashboardList />} invitedDashboardList={<InvitedDashboardList />} />
       </BaseContainer>
     </HydrationBoundary>
