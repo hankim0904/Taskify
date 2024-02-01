@@ -1,22 +1,29 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useState, ReactNode } from "react";
+import { useState } from "react";
 import styles from "./Sidebar.module.scss";
 import classNames from "classnames/bind";
 import Dashboard from "../../Dashboard/Dashboard";
-import dashboardListMockData from "../mock/DashboardListMockData";
 
 const cx = classNames.bind(styles);
 
-//mock 데이터를 사용했으니 실제 데이터로 변경해 주세요.
-const dashboardListData = dashboardListMockData.dashboards;
+interface DashBoradData {
+  id: number;
+  title: string;
+  color: string;
+  createdAt: string;
+  updatedAt: string;
+  createdByMe: true;
+  userId: number;
+}
 
 interface SidebarPorps {
+  dashBoardList: DashBoradData[];
   handleChangeDashBoardTitle: (title: string, createdByMe: boolean) => void;
 }
 
-export default function Sidebar({ handleChangeDashBoardTitle }: SidebarPorps) {
+export default function Sidebar({ dashBoardList, handleChangeDashBoardTitle }: SidebarPorps) {
   const [selectedIdx, setSelectedIdx] = useState(0);
   const router = useRouter();
 
@@ -52,7 +59,7 @@ export default function Sidebar({ handleChangeDashBoardTitle }: SidebarPorps) {
         </div>
 
         <div className={cx("contents")}>
-          {dashboardListData.map((data, index) => (
+          {dashBoardList.map((data, index) => (
             <div
               key={data.id}
               className={cx("board-list", { selected: index === selectedIdx })}
