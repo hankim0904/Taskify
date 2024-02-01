@@ -31,4 +31,8 @@
   &:last-child {
     @include column-flexbox(end, end);
   }
+
+  & button {
+    width: 8.4rem;
+  }
 }

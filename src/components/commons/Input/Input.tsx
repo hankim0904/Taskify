@@ -30,7 +30,7 @@ export default function Input({ placeholder, type, labelName, isModal = false, .
     <div className={cx("input-area")}>
       <label htmlFor={props.name} className={cx("label", { modal: isModal })}>
         {labelName}
-        {props.name === "createTodoModalTitle" && <span className={cx("modalRequired")}> *</span>}
+        {isModal && props.rules?.required && <span className={cx("modalRequired")}> *</span>}
         {inputType === "file" && (
           <div className={cx("file-type-lable")}>
             <Image width={28} height={28} src="/assets/icons/ic-plus-without-background.svg" alt="이미지 추가하기" />
