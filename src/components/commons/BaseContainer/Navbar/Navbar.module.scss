@@ -18,10 +18,23 @@
   }
 
   &-title {
+    @include flexbox(start, center);
+    gap: 0.8rem;
     flex: 1;
+
     @include text-style(2, 700, $black-200);
     @include responsive("T") {
       display: none;
+    }
+
+    .dashboard-name {
+      @include text-style(2, 700, $black-200);
+    }
+    .created-icon {
+      display: inline-block;
+      position: relative;
+      width: 2rem;
+      height: 1.6rem;
     }
   }
 
@@ -148,6 +161,7 @@
       padding: 1rem 2rem;
       background-color: white;
       border: 1px solid #ddd;
+      z-index: 1;
 
       @include responsive("M") {
         left: auto;

@@ -7,12 +7,12 @@ const cx = classNames.bind(styles);
 
 interface MixButtonProps {
   children?: React.ReactNode;
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 export const MixButton = ({ children, onClick }: MixButtonProps) => {
   return (
-    <button className={cx("btn", { isChildren: children })} type="button" onClick={onClick}>
+    <button onClick={onClick} className={cx("btn", { isChildren: children })} type="button">
       {children && <span>{children}</span>}
       <div className={cx("icon-container")}>
         <Image src="/assets/images/plus.png" fill alt="plusBtn" />

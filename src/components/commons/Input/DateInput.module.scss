@@ -1,0 +1,31 @@
+.input-area {
+  @include column-flexbox(start, start);
+  gap: 0.8rem;
+  position: relative;
+  width: 100%;
+}
+
+.label {
+  @include text-style(1.6, 400, $black-200);
+  cursor: pointer;
+}
+
+.input {
+  @include flexbox(start, center);
+  @include text-style(1.6);
+
+  width: 100%;
+  height: 5rem;
+  padding: 1.5rem 1.6rem;
+  border-radius: 0.8rem;
+  border: 0.1rem solid $gray-300;
+
+  &:focus {
+    outline: none;
+    border: 0.1rem solid $violet;
+  }
+
+  &.error {
+    border: 0.1rem solid $red;
+  }
+}

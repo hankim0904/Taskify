@@ -3,11 +3,19 @@
   height: auto;
   padding: 2rem 2rem 5.6rem;
 
+  & button {
+    width: 32rem;
+  }
+
   @media screen and (max-width: $tablet-breakpoint) {
     padding-bottom: 4.8rem;
   }
   @media screen and (max-width: $mobile-breakpoint) {
     padding-bottom: 2rem;
+  }
+
+  &.openModal {
+    position: sticky;
   }
 }
 
