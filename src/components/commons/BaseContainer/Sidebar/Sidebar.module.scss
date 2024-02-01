@@ -17,11 +17,11 @@
 
     &-symbol {
       position: relative;
-      width: 2.8815rem;
-      height: 3.3069rem;
+      width: 3rem;
+      height: 3rem;
 
       @include responsive("M") {
-        width: 2.3629rem;
+        width: 2rem;
         height: 2.7133rem;
       }
     }

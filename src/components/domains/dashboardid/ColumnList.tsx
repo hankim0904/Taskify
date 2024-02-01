@@ -1,3 +1,7 @@
+import { useRouter } from "next/router";
+import { useQuery } from "@tanstack/react-query";
+import { getColumnList } from "@/components/domains/dashboardid/queries";
+
 import styles from "./ColumnList.module.scss";
 import classNames from "classnames/bind";
 
@@ -5,15 +9,20 @@ import Column from "./ui/Column";
 
 const cx = classNames.bind(styles);
 
-import { columnListData } from "./mock/column-list";
-
 export default function ColumnList() {
-  //mock 데이터를 사용했으니 실제 데이터로 변경해 주세요.
-  const columns = columnListData.data;
+  const router = useRouter();
+  const dashboardId = router.query.dashboardid;
+  const {
+    data: columnListData,
+    isError,
+    isLoading,
+  } = useQuery({ queryKey: ["columnList", dashboardId], queryFn: () => getColumnList(dashboardId) });
+
+  const columnList = columnListData?.data ?? [];
 
   return (
     <article className={cx("column-list")}>
-      {columns.map(({ id, title }) => (
+      {columnList.map(({ id, title }: { id: number; title: string }) => (
         <Column key={id} columnId={id} columnTitle={title} />
       ))}
     </article>

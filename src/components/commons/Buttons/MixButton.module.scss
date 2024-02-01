@@ -1,10 +1,12 @@
 .btn {
   @include flexbox();
   @include text-style(1.6, 600, $black-200);
+  background: $white;
   width: 100%;
   padding: 0.9rem;
   border-radius: 0.8rem;
   border: 0.1rem solid $gray-300;
+  background-color: $white;
   gap: 1.2rem;
 
   &.isChildren {

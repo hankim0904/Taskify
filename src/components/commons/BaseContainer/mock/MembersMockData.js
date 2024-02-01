@@ -1,4 +1,3 @@
-//mock 데이터를 사용했으니 실제 데이터로 변경해 주세요.
 export const membersMockData = {
   members: [
     {

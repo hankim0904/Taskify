@@ -8,4 +8,17 @@
   &.forward {
     border-radius: 0px 4px 4px 0px;
   }
+
+  &:hover {
+    background-color: $gray-200;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  & > img {
+    filter: invert(5%) sepia(3%) saturate(261%) hue-rotate(314deg) brightness(97%) contrast(91%);
+  }
 }

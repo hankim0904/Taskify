@@ -1,21 +1,30 @@
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useRouter } from "next/router";
+import { useState, ReactNode } from "react";
 import styles from "./Sidebar.module.scss";
 import classNames from "classnames/bind";
 import Dashboard from "../../Dashboard/Dashboard";
-import dashboardListData from "./dashboardListData";
+import dashboardListMockData from "../mock/DashboardListMockData";
 
 const cx = classNames.bind(styles);
-const dashboardData = dashboardListData.dashboards;
 
-export default function Sidebar() {
+//mock 데이터를 사용했으니 실제 데이터로 변경해 주세요.
+const dashboardListData = dashboardListMockData.dashboards;
+
+interface SidebarPorps {
+  handleChangeDashBoardTitle: (title: string, createdByMe: boolean) => void;
+}
+
+export default function Sidebar({ handleChangeDashBoardTitle }: SidebarPorps) {
   const [selectedIdx, setSelectedIdx] = useState(0);
+  const router = useRouter();
 
-  function handleSelectBoard(index: number) {
+  function handleSelectDashBoard(index: number, dashboardId: number) {
     if (index !== selectedIdx) {
       setSelectedIdx(index);
     }
+    router.push(`/dashboard/${dashboardId}`);
   }
 
   return (
@@ -26,12 +35,14 @@ export default function Sidebar() {
             <Image fill src="/assets/images/logo-symbol.png" alt="로고 심볼" />
           </Link>
         </div>
+
         <div className={cx("logo-typo")}>
           <Link href="/">
             <Image fill src="/assets/images/logo-typo.png" alt="로고 타이포" />
           </Link>
         </div>
       </div>
+
       <div className={cx("dash-boards")}>
         <div className={cx("header")}>
           <span className={cx("title")}>Dash Boards</span>
@@ -41,12 +52,15 @@ export default function Sidebar() {
         </div>
 
         <div className={cx("contents")}>
-          {dashboardData.map((data, index) => (
+          {dashboardListData.map((data, index) => (
             <div
+              key={data.id}
               className={cx("board-list", { selected: index === selectedIdx })}
-              onClick={() => handleSelectBoard(index)}
-            >
-              <Dashboard color={data.color} isHost={true} isSidebar={true}>
+              onClick={() => {
+                handleSelectDashBoard(index, data.id);
+                handleChangeDashBoardTitle(data.title, data.createdByMe);
+              }}>
+              <Dashboard color={data.color} isHost={data.createdByMe} isSidebar={true}>
                 {data.title}
               </Dashboard>
             </div>
