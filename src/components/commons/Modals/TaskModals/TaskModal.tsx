@@ -5,14 +5,14 @@ import ResponseBtn from "../../Buttons/ResponseButton";
 import Input from "../../Input/Input";
 import Textarea from "../../Input/Textarea";
 import { ChangeEvent, useState } from "react";
-import Dropdown from "../../../domains/edit/Dropdown/Dropdown";
+import Dropdown from "./DropdownForTaskModals/DropdownForTaskModals";
 import NiceModal, { NiceModalHandler, useModal } from "@ebay/nice-modal-react";
 import DateInput from "../../Input/DateInput";
 
 const cx = classNames.bind(styles);
 
 interface Props {
-  isEdit: boolean;
+  isEdit?: boolean;
   onCancle?: () => void;
 }
 
@@ -24,7 +24,7 @@ export default NiceModal.create(({ isEdit }: Props) => {
 
 //상태 값 dashboardId 로 변환해서 submit
 
-function TaskModal({ isEdit, onCancle }: Props) {
+function TaskModal({ isEdit = false, onCancle }: Props) {
   const [startDate, setStartDate] = useState(new Date());
 
   const { control, setValue, handleSubmit, formState } = useForm({ mode: "onBlur" });
@@ -59,7 +59,7 @@ function TaskModal({ isEdit, onCancle }: Props) {
           control={control}
           rules={{ required: "설명을 입력해 주세요" }}
         />
-        <DateInput labelName="날짜" control={control} name="dueDate" />
+        <DateInput labelName="마감일" control={control} name="dueDate" />
 
         <Input isModal={true} type="text" name="tag" labelName="태그" placeholder="입력 후 Enter" control={control} />
         <Input isModal={true} type="file" name="profileImageUrl" labelName="이미지" placeholder="" control={control} />

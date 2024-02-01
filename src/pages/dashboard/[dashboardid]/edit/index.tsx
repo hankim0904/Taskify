@@ -29,6 +29,7 @@ export default function Edit() {
   const [myDashBoard, setMyDashBoard] = useState<DashBoradData>();
   const [invitedMemberList, setInvitedMembersList] = useState();
   const router = useRouter();
+  const currentPath = router.pathname;
   const parms = useParams();
 
   console.log(parms);
@@ -72,7 +73,7 @@ export default function Edit() {
   }, []);
 
   return (
-    <BaseContainer currentPath="test">
+    <BaseContainer currentPath={currentPath}>
       <main className={cx("main", { openModal: isOpenModal })}>
         <button type="button" onClick={gobackButton} className={cx("backforward")}>
           <Image src="/assets/icons/ic-arrow-forward.svg" width={20} height={20} alt="뒤로가기" />

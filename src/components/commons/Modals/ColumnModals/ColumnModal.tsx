@@ -4,16 +4,16 @@ import styles from "./ColumnModal.module.scss";
 import classNames from "classnames/bind";
 import ResponseBtn from "../../Buttons/ResponseButton";
 import { useState } from "react";
-import NiceModal, { NiceModalHandler, useModal } from "@ebay/nice-modal-react";
+import NiceModal, { useModal } from "@ebay/nice-modal-react";
 
 const cx = classNames.bind(styles);
 
 interface Props {
-  isEdit: boolean;
+  isEdit?: boolean;
   onCancle: () => void;
 }
 
-export default NiceModal.create(({ isEdit }: Props) => {
+export default NiceModal.create(({ isEdit = false }: Props) => {
   const modal = useModal();
 
   return <ColumnModal isEdit={isEdit} onCancle={modal.remove} />;

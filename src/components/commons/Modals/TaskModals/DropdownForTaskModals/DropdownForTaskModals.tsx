@@ -1,5 +1,5 @@
 import { FieldValues, UseControllerProps, UseFormSetValue, useController, useForm, useWatch } from "react-hook-form";
-import styles from "./Dropdown.module.scss";
+import styles from "./DropdownForTaskModals.module.scss";
 import classNames from "classnames/bind";
 import Image from "next/image";
 import { ChangeEvent, MouseEvent, useState } from "react";
@@ -61,8 +61,6 @@ export default function Dropdown({ setValue, ...props }: Props) {
     name: props.name,
     defaultValue: "",
   });
-
-  console.log(field.value);
 
   function handleOpenSelectList() {
     setOpenSelectList((prev) => !prev);
