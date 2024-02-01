@@ -3,9 +3,9 @@ import styles from "./DashboradEditMemberBox.module.scss";
 import classNames from "classnames/bind";
 import PageChangeButton from "@/components/commons/Buttons/PageChangeButton";
 import Image from "next/image";
-import { MouseEventHandler } from "react";
-import NiceModal, { NiceModalHandler } from "@ebay/nice-modal-react";
-import ModalLayout from "@/components/commons/Modals/ModalLayout";
+import { useModal } from "@ebay/nice-modal-react";
+//import InviteModal from "@/components/commons/Modals/InviteModal/InviteModal";
+import TaskModal from "@/components/commons/Modals/TaskModals/TaskModal";
 
 const cx = classNames.bind(styles);
 
@@ -50,14 +50,14 @@ const members = [
 interface Props {
   title: string;
   isMemberEdit: boolean;
-  setModal?: NiceModalHandler<Record<string, unknown>>;
-  showModal?: () => void;
   memberList?: any;
 }
 
 //초대 취소시 유저 아이디 필요
 
-export default function DashboradEditMemberBox({ showModal, title, isMemberEdit, memberList }: Props) {
+export default function DashboradEditMemberBox({ title, isMemberEdit, memberList }: Props) {
+  const modal = useModal(TaskModal, { isEdit: true });
+
   function handleBackwardPageClick() {}
   return (
     <section className={cx("dashborad-edit-box", { email: !isMemberEdit })}>
@@ -70,7 +70,7 @@ export default function DashboradEditMemberBox({ showModal, title, isMemberEdit,
 
           {!isMemberEdit && (
             <div className={cx("invite-btn")}>
-              <ResponseBtn onClick={showModal} state="accept" ph={0.7} fs={1.2}>
+              <ResponseBtn onClick={modal.show} state="accept" ph={0.7} fs={1.2}>
                 <Image src="/assets/icons/ic-plus-box.svg" width={16} height={16} alt="sd" />
                 초대 하기
               </ResponseBtn>

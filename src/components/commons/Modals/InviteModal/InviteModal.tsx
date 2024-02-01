@@ -8,17 +8,23 @@ import NiceModal, { NiceModalHandler, useModal } from "@ebay/nice-modal-react";
 const cx = classNames.bind(styles);
 
 interface Props {
-  setModal?: NiceModalHandler<Record<string, unknown>>;
+  onCancle: () => void;
 }
 
-export default function InviteModal({ setModal }: Props) {
+export default NiceModal.create(() => {
+  const modal = useModal();
+
+  return <InviteModal onCancle={modal.remove} />;
+});
+
+function InviteModal({ onCancle }: Props) {
   const { control, handleSubmit, formState } = useForm({ mode: "onBlur" });
 
   function handleOnSubmit(data: any) {
     console.log(data);
   }
   return (
-    <>
+    <article className={cx("modal-container")}>
       <h2 className={cx("title")}>초대하기</h2>
       <form className={cx("form")} onSubmit={handleSubmit(handleOnSubmit)}>
         <Input
@@ -34,7 +40,7 @@ export default function InviteModal({ setModal }: Props) {
           }}
         />
         <div className={cx("btn-line")}>
-          <ResponseBtn onClick={setModal?.remove} state="cancel" ph={1.4} fs={1.6}>
+          <ResponseBtn onClick={onCancle} state="cancel" ph={1.4} fs={1.6}>
             취소
           </ResponseBtn>
           <ResponseBtn type="submit" disabled={!formState.isValid} state="accept" ph={1.4} fs={1.6}>
@@ -42,6 +48,6 @@ export default function InviteModal({ setModal }: Props) {
           </ResponseBtn>
         </div>
       </form>
-    </>
+    </article>
   );
 }

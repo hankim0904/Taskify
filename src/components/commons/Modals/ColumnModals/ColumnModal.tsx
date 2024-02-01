@@ -4,16 +4,22 @@ import styles from "./ColumnModal.module.scss";
 import classNames from "classnames/bind";
 import ResponseBtn from "../../Buttons/ResponseButton";
 import { useState } from "react";
-import { NiceModalHandler } from "@ebay/nice-modal-react";
+import NiceModal, { NiceModalHandler, useModal } from "@ebay/nice-modal-react";
 
 const cx = classNames.bind(styles);
 
 interface Props {
   isEdit: boolean;
-  setModal?: NiceModalHandler<Record<string, unknown>>;
+  onCancle: () => void;
 }
 
-export default function ColumnModal({ isEdit, setModal }: Props) {
+export default NiceModal.create(({ isEdit }: Props) => {
+  const modal = useModal();
+
+  return <ColumnModal isEdit={isEdit} onCancle={modal.remove} />;
+});
+
+function ColumnModal({ isEdit, onCancle }: Props) {
   const [isSureDelete, setIsSureDelete] = useState(false);
   const { control, handleSubmit, formState } = useForm({ mode: "onChange" });
 
@@ -26,7 +32,7 @@ export default function ColumnModal({ isEdit, setModal }: Props) {
   };
 
   return !isSureDelete ? (
-    <>
+    <article className={cx("modal-container")}>
       <h2 className={cx("title")}>{isEdit ? "칼럼 관리" : "칼럼 생성"}</h2>
       <form className={cx("form")} onSubmit={handleSubmit(handleOnSubmit)}>
         <Input
@@ -39,7 +45,7 @@ export default function ColumnModal({ isEdit, setModal }: Props) {
           rules={{ required: "프로젝트 이름을 입력해 주세요" }}
         />
         <div className={cx("btn-line")}>
-          <ResponseBtn onClick={setModal?.remove} state="cancel" ph={1.4} fs={1.6}>
+          <ResponseBtn onClick={onCancle} state="cancel" ph={1.4} fs={1.6}>
             취소
           </ResponseBtn>
           <ResponseBtn type="submit" disabled={!formState.isValid} state="accept" ph={1.4} fs={1.6}>
@@ -52,9 +58,9 @@ export default function ColumnModal({ isEdit, setModal }: Props) {
           삭제하기
         </button>
       )}
-    </>
+    </article>
   ) : (
-    <>
+    <article className={cx("modal-container")}>
       <h2 className={cx("delete-message")}>칼럼의 모든 카드가 삭제됩니다</h2>
       <div className={cx("btn-line")}>
         <ResponseBtn onClick={handelonClickDelete} state="cancel" ph={1.4} fs={1.6}>
@@ -64,6 +70,6 @@ export default function ColumnModal({ isEdit, setModal }: Props) {
           삭제
         </ResponseBtn>
       </div>
-    </>
+    </article>
   );
 }

@@ -7,8 +7,6 @@ import ResponseBtn from "@/components/commons/Buttons/ResponseButton";
 import BaseContainer from "@/components/commons/BaseContainer/BaseContainer";
 import { useRouter } from "next/router";
 import { use, useEffect, useState } from "react";
-import ModalLayout from "@/components/commons/Modals/ModalLayout";
-import NiceModal, { useModal } from "@ebay/nice-modal-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { axiosInstance } from "@/api/axiosInstance";
 import { useParams } from "next/navigation";
@@ -26,7 +24,7 @@ interface DashBoradData {
 }
 
 export default function Edit() {
-  const { accessToken } = useAuth();
+  //const { accessToken } = useAuth();
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [myDashBoard, setMyDashBoard] = useState<DashBoradData>();
   const [invitedMemberList, setInvitedMembersList] = useState();
@@ -35,11 +33,14 @@ export default function Edit() {
 
   console.log(parms);
 
+  const testAccessToken =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Njg5LCJ0ZWFtSWQiOiIyLTkiLCJpYXQiOjE3MDY2NzgwMzEsImlzcyI6InNwLXRhc2tpZnkifQ.xTJzppjh39utbp7V6-yYsFFXYzDmDT4jFUxabGtVZlY";
+
   async function getMyDashBoard(id: number) {
     try {
       const res = await axiosInstance.get(`/dashboards/${id}`, {
         headers: {
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Njg5LCJ0ZWFtSWQiOiIyLTkiLCJpYXQiOjE3MDY2NzgwMzEsImlzcyI6InNwLXRhc2tpZnkifQ.xTJzppjh39utbp7V6-yYsFFXYzDmDT4jFUxabGtVZlY`,
+          Authorization: `Bearer ${testAccessToken}`,
         },
       });
       const dashBoradData = res.data;
@@ -53,7 +54,7 @@ export default function Edit() {
   async function getInvitedMember(id?: number) {
     const res = await axiosInstance.get(`dashboards/2713/invitations?page=1&size=20`, {
       headers: {
-        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Njg5LCJ0ZWFtSWQiOiIyLTkiLCJpYXQiOjE3MDY2NzgwMzEsImlzcyI6InNwLXRhc2tpZnkifQ.xTJzppjh39utbp7V6-yYsFFXYzDmDT4jFUxabGtVZlY`,
+        Authorization: `Bearer ${testAccessToken}`,
       },
     });
     const invitedMembers = res.data.invitations.map((invitation: any) => invitation.invitee);
@@ -64,10 +65,6 @@ export default function Edit() {
   function gobackButton() {
     router.back();
   }
-
-  const showModal = () => {
-    NiceModal.show(ModalLayout, { modalType: "editTask" });
-  };
 
   useEffect(() => {
     getMyDashBoard(2713);
@@ -84,7 +81,6 @@ export default function Edit() {
         <DashboradEditTitleBox selectedColor={myDashBoard?.color}>{myDashBoard?.title}</DashboradEditTitleBox>
         <DashboradEditMemberBox isMemberEdit={true} title="구성원"></DashboradEditMemberBox>
         <DashboradEditMemberBox
-          showModal={showModal}
           isMemberEdit={false}
           memberList={invitedMemberList}
           title="초대 내역"
