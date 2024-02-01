@@ -1,56 +1,121 @@
-import { useState } from "react";
-
+import { useEffect, useState } from "react";
 import styles from "./DashboardList.module.scss";
+import skeletonStyles from "./ui/DashboardButtonSkUi.module.scss";
 import classNames from "classnames/bind";
-
 import { MixButton } from "@/components/commons/Buttons/MixButton";
 import DashboardButton from "./ui/DashboardButton";
 import PageChangeButton from "../../commons/Buttons/PageChangeButton";
-
-import { dashboardListData } from "./mock/dashboard-list";
+import NiceModal from "@ebay/nice-modal-react";
+import DashboardCreationModal from "@/components/commons/Modals/DashboardCreationModal/DashboardCreationModal";
+import { useQuery } from "@tanstack/react-query";
+import getDashBoards from "@/api/getDashBoards";
 
 const cx = classNames.bind(styles);
+const skCx = classNames.bind(skeletonStyles);
+
+interface DashboardData {
+  id: number;
+  title: string;
+  color: string;
+  createdByMe: boolean;
+}
 
 export default function DashboardList() {
-  const [currentpage, setCurrentPage] = useState(1);
-  //mock 데이터를 사용했으니 실제 데이터로 변경해 주세요.
-  const dashboards = dashboardListData.dashboards;
-  const isExistDashboard = dashboards.length === 0 ? false : true;
-  const totalPageCount = Math.ceil(dashboardListData.totalCount / 6);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [cursorId, setCursorId] = useState<number | null>(null);
 
-  function handleBackwardPageClick() {
-    //이전 페이지의 dashboard를 보여줄 수 있게 서버에 요청을 보내주세요
-    // setCurrentPage를 이용해서 '~페이지 중 ~' 부분의 숫자를 하나 줄여주세요.
-  }
+  const { data, isLoading } = useQuery({
+    queryKey: ["headers", currentPage, cursorId],
+    queryFn: () => getDashBoards(currentPage, cursorId),
+  });
 
-  function handleForwardPageClick() {
-    //이후 페이지의 dashboard를 보여줄 수 있게 서버에 요청을 보내주세요
-    // setCurrentPage를 이용해서 '~페이지 중 ~' 부분의 숫자를 하나 줄여주세요.
+  const dashboardDatas = data?.dashboards;
+  const totalPage = Math.ceil(data?.totalCount / 5);
+
+  const showModal = () => {
+    NiceModal.show(DashboardCreationModal);
+  };
+
+  useEffect(() => {
+    if (data?.dashboards) {
+      const lastDashboard = data?.dashboards[data.dashboards.length - 1];
+
+      setCursorId(lastDashboard.id);
+    }
+  }, [data]);
+
+  console.log(dashboardDatas);
+
+  if (isLoading) {
+    return (
+      <article>
+        <div className={cx("dashboard-btn-collection")}>
+          <div className={cx("dashboard-btn-container")}>
+            <MixButton onClick={showModal}>새로운 대시보드</MixButton>
+          </div>
+          <SkeletonDashBoardList />
+        </div>
+        {
+          <div className={cx("page-change")}>
+            <span className={cx("page-change-text")}>{`로딩중...`}</span>
+            <span className={cx("page-change-btn")}>
+              <PageChangeButton isForward={false} disabled={true} />
+              <PageChangeButton disabled={true} />
+            </span>
+          </div>
+        }
+      </article>
+    );
   }
 
   return (
     <article>
       <div className={cx("dashboard-btn-collection")}>
         <div className={cx("dashboard-btn-container")}>
-          <MixButton>새로운 대시보드</MixButton>
+          <MixButton onClick={showModal}>새로운 대시보드</MixButton>
         </div>
-        {dashboards.map(({ id, title, color, createdByMe }) => (
-          <div className={cx("dashboard-btn-container")} key={id}>
-            <DashboardButton id={id} color={color} isHost={createdByMe}>
-              {title}
-            </DashboardButton>
-          </div>
-        ))}
+        {dashboardDatas &&
+          dashboardDatas.map(({ id, title, color, createdByMe }: DashboardData) => (
+            <div className={cx("dashboard-btn-container")} key={id}>
+              <DashboardButton id={id} color={color} isHost={createdByMe}>
+                {title}
+              </DashboardButton>
+            </div>
+          ))}
       </div>
-      {isExistDashboard && (
-        <div className={cx("page-change")}>
-          <span className={cx("page-change-text")}>{`${totalPageCount} 페이지 중${currentpage}`}</span>
-          <span className={cx("page-change-btn")}>
-            <PageChangeButton isForward={false} onClick={handleBackwardPageClick} />
-            <PageChangeButton onClick={handleForwardPageClick} />
-          </span>
-        </div>
-      )}
+
+      <div className={cx("page-change")}>
+        <span className={cx("page-change-text")}>{`${totalPage} 페이지 중 ${currentPage}`}</span>
+        <span className={cx("page-change-btn")}>
+          <PageChangeButton
+            isForward={false}
+            onClick={() => {
+              setCurrentPage((currentPage) => currentPage - 1);
+            }}
+            disabled={currentPage <= 1}
+          />
+          <PageChangeButton
+            onClick={() => {
+              setCurrentPage((currentPage) => currentPage + 1);
+            }}
+            disabled={currentPage >= totalPage}
+          />
+        </span>
+      </div>
     </article>
   );
+}
+
+function SkeletonDashBoardList() {
+  const numberOfItems = 5;
+
+  const items = Array.from({ length: numberOfItems }, (_, index) => (
+    <div className={cx("dashboard-btn-container")} key={index}>
+      <div className={skCx("dashboard-btn")}>
+        <div className={skCx("line")} />
+      </div>
+    </div>
+  ));
+
+  return <>{items}</>;
 }

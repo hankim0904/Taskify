@@ -1,6 +1,7 @@
 .btn {
   @include flexbox();
   @include text-style(1.6, 600, $black-200);
+  background: $white;
   width: 100%;
   padding: 0.9rem;
   border-radius: 0.8rem;

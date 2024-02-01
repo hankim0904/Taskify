@@ -1,6 +1,5 @@
 .mydashboard-container {
   background-color: $gray-100;
-  width: 100vw;
   min-height: 100vh;
 }
 
@@ -12,14 +11,14 @@
   padding-left: 4rem;
 
   @include responsive("T") {
-    width: calc(100vw - 8rem);
+    width: calc(100% - 8rem);
     margin: 0 auto;
     padding-left: 0;
     padding-bottom: 11.7rem;
   }
 
   @include responsive("M") {
-    width: calc(100vw - 4.8rem);
+    width: calc(100% - 4.8rem);
     padding-top: 2.4rem;
     padding-bottom: 2.4rem;
   }
