@@ -16,7 +16,7 @@ interface Props {
   onCancle?: () => void;
 }
 
-export default NiceModal.create(({ isEdit }: Props) => {
+export default NiceModal.create(({ isEdit = false }: Props) => {
   const modal = useModal();
 
   return <TaskModal isEdit={isEdit} onCancle={modal.remove} />;
