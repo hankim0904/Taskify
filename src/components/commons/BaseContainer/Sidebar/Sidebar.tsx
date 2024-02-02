@@ -19,11 +19,11 @@ interface DashBoradData {
 }
 
 interface SidebarPorps {
-  dashBoardList: DashBoradData[];
+  dashboardDatas: DashBoradData[];
   handleChangeDashBoardTitle: (title: string, createdByMe: boolean) => void;
 }
 
-export default function Sidebar({ dashBoardList, handleChangeDashBoardTitle }: SidebarPorps) {
+export default function Sidebar({ dashboardDatas, handleChangeDashBoardTitle }: SidebarPorps) {
   const [selectedIdx, setSelectedIdx] = useState(0);
   const router = useRouter();
 
@@ -59,7 +59,7 @@ export default function Sidebar({ dashBoardList, handleChangeDashBoardTitle }: S
         </div>
 
         <div className={cx("contents")}>
-          {dashBoardList.map((data, index) => (
+          {dashboardDatas.map((data, index) => (
             <div
               key={data.id}
               className={cx("board-list", { selected: index === selectedIdx })}

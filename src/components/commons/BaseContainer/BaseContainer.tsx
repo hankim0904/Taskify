@@ -3,7 +3,8 @@ import Sidebar from "./Sidebar/Sidebar";
 import styles from "./BaseContainer.module.scss";
 import classNames from "classnames/bind";
 import { ReactNode, useEffect, useState } from "react";
-import { axiosInstance } from "@/api/axiosInstance";
+import getDashBoards from "@/api/getDashBoards";
+import { useQuery } from "@tanstack/react-query";
 
 const cx = classNames.bind(styles);
 
@@ -23,40 +24,26 @@ interface BaseContainerProps {
 }
 
 export default function BaseContainer({ currentPath, children }: BaseContainerProps) {
-  const [dashBoardList, setDashBoardList] = useState<DashBoradData[]>([]);
-  const [dashBoardTilte, setDashBoardTitle] = useState("");
+  const [dashBoardTitle, setDashBoardTitle] = useState("");
   const [isCreatedByMe, setIsCreatedByMe] = useState(false);
 
-  function setInitialValues(dashBoardList: DashBoradData[]) {
-    if (dashBoardList.length > 0) {
-      setDashBoardTitle(dashBoardList[0].title);
-      setIsCreatedByMe(dashBoardList[0].createdByMe);
+  function setInitialValues(dashboardDatas: DashBoradData[]) {
+    if (dashboardDatas.length > 0) {
+      setDashBoardTitle(dashboardDatas[0].title);
+      setIsCreatedByMe(dashboardDatas[0].createdByMe);
     }
   }
 
-  async function getDashBoardList() {
-    try {
-      const res = await axiosInstance.get(`dashboards`, {
-        headers: {
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Njg5LCJ0ZWFtSWQiOiIyLTkiLCJpYXQiOjE3MDY2NzgwMzEsImlzcyI6InNwLXRhc2tpZnkifQ.xTJzppjh39utbp7V6-yYsFFXYzDmDT4jFUxabGtVZlY`,
-        },
-        params: {
-          navigationMethod: "infiniteScroll",
-        },
-      });
+  const { data } = useQuery({
+    queryKey: ["headers"],
+    queryFn: () => getDashBoards("infiniteScroll", 20),
+  });
 
-      const dashBoardList = res.data.dashboards;
-
-      setDashBoardList(dashBoardList);
-      setInitialValues(dashBoardList);
-    } catch (e) {
-      console.log(e);
-    }
-  }
+  const dashboardDatas = data?.dashboards || [];
 
   useEffect(() => {
-    getDashBoardList();
-  }, []);
+    setInitialValues(dashboardDatas);
+  }, [dashboardDatas]);
 
   function handleChangeDashBoardTitle(title: string, createdByMe: boolean) {
     setDashBoardTitle(title);
@@ -64,12 +51,14 @@ export default function BaseContainer({ currentPath, children }: BaseContainerPr
   }
 
   return (
-    <div className={cx("container")}>
-      <Sidebar dashBoardList={dashBoardList} handleChangeDashBoardTitle={handleChangeDashBoardTitle} />
-      <div className={cx("contents")}>
-        <Navbar currentPath={currentPath} dashBoardTilte={dashBoardTilte} isCreatedByMe={isCreatedByMe} />
-        {children}
+    <div className={cx("grid")}>
+      <div className={cx("grid-sidebar")}>
+        <Sidebar dashboardDatas={dashboardDatas} handleChangeDashBoardTitle={handleChangeDashBoardTitle} />
       </div>
+      <div className={cx("grid-navbar")}>
+        <Navbar currentPath={currentPath} dashBoardTitle={dashBoardTitle} isCreatedByMe={isCreatedByMe} />
+      </div>
+      <div className={cx("grid-content")}>{children}</div>
     </div>
   );
 }

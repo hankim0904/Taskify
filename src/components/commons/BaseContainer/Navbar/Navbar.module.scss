@@ -21,6 +21,7 @@
     @include flexbox(start, center);
     gap: 0.8rem;
     flex: 1;
+    width: 30rem;
 
     @include text-style(2, 700, $black-200);
     @include responsive("T") {
@@ -28,6 +29,10 @@
     }
 
     .dashboard-name {
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+
       @include text-style(2, 700, $black-200);
     }
     .created-icon {
@@ -45,7 +50,7 @@
   &-action-btns {
     @include flexbox;
     gap: 1.6rem;
-    padding-right: 4rem;
+    padding: 0 4rem;
 
     @include responsive("T") {
       gap: 1.2rem;
@@ -89,7 +94,6 @@
 
   &-member {
     @include flexbox;
-    border-right: 1px solid $gray-300;
 
     &-list {
       width: 3.8rem;
@@ -97,6 +101,22 @@
       border: 0.2rem solid $white;
       border-radius: 50%;
       background-color: #ffc85a;
+
+      &.only-me {
+        margin-right: 3.2rem;
+
+        @include responsive("T") {
+          margin-right: 2.4rem;
+        }
+
+        @include responsive("M") {
+          margin-right: 1.2rem;
+        }
+      }
+
+      &.count {
+        background-color: #f4d7da;
+      }
 
       &-img {
         border-radius: 50%;
@@ -123,11 +143,16 @@
     @include flexbox;
     gap: 0.9rem;
     position: relative;
-    margin-left: 3.8rem;
+    border-left: 1px solid $gray-300;
+    padding-left: 3.2rem;
     cursor: pointer;
 
+    @include responsive("T") {
+      padding-left: 2.4rem;
+    }
+
     @include responsive("M") {
-      margin-left: 1.2rem;
+      padding-left: 1.2rem;
     }
 
     &-circle {

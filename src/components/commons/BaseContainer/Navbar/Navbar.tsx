@@ -1,31 +1,45 @@
 import Image from "next/image";
 import styles from "./Navbar.module.scss";
 import classNames from "classnames/bind";
-import { membersMockData } from "../mock/MembersMockData";
 import { useState, useEffect, useRef } from "react";
-import dashboardListData from "../mock/DashboardListMockData";
+import getMembers from "@/api/getMembers";
+import { useQuery } from "@tanstack/react-query";
+import { useRouter } from "next/router";
 
 const cx = classNames.bind(styles);
 
 const MAX_DISPLAY_PC = 4;
 const MAX_DISPLAY_TABLET = 2;
 
-//mock 데이터를 사용했으니 실제 데이터로 변경해 주세요.
-const dashboardData = dashboardListData.dashboards;
-
 interface NavbarProps {
   currentPath: string;
-  dashBoardTilte: string;
+  dashBoardTitle: string;
   isCreatedByMe: boolean;
 }
 
-export default function Navbar({ currentPath, dashBoardTilte, isCreatedByMe }: NavbarProps) {
-  const dropMenuRef = useRef<HTMLDivElement | null>(null);
+type Member = {
+  id: number;
+  profileImageUrl?: string;
+  nickname: string;
+};
+
+export default function Navbar({ currentPath, dashBoardTitle, isCreatedByMe }: NavbarProps) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isTablet, setIsTablet] = useState(false);
 
-  const displayedMembers = membersMockData.members.slice(0, isTablet ? MAX_DISPLAY_TABLET : MAX_DISPLAY_PC);
-  const remainingMembersCount = membersMockData.totalCount - displayedMembers.length;
+  const router = useRouter();
+  const dashboardId = router.query.dashboardid;
+
+  const { data } = useQuery({
+    queryKey: ["memberList", dashboardId],
+    queryFn: () => getMembers(dashboardId),
+  });
+  const memberList: Member[] = data?.members || [];
+  const memberTotalCount: number | undefined = data?.totalCount;
+
+  const dropMenuRef = useRef<HTMLDivElement | null>(null);
+  const displayedMembers: Member[] = memberList.slice(0, isTablet ? MAX_DISPLAY_TABLET : MAX_DISPLAY_PC);
+  const remainingMembersCount: number = memberTotalCount ? memberTotalCount - displayedMembers.length : 0;
 
   function handleDropDownMenu() {
     setIsDropdownOpen(!isDropdownOpen);
@@ -66,7 +80,7 @@ export default function Navbar({ currentPath, dashBoardTilte, isCreatedByMe }: N
   return (
     <div className={cx("navbar")}>
       <div className={cx("navbar-title")}>
-        <span className={cx("dashboard-name")}>{dashBoardTilte}</span>
+        <span className={cx("dashboard-name")}>{dashBoardTitle}</span>
         <span className={cx("created-icon")}>
           {isCreatedByMe && <Image fill src="/assets/icons/ic-crown.svg" alt="왕관 모양 아이콘" />}
         </span>
@@ -92,13 +106,17 @@ export default function Navbar({ currentPath, dashBoardTilte, isCreatedByMe }: N
           </div>
 
           <div className={cx("navbar-member")}>
-            {membersMockData.totalCount !== 0 &&
+            {memberTotalCount !== 0 &&
               displayedMembers.map((member, index) =>
                 member.profileImageUrl ? (
                   <div
                     key={member.id}
-                    className={cx("navbar-member-list")}
-                    style={{ position: "relative", right: `${index}rem`, backgroundColor: "white" }}>
+                    className={cx("navbar-member-list", memberTotalCount === 1 && "navbar-only-me")}
+                    style={{
+                      position: "relative",
+                      right: `${index}rem`,
+                      backgroundColor: "white",
+                    }}>
                     <Image
                       fill
                       src={member.profileImageUrl}
@@ -107,14 +125,19 @@ export default function Navbar({ currentPath, dashBoardTilte, isCreatedByMe }: N
                     />
                   </div>
                 ) : (
-                  <div className={cx("navbar-member-list")} style={{ position: "relative", right: `${index}rem` }}>
+                  <div
+                    className={cx("navbar-member-list", memberTotalCount === 1 && "only-me")}
+                    style={{
+                      position: "relative",
+                      right: `${index}rem`,
+                    }}>
                     <span className={cx("navbar-member-list-nickname")}>{extractInitial(member.nickname)}</span>
                   </div>
                 ),
               )}
-            {membersMockData.totalCount > displayedMembers.length && (
+            {memberTotalCount !== undefined && memberTotalCount > displayedMembers.length && (
               <div
-                className={cx("navbar-member-list")}
+                className={cx("navbar-member-list", "count")}
                 style={{ position: "relative", right: `${displayedMembers.length}rem` }}>
                 <span className={cx("navbar-member-list-count")}>+{remainingMembersCount}</span>
               </div>
