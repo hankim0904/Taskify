@@ -36,7 +36,7 @@ export default function BaseContainer({ currentPath, children }: BaseContainerPr
 
   const { data } = useQuery({
     queryKey: ["headers"],
-    queryFn: () => getDashBoards("infiniteScroll", 20),
+    queryFn: () => getDashBoards("infiniteScroll", 60),
   });
 
   const dashboardDatas = data?.dashboards || [];

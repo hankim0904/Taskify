@@ -4,7 +4,6 @@ import TaskModal from "./TaskModals/TaskModal";
 import ColumnModal from "./ColumnModals/ColumnModal";
 import InviteModal from "./InviteModal/InviteModal";
 import React from "react";
-import NiceModal, { NiceModalHandler, useModal } from "@ebay/nice-modal-react";
 
 const cx = classNames.bind(styles);
 
@@ -18,20 +17,14 @@ const ModalContents = {
 
 interface Props {
   modalType: keyof typeof ModalContents;
-  setModal?: NiceModalHandler<Record<string, unknown>>;
+  isModalOpen?: () => void;
 }
 
-function ModalLayout({ modalType = "addTask" }: Props) {
-  const modal = useModal();
-
-  const ContentComponent = React.cloneElement(ModalContents[modalType], { setModal: modal });
+export default function ModalLayout({ modalType = "addTask", isModalOpen }: Props) {
+  const ContentComponent = ModalContents[modalType];
   return (
     <section className={cx("modal-background")}>
       <article className={cx("modal-container")}> {ContentComponent}</article>
     </section>
   );
 }
-
-export default NiceModal.create(({ modalType }: Props) => {
-  return <ModalLayout modalType={modalType} />;
-});

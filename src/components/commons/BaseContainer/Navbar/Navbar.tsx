@@ -1,11 +1,14 @@
 import Image from "next/image";
 import styles from "./Navbar.module.scss";
 import classNames from "classnames/bind";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, use } from "react";
 import getMembers from "@/api/getMembers";
 import getUsersMe from "@/api/getUsersMe";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
+import { useAuth } from "@/contexts/AuthContext";
+import InviteModal from "../../Modals/InviteModal/InviteModal";
+import { useModal } from "@ebay/nice-modal-react";
 
 const cx = classNames.bind(styles);
 
@@ -25,11 +28,16 @@ type Member = {
 };
 
 export default function Navbar({ currentPath, dashBoardTitle, isCreatedByMe }: NavbarProps) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isTablet, setIsTablet] = useState(false);
 
+  const modal = useModal(InviteModal);
+
   const router = useRouter();
   const dashboardId = router.query.dashboardid;
+
+  const { logout } = useAuth();
 
   const { data: memberData } = useQuery({
     queryKey: ["memberList", dashboardId],
@@ -52,10 +60,18 @@ export default function Navbar({ currentPath, dashBoardTitle, isCreatedByMe }: N
   }
 
   function extractInitial(nickname: string) {
-    console.log(nickname);
     if (nickname) {
       return nickname[0].toUpperCase();
     }
+  }
+
+  function handleLogOut() {
+    logout();
+    router.push("/landing");
+  }
+
+  function handleOpenModal() {
+    setIsModalOpen(true);
   }
 
   useEffect(() => {
@@ -98,11 +114,11 @@ export default function Navbar({ currentPath, dashBoardTitle, isCreatedByMe }: N
       {currentPath.includes("/dashboard") && (
         <div className={cx("navbar-utils")}>
           <div className={cx("navbar-action-btns")}>
-            <button className={cx("manage")}>
+            <button className={cx("manage")} onClick={() => router.push(`/dashboard/${dashboardId}/edit`)}>
               <Image className={cx("img")} width={20} height={20} src="/assets/icons/ic-gear.svg" alt="관리 아이콘" />
               <span className={cx("text")}>관리</span>
             </button>
-            <button className={cx("invite")}>
+            <button className={cx("invite")} onClick={handleOpenModal}>
               <Image
                 className={cx("img")}
                 width={20}
@@ -110,7 +126,9 @@ export default function Navbar({ currentPath, dashBoardTitle, isCreatedByMe }: N
                 src="/assets/icons/ic-plus-box.svg"
                 alt="초대 아이콘"
               />
-              <span className={cx("text")}>초대하기</span>
+              <span className={cx("text")} onClick={() => modal.show(InviteModal)}>
+                초대하기
+              </span>
             </button>
           </div>
 
@@ -180,13 +198,19 @@ export default function Navbar({ currentPath, dashBoardTitle, isCreatedByMe }: N
             }}>
             <button>
               <span className={cx("text")}>
-                <button>로그아웃</button>
+                <button onClick={handleLogOut}>로그아웃</button>
               </span>
             </button>
-            <button>
+            <button
+              onClick={() => {
+                router.push("/mypage");
+              }}>
               <span className={cx("text")}>내 정보</span>
             </button>
-            <button>
+            <button
+              onClick={() => {
+                router.push("/mydashboard");
+              }}>
               <span className={cx("text")}>내 대시보드</span>
             </button>
           </div>

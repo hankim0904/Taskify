@@ -27,6 +27,8 @@ export default function Sidebar({ dashboardDatas, handleChangeDashBoardTitle }: 
   const [selectedIdx, setSelectedIdx] = useState(0);
   const router = useRouter();
 
+  console.log(dashboardDatas);
+
   function handleSelectDashBoard(index: number, dashboardId: number) {
     if (index !== selectedIdx) {
       setSelectedIdx(index);
