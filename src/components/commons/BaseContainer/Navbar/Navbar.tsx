@@ -3,6 +3,7 @@ import styles from "./Navbar.module.scss";
 import classNames from "classnames/bind";
 import { useState, useEffect, useRef } from "react";
 import getMembers from "@/api/getMembers";
+import getUsersMe from "@/api/getUsersMe";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 
@@ -30,12 +31,17 @@ export default function Navbar({ currentPath, dashBoardTitle, isCreatedByMe }: N
   const router = useRouter();
   const dashboardId = router.query.dashboardid;
 
-  const { data } = useQuery({
+  const { data: memberData } = useQuery({
     queryKey: ["memberList", dashboardId],
     queryFn: () => getMembers(dashboardId),
   });
-  const memberList: Member[] = data?.members || [];
-  const memberTotalCount: number | undefined = data?.totalCount;
+  const memberList: Member[] = memberData?.members || [];
+  const memberTotalCount: number | undefined = memberData?.totalCount;
+
+  const { data: userMeData } = useQuery({
+    queryKey: ["userMe"],
+    queryFn: () => getUsersMe(),
+  });
 
   const dropMenuRef = useRef<HTMLDivElement | null>(null);
   const displayedMembers: Member[] = memberList.slice(0, isTablet ? MAX_DISPLAY_TABLET : MAX_DISPLAY_PC);
@@ -46,7 +52,10 @@ export default function Navbar({ currentPath, dashBoardTitle, isCreatedByMe }: N
   }
 
   function extractInitial(nickname: string) {
-    return nickname[0].toUpperCase();
+    console.log(nickname);
+    if (nickname) {
+      return nickname[0].toUpperCase();
+    }
   }
 
   useEffect(() => {
@@ -111,7 +120,7 @@ export default function Navbar({ currentPath, dashBoardTitle, isCreatedByMe }: N
                 member.profileImageUrl ? (
                   <div
                     key={member.id}
-                    className={cx("navbar-member-list", memberTotalCount === 1 && "navbar-only-me")}
+                    className={cx("navbar-member-list", memberTotalCount === 1 && "only-me")}
                     style={{
                       position: "relative",
                       right: `${index}rem`,
@@ -147,10 +156,21 @@ export default function Navbar({ currentPath, dashBoardTitle, isCreatedByMe }: N
       )}
 
       <div className={cx("navbar-user")} ref={dropMenuRef} onClick={handleDropDownMenu}>
-        <div className={cx("navbar-user-circle")}>
-          <span className={cx("navbar-user-circle-nickname")}>B</span>
-        </div>
-        <div className={cx("navbar-user-name")}>배유철</div>
+        {userMeData?.profileImageUrl ? (
+          <>
+            <div className={cx("navbar-user-circle")}>
+              <Image fill src={userMeData?.profileImageUrl} className={cx("navbar-member-list-img")} alt="내 이미지" />
+            </div>
+            <div className={cx("navbar-user-name")}>{userMeData?.nickname}</div>
+          </>
+        ) : (
+          <>
+            <div className={cx("navbar-user-circle")}>
+              <span className={cx("navbar-user-circle-nickname")}>{extractInitial(userMeData?.nickname)}</span>
+            </div>
+            <div className={cx("navbar-user-name")}>{userMeData?.nickname}</div>)
+          </>
+        )}
 
         {isDropdownOpen && (
           <div
