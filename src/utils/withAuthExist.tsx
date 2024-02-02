@@ -12,12 +12,12 @@ const withAuthExist = (WrappedComponent: React.ComponentType) => {
       const checkAuth = async () => {
         try {
           if (accessToken) {
-            const response = await axiosInstance.get("dashboards", {
+            const response = await axiosInstance.get("dashboards?navigationMethod=infiniteScroll", {
               headers: {
                 Authorization: `Bearer ${accessToken}`,
               },
             });
-            const firstDashboardId = response.data.dashboards[0].id;
+            const firstDashboardId = response.data.dashboards[0]?.id;
             if (firstDashboardId) {
               router.push(`dashboard/${firstDashboardId}`);
             } else {
