@@ -6,31 +6,16 @@ import ResponseBtn from "../../Buttons/ResponseButton";
 import { useState } from "react";
 import NiceModal, { useModal } from "@ebay/nice-modal-react";
 import ModalBackground from "../ModalBackground";
-<<<<<<< HEAD
-=======
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getColumnList, deleteColumn, putColumnName, postColumn } from "@/components/domains/dashboardid/api/queries";
 import { getColumnListQueryKey } from "@/components/domains/dashboardid/api/queryKeys";
 import { useRouter } from "next/router";
-
->>>>>>> dev
 
 const cx = classNames.bind(styles);
 
 interface Props {
   isEdit?: boolean;
   onCancel: () => void;
-<<<<<<< HEAD
-}
-
-export default NiceModal.create(({ isEdit = false }: Props) => {
-  const modal = useModal();
-
-  return <ColumnModal isEdit={isEdit} onCancel={modal.remove} />;
-});
-
-function ColumnModal({ isEdit, onCancel }: Props) {
-=======
   columnId?: number;
 }
 
@@ -44,7 +29,6 @@ function ColumnModal({ isEdit, onCancel, columnId }: Props) {
   const router = useRouter();
   const dashboardId = router.query.dashboardid;
   const queryClient = useQueryClient();
->>>>>>> dev
   const [isSureDelete, setIsSureDelete] = useState(false);
   const { control, handleSubmit, formState, watch } = useForm<any>({
     mode: "all",
@@ -59,7 +43,7 @@ function ColumnModal({ isEdit, onCancel, columnId }: Props) {
   const columnList = columnListData.data;
 
   const postColumnMutation = useMutation({
-    mutationFn: (newColumn) => postColumn(newColumn),
+    mutationFn: newColumn => postColumn(newColumn),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: getColumnListQueryKey(dashboardId) });
       onCancel();
@@ -75,7 +59,7 @@ function ColumnModal({ isEdit, onCancel, columnId }: Props) {
   });
 
   const putColumnNameMutation = useMutation({
-    mutationFn: (changedName) => putColumnName(columnId, changedName),
+    mutationFn: changedName => putColumnName(columnId, changedName),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: getColumnListQueryKey(dashboardId) });
       onCancel();
@@ -87,10 +71,10 @@ function ColumnModal({ isEdit, onCancel, columnId }: Props) {
   }
 
   function handelonClickDelete() {
-    setIsSureDelete((prev) => !prev);
+    setIsSureDelete(prev => !prev);
   }
 
-  const handleOnSubmit: SubmitHandler<FieldValues> = (data) => {
+  const handleOnSubmit: SubmitHandler<FieldValues> = data => {
     if (isEdit) {
       putColumnNameMutation.mutate({ title: data.columnName });
     } else {
@@ -114,10 +98,6 @@ function ColumnModal({ isEdit, onCancel, columnId }: Props) {
             labelName="이름"
             placeholder="새로운 프로젝트"
             control={control}
-<<<<<<< HEAD
-            rules={{ required: "프로젝트 이름을 입력해 주세요" }}
-          />
-=======
             rules={{
               required: "프로젝트 이름을 입력해 주세요",
               validate: {
@@ -125,15 +105,14 @@ function ColumnModal({ isEdit, onCancel, columnId }: Props) {
                   if (columnList.length >= 10 && !isEdit) return "컬럼은 최대 10개까지 생성할 수 있습니다";
                   return true;
                 },
-                alreadyExist: (value) => {
-                  const isDuplicatedColumnName = columnList.some((column) => column.title === value);
+                alreadyExist: value => {
+                  const isDuplicatedColumnName = columnList.some(column => column.title === value);
                   if (isDuplicatedColumnName) return "중복된 컬럼 이름입니다";
                   return true;
                 },
               },
             }}
-             />
->>>>>>> dev
+          />
           <div className={cx("btn-line")}>
             <ResponseBtn onClick={onCancel} state="cancel" ph={1.4} fs={1.6}>
               취소
@@ -159,11 +138,7 @@ function ColumnModal({ isEdit, onCancel, columnId }: Props) {
           <ResponseBtn onClick={handelonClickDelete} state="cancel" ph={1.4} fs={1.6}>
             취소
           </ResponseBtn>
-<<<<<<< HEAD
-          <ResponseBtn type="submit" state="accept" ph={1.4} fs={1.6}>
-=======
           <ResponseBtn type="submit" state="accept" ph={1.4} fs={1.6} onClick={handleDeleteColumn}>
->>>>>>> dev
             삭제
           </ResponseBtn>
         </div>

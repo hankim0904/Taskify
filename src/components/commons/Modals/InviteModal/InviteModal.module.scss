@@ -1,9 +1,5 @@
 .modal-container {
-<<<<<<< HEAD
-  @include pos-center(absolute);
-=======
   @include pos-center(fixed);
->>>>>>> dev
   overflow-y: auto;
   width: 100%;
   max-width: 54rem;
