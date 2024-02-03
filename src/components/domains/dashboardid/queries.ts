@@ -1,7 +1,7 @@
 import { axiosInstance } from "@/api/axiosInstance";
 
 const accessToken =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NzE0LCJ0ZWFtSWQiOiIyLTkiLCJpYXQiOjE3MDY2OTg1NTQsImlzcyI6InNwLXRhc2tpZnkifQ.oEoe6s1NCVsFlTn1Gara6-eMRIE-zGcfBwQl7SFlEe4";
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Njg5LCJ0ZWFtSWQiOiIyLTkiLCJpYXQiOjE3MDY2NzgwMzEsImlzcyI6InNwLXRhc2tpZnkifQ.xTJzppjh39utbp7V6-yYsFFXYzDmDT4jFUxabGtVZlY";
 
 export const getColumnList = async (dashboardId: string | string[] | undefined) => {
   const response = await axiosInstance.get("columns", {

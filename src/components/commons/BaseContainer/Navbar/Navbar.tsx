@@ -1,14 +1,15 @@
 import Image from "next/image";
 import styles from "./Navbar.module.scss";
 import classNames from "classnames/bind";
-import { useState, useEffect, useRef, use } from "react";
+import { useState, useEffect, useRef } from "react";
 import getMembers from "@/api/getMembers";
 import getUsersMe from "@/api/getUsersMe";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
-import { useAuth } from "@/contexts/AuthContext";
 import InviteModal from "../../Modals/InviteModal/InviteModal";
 import { useModal } from "@ebay/nice-modal-react";
+import UserDropdownMenu from "./UserProfile/UserDropdownMenu/UserDropdownMenu";
+import UserProfile from "./UserProfile/UserProfile";
 
 const cx = classNames.bind(styles);
 
@@ -28,16 +29,11 @@ type Member = {
 };
 
 export default function Navbar({ currentPath, dashBoardTitle, isCreatedByMe }: NavbarProps) {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isTablet, setIsTablet] = useState(false);
 
   const modal = useModal(InviteModal);
-
   const router = useRouter();
   const dashboardId = router.query.dashboardid;
-
-  const { logout } = useAuth();
 
   const { data: memberData } = useQuery({
     queryKey: ["memberList", dashboardId],
@@ -51,28 +47,8 @@ export default function Navbar({ currentPath, dashBoardTitle, isCreatedByMe }: N
     queryFn: () => getUsersMe(),
   });
 
-  const dropMenuRef = useRef<HTMLDivElement | null>(null);
   const displayedMembers: Member[] = memberList.slice(0, isTablet ? MAX_DISPLAY_TABLET : MAX_DISPLAY_PC);
   const remainingMembersCount: number = memberTotalCount ? memberTotalCount - displayedMembers.length : 0;
-
-  function handleDropDownMenu() {
-    setIsDropdownOpen(!isDropdownOpen);
-  }
-
-  function extractInitial(nickname: string) {
-    if (nickname) {
-      return nickname[0].toUpperCase();
-    }
-  }
-
-  function handleLogOut() {
-    logout();
-    router.push("/landing");
-  }
-
-  function handleOpenModal() {
-    setIsModalOpen(true);
-  }
 
   useEffect(() => {
     const handleResize = () => {
@@ -91,16 +67,11 @@ export default function Navbar({ currentPath, dashBoardTitle, isCreatedByMe }: N
     };
   }, []);
 
-  useEffect(() => {
-    const handleOutsideClose = (e: { target: any }) => {
-      if (isDropdownOpen && dropMenuRef.current && !dropMenuRef.current.contains(e.target)) {
-        setIsDropdownOpen(false);
-      }
-    };
-    document.addEventListener("click", handleOutsideClose);
-
-    return () => document.removeEventListener("click", handleOutsideClose);
-  }, [isDropdownOpen]);
+  function extractInitial(nickname: string) {
+    if (nickname) {
+      return nickname[0].toUpperCase();
+    }
+  }
 
   return (
     <div className={cx("navbar")}>
@@ -118,7 +89,7 @@ export default function Navbar({ currentPath, dashBoardTitle, isCreatedByMe }: N
               <Image className={cx("img")} width={20} height={20} src="/assets/icons/ic-gear.svg" alt="관리 아이콘" />
               <span className={cx("text")}>관리</span>
             </button>
-            <button className={cx("invite")} onClick={handleOpenModal}>
+            <button className={cx("invite")}>
               <Image
                 className={cx("img")}
                 width={20}
@@ -173,49 +144,7 @@ export default function Navbar({ currentPath, dashBoardTitle, isCreatedByMe }: N
         </div>
       )}
 
-      <div className={cx("navbar-user")} ref={dropMenuRef} onClick={handleDropDownMenu}>
-        {userMeData?.profileImageUrl ? (
-          <>
-            <div className={cx("navbar-user-circle")}>
-              <Image fill src={userMeData?.profileImageUrl} className={cx("navbar-member-list-img")} alt="내 이미지" />
-            </div>
-            <div className={cx("navbar-user-name")}>{userMeData?.nickname}</div>
-          </>
-        ) : (
-          <>
-            <div className={cx("navbar-user-circle")}>
-              <span className={cx("navbar-user-circle-nickname")}>{extractInitial(userMeData?.nickname)}</span>
-            </div>
-            <div className={cx("navbar-user-name")}>{userMeData?.nickname}</div>)
-          </>
-        )}
-
-        {isDropdownOpen && (
-          <div
-            className={cx("navbar-user-dropdown-menu")}
-            onClick={e => {
-              e.stopPropagation();
-            }}>
-            <button>
-              <span className={cx("text")}>
-                <button onClick={handleLogOut}>로그아웃</button>
-              </span>
-            </button>
-            <button
-              onClick={() => {
-                router.push("/mypage");
-              }}>
-              <span className={cx("text")}>내 정보</span>
-            </button>
-            <button
-              onClick={() => {
-                router.push("/mydashboard");
-              }}>
-              <span className={cx("text")}>내 대시보드</span>
-            </button>
-          </div>
-        )}
-      </div>
+      <UserProfile userMeData={userMeData} extractInitial={extractInitial} />
     </div>
   );
 }
