@@ -16,6 +16,9 @@ const cx = classNames.bind(styles);
 const MAX_DISPLAY_PC = 4;
 const MAX_DISPLAY_TABLET = 2;
 
+//mock 데이터를 사용했으니 실제 데이터로 변경해 주세요.
+const dashboardData = dashboardListData.dashboards;
+
 interface NavbarProps {
   currentPath: string;
   dashBoardTitle: string;

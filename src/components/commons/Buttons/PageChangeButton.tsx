@@ -19,6 +19,7 @@ export default function PageChangeButton({ onClick, isForward = true, disabled }
         alt="페이지 넘김 방향 표시 아이콘"
         width={16}
         height={16}
+        className={cx("page-change-btn-svg")}
       />
     </button>
   );

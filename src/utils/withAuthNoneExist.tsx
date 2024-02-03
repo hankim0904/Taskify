@@ -27,4 +27,4 @@ const withAuthNoneExist = (WrappedComponent: React.ComponentType) => {
   return AuthenticatedComponent;
 };
 
-export default withAuth;
+export default withAuthNoneExist;

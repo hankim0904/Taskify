@@ -7,7 +7,7 @@ import Image from "next/image";
 const cx = classNames.bind(styles);
 
 interface InputProps extends UseControllerProps {
-  placeholder: string;
+  placeholder?: string;
   labelName?: string;
   type: string;
   isModal?: boolean;
@@ -27,7 +27,7 @@ export default function Input({ placeholder, type, labelName, isModal = false, .
   const isError = fieldState.invalid;
 
   return (
-    <div className={cx("input-area")}>
+    <div className={cx("input-area", { checkbox: inputType === "checkbox" })}>
       <label htmlFor={props.name} className={cx("label", { modal: isModal })}>
         {labelName}
         {isModal && props.rules?.required && <span className={cx("modalRequired")}> *</span>}
@@ -40,12 +40,19 @@ export default function Input({ placeholder, type, labelName, isModal = false, .
       <input
         id={props.name}
         type={inputType}
-        className={cx("input", { error: isError }, { search: type === "search" }, { file: inputType === "file" })}
+        className={cx(
+          "input",
+          { checkbox: inputType === "checkbox" },
+          { error: isError },
+          { search: type === "search" },
+          { file: inputType === "file" }
+        )}
         placeholder={placeholder}
         {...field}
       />
 
-      <p className={cx("error-message")}>{isError && fieldState.error?.message}</p>
+
+      {inputType !== "checkbox" && <p className={cx("error-message")}>{fieldState.error?.message}</p>}
 
       {type === "password" ? (
         <Image

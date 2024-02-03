@@ -1,7 +1,7 @@
 .dashboard {
   @include flexbox(stretch, center);
   flex: 0 0 auto;
-  width: 100%;
+  width: 95%;
 
   &.sidebar {
     @include responsive("M") {
@@ -19,10 +19,10 @@
 
   &-title {
     @include text-style(1.6, 600, $black-200);
-    max-width: 20ch;
     overflow: hidden;
-    text-overflow: ellipsis;
     white-space: nowrap;
+    max-width: 15rem;
+    text-overflow: ellipsis;
     padding-left: 1.6rem;
     padding-right: 0.8rem;
 
@@ -37,8 +37,8 @@
 
     @include responsive("M") {
       @include text-style(1.4, 600, $black-200);
-      max-width: 30ch;
       padding-right: 0.4rem;
+      max-width: 20rem;
     }
 
     &.sidebar {

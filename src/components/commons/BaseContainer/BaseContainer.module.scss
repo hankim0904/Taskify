@@ -25,5 +25,6 @@
 
   &-content {
     grid-area: content;
+    overflow: auto;
   }
 }
