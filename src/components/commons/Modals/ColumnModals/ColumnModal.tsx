@@ -11,6 +11,7 @@ import { getColumnList, deleteColumn, putColumnName, postColumn } from "@/compon
 import { getColumnListQueryKey } from "@/components/domains/dashboardid/api/queryKeys";
 import { useRouter } from "next/router";
 
+
 const cx = classNames.bind(styles);
 
 interface Props {
@@ -112,7 +113,7 @@ function ColumnModal({ isEdit, onCancel, columnId }: Props) {
                 },
               },
             }}
-          />
+             />
           <div className={cx("btn-line")}>
             <ResponseBtn onClick={onCancel} state="cancel" ph={1.4} fs={1.6}>
               취소
