@@ -6,57 +6,47 @@ import Image from "next/image";
 import { useModal } from "@ebay/nice-modal-react";
 //import InviteModal from "@/components/commons/Modals/InviteModal/InviteModal";
 import TaskModal from "@/components/commons/Modals/TaskModals/TaskModal";
+import { useParams } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
+import { getDashBoardMembers, getDashboardInvitations } from "./getEditData";
+import { useState } from "react";
+import ColumnModal from "@/components/commons/Modals/ColumnModals/ColumnModal";
 
 const cx = classNames.bind(styles);
-
-const members = [
-  {
-    id: 0,
-    userId: 0,
-    email: "asdf@asdf.asdf",
-    nickname: "ddd",
-    profileImageUrl: "/a",
-  },
-  {
-    id: 0,
-    userId: 0,
-    email: "qwer@qwer.qwer",
-    nickname: "qqqqq",
-    profileImageUrl: "/a",
-  },
-  {
-    id: 0,
-    userId: 0,
-    email: "qwerqwer@qwer.qwer",
-    nickname: "eeeee",
-    profileImageUrl: "/a",
-  },
-  {
-    id: 0,
-    userId: 0,
-    email: "d@asfsdf.sfsd",
-    nickname: "aaaaa",
-    profileImageUrl: "/a",
-  },
-  {
-    id: 0,
-    userId: 0,
-    email: "QWERwqe@asdf.sd",
-    nickname: "ccccc",
-    profileImageUrl: "/a",
-  },
-];
 
 interface Props {
   title: string;
   isMemberEdit: boolean;
-  memberList?: any;
 }
 
 //초대 취소시 유저 아이디 필요
 
-export default function DashboradEditMemberBox({ title, isMemberEdit, memberList }: Props) {
-  const modal = useModal(TaskModal, { isEdit: true });
+export default function DashboradEditMemberBox({ title, isMemberEdit }: Props) {
+  const modal = useModal(ColumnModal, { isEdit: false });
+  const [invitationPage, setInvitationPage] = useState(1);
+  const [memberPage, setMemberPage] = useState(1);
+  const [page, setPage] = useState(1);
+
+  const parms = useParams();
+  const dashboardId = parms.dashboardid;
+
+  const { data: invitationsData } = useQuery({
+    queryKey: ["invitations", dashboardId, invitationPage],
+    queryFn: () => getDashboardInvitations(dashboardId, invitationPage),
+  });
+
+  const { data: memberData } = useQuery({
+    queryKey: ["members", dashboardId, memberPage],
+    queryFn: () => getDashBoardMembers(dashboardId, memberPage),
+  });
+
+  console.log(memberData);
+  const memebers = memberData?.members;
+
+  const invitedMembers = invitationsData?.invitations.map((invitation: any) => invitation.invitee);
+
+  const memberList = isMemberEdit ? memebers : invitedMembers;
+  //const page = isMemberEdit ? memberPage : invitationPage;
 
   function handleBackwardPageClick() {}
   return (
@@ -64,9 +54,13 @@ export default function DashboradEditMemberBox({ title, isMemberEdit, memberList
       <article className={cx("title-line")}>
         <h2 className={cx("title")}>{title}</h2>
         <div className={cx("title-right-contents")}>
-          <p>1 페이지 중 1</p>
-          <PageChangeButton isForward={false} onClick={handleBackwardPageClick}></PageChangeButton>
-          <PageChangeButton isForward={true} onClick={handleBackwardPageClick}></PageChangeButton>
+          <p>1 페이지 중 {page}</p>
+          <PageChangeButton
+            isForward={false}
+            disabled={page === 1}
+            onClick={handleBackwardPageClick}
+          ></PageChangeButton>
+          <PageChangeButton isForward={true} onClick={() => setMemberPage((old) => old + 1)}></PageChangeButton>
 
           {!isMemberEdit && (
             <div className={cx("invite-btn")}>
@@ -85,13 +79,13 @@ export default function DashboradEditMemberBox({ title, isMemberEdit, memberList
           <li className={cx("list-item")} key={member.id}>
             {isMemberEdit ? (
               <div className={cx("member-name")}>
-                {/* <Image
+                <Image
                   className={cx("profileImg")}
                   width={38}
                   height={38}
                   alt="프로필 이미지"
                   src={member.profileImageUrl}
-                /> */}
+                />
                 {member.nickname}
               </div>
             ) : (

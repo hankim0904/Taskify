@@ -6,10 +6,13 @@ import Image from "next/image";
 import ResponseBtn from "@/components/commons/Buttons/ResponseButton";
 import BaseContainer from "@/components/commons/BaseContainer/BaseContainer";
 import { useRouter } from "next/router";
-import { use, useEffect, useState } from "react";
-import { useAuth } from "@/contexts/AuthContext";
-import { axiosInstance } from "@/api/axiosInstance";
-import { useParams } from "next/navigation";
+import { GetServerSidePropsContext } from "next";
+import { DehydratedState, HydrationBoundary, QueryClient, dehydrate } from "@tanstack/react-query";
+import {
+  getDashBoardTittle,
+  getDashBoardMembers,
+  getDashboardInvitations,
+} from "@/components/domains/edit/article/getEditData";
 
 const cx = classNames.bind(styles);
 
@@ -23,73 +26,62 @@ interface DashBoradData {
   userId: number;
 }
 
-export default function Edit() {
+const getDashBoardTittleQueryKey = (dashboardId: string | string[] | undefined) => ["dashboards", dashboardId];
+const getDashBoardMembersQueryKey = (dashboardId: string | string[] | undefined) => [,];
+const getDashboardInvitationsQueryKey = (dashboardId: string | string[] | undefined) => [];
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const queryClient = new QueryClient();
+  const dashboardId = context.query.dashboardid;
+
+  await Promise.all([
+    queryClient.prefetchQuery({
+      queryKey: getDashBoardTittleQueryKey(dashboardId),
+      queryFn: () => getDashBoardTittle(dashboardId),
+    }),
+    queryClient.prefetchQuery({
+      queryKey: ["members", dashboardId],
+      queryFn: () => getDashBoardMembers(dashboardId, 1),
+    }),
+    queryClient.prefetchQuery({
+      queryKey: ["invitations", dashboardId],
+      queryFn: () => getDashboardInvitations(dashboardId, 1),
+    }),
+  ]);
+
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
+  };
+}
+
+export default function Edit({ dehydratedState }: { dehydratedState: DehydratedState }) {
   //const { accessToken } = useAuth();
-  const [isOpenModal, setIsOpenModal] = useState(false);
-  const [myDashBoard, setMyDashBoard] = useState<DashBoradData>();
-  const [invitedMemberList, setInvitedMembersList] = useState();
   const router = useRouter();
   const currentPath = router.pathname;
-  const parms = useParams();
-
-  console.log(parms);
-
-  const testAccessToken =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Njg5LCJ0ZWFtSWQiOiIyLTkiLCJpYXQiOjE3MDY2NzgwMzEsImlzcyI6InNwLXRhc2tpZnkifQ.xTJzppjh39utbp7V6-yYsFFXYzDmDT4jFUxabGtVZlY";
-
-  async function getMyDashBoard(id: number) {
-    try {
-      const res = await axiosInstance.get(`/dashboards/${id}`, {
-        headers: {
-          Authorization: `Bearer ${testAccessToken}`,
-        },
-      });
-      const dashBoradData = res.data;
-      console.log(dashBoradData);
-      setMyDashBoard(dashBoradData);
-    } catch (error) {
-      console.error("대시보드를 가져오는 중 에러 발생:", error);
-    }
-  }
-
-  async function getInvitedMember(id?: number) {
-    const res = await axiosInstance.get(`dashboards/2713/invitations?page=1&size=20`, {
-      headers: {
-        Authorization: `Bearer ${testAccessToken}`,
-      },
-    });
-    const invitedMembers = res.data.invitations.map((invitation: any) => invitation.invitee);
-
-    setInvitedMembersList(invitedMembers);
-  }
+  const isOpenModal = false;
 
   function gobackButton() {
     router.back();
   }
 
-  useEffect(() => {
-    getMyDashBoard(2713);
-    getInvitedMember();
-  }, []);
-
   return (
-    <BaseContainer currentPath={currentPath}>
-      <main className={cx("main", { openModal: isOpenModal })}>
-        <button type="button" onClick={gobackButton} className={cx("backforward")}>
-          <Image src="/assets/icons/ic-arrow-forward.svg" width={20} height={20} alt="뒤로가기" />
-          돌아가기
-        </button>
-        <DashboradEditTitleBox selectedColor={myDashBoard?.color}>{myDashBoard?.title}</DashboradEditTitleBox>
-        <DashboradEditMemberBox isMemberEdit={true} title="구성원"></DashboradEditMemberBox>
-        <DashboradEditMemberBox
-          isMemberEdit={false}
-          memberList={invitedMemberList}
-          title="초대 내역"
-        ></DashboradEditMemberBox>
-        <ResponseBtn state="delete" ph={2} fs={1.8}>
-          대시보드 삭제하기
-        </ResponseBtn>
-      </main>
-    </BaseContainer>
+    <HydrationBoundary state={dehydratedState}>
+      <BaseContainer currentPath={currentPath}>
+        <main className={cx("main", { openModal: isOpenModal })}>
+          <button type="button" onClick={gobackButton} className={cx("backforward")}>
+            <Image src="/assets/icons/ic-arrow-forward.svg" width={20} height={20} alt="뒤로가기" />
+            돌아가기
+          </button>
+          <DashboradEditTitleBox />
+          <DashboradEditMemberBox isMemberEdit={true} title="구성원"></DashboradEditMemberBox>
+          <DashboradEditMemberBox isMemberEdit={false} title="초대 내역"></DashboradEditMemberBox>
+          <ResponseBtn state="delete" ph={2} fs={1.8}>
+            대시보드 삭제하기
+          </ResponseBtn>
+        </main>
+      </BaseContainer>
+    </HydrationBoundary>
   );
 }
