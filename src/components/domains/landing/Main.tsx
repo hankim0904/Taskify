@@ -61,7 +61,13 @@ export default function Main() {
           {/* 3-1 */}
           <div className={cx("small-box")}>
             <div className={cx("small-box-img-container")}>
-              <motion.div className={cx("small-box-img-item1")}>
+              <motion.div
+                className={cx("small-box-img-item1")}
+                initial={{ opacity: 0, scale: 0 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 2, type: "spring" }}
+                viewport={{ once: true }}
+              >
                 <Image src={landing3} fill alt="dashboardSettingImg" />
               </motion.div>
             </div>
@@ -73,7 +79,13 @@ export default function Main() {
           {/* 3-2 */}
           <div className={cx("small-box")}>
             <div className={cx("small-box-img-container")}>
-              <motion.div className={cx("small-box-img-item2")}>
+              <motion.div
+                className={cx("small-box-img-item2")}
+                initial={{ opacity: 0, scale: 0 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 2, type: "spring" }}
+                viewport={{ once: true }}
+              >
                 <Image src={landing4} fill alt="inviteImg" />
               </motion.div>
             </div>
@@ -85,7 +97,13 @@ export default function Main() {
           {/* 3-3 */}
           <div className={cx("small-box")}>
             <div className={cx("small-box-img-container")}>
-              <motion.div className={cx("small-box-img-item3")}>
+              <motion.div
+                className={cx("small-box-img-item3")}
+                initial={{ opacity: 0, scale: 0 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 2, type: "spring" }}
+                viewport={{ once: true }}
+              >
                 <Image src={landing5} fill alt="MemberListImg" />
               </motion.div>
             </div>

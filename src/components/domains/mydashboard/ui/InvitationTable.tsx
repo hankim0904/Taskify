@@ -1,4 +1,4 @@
-import { FieldValues, SubmitHandler, useForm, useWatch } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 
 import styles from "./InvitationTable.module.scss";
 import classNames from "classnames/bind";
@@ -42,10 +42,6 @@ export default function IvitationTable({ invitations }: IvitationTableProps) {
     defaultValue: "",
   });
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    console.log(data);
-  };
-
   const filteredData = invitations.filter((item) => {
     return item.dashboard.title.includes(searchValue) || item.inviter.nickname.includes(searchValue);
   });
@@ -71,7 +67,7 @@ export default function IvitationTable({ invitations }: IvitationTableProps) {
         {filteredData.map(({ id, dashboard: { title }, inviter: { nickname } }) => (
           <div className={cx("invitation-table-content")} key={id}>
             <div className={cx("invitation-table-content-word")}>
-              <Invitation title={title} inviter={nickname} />
+              <Invitation title={title} inviter={nickname} path={id} />
             </div>
             <hr className={cx("invitation-table-content-break")} />
           </div>

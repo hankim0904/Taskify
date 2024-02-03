@@ -77,6 +77,5 @@
 }
 
 .error-message {
-  height: 1.4rem;
   @include text-style(1.4, 400, $red);
 }
