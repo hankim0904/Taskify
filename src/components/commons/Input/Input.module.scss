@@ -4,6 +4,12 @@
   position: relative;
   width: 100%;
 
+  &.checkbox {
+    flex-direction: row-reverse;
+    align-items: end;
+    justify-content: start;
+  }
+
   .eye {
     position: absolute;
     right: 1.6rem;
@@ -52,6 +58,7 @@
   padding: 1.5rem 1.6rem;
   border-radius: 0.8rem;
   border: 0.1rem solid $gray-300;
+  background-color: $white;
 
   &:focus {
     outline: none;
@@ -69,6 +76,14 @@
   &.file {
     margin-left: 1rem;
     width: 1rem;
+  }
+
+  &.checkbox {
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+    border: 0.1rem solid $gray-300;
+    border-radius: 0.4rem;
   }
 }
 
