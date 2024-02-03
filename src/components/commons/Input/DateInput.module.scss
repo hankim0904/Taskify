@@ -6,7 +6,7 @@
 }
 
 .label {
-  @include text-style(1.6, 400, $black-200);
+  @include text-style(1.8, 500, $black-200);
   cursor: pointer;
 }
 
@@ -28,4 +28,9 @@
   &.error {
     border: 0.1rem solid $red;
   }
+}
+
+.error-message {
+  height: 1.4rem;
+  @include text-style(1.4, 400, $red);
 }

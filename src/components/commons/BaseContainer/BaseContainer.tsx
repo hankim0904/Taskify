@@ -2,12 +2,21 @@ import Navbar from "./Navbar/Navbar";
 import Sidebar from "./Sidebar/Sidebar";
 import styles from "./BaseContainer.module.scss";
 import classNames from "classnames/bind";
-import { ReactNode, useState } from "react";
-import dashboardListData from "./mock/DashboardListMockData";
+import { ReactNode, useEffect, useState } from "react";
+import getDashBoards from "@/api/getDashBoards";
+import { useQuery } from "@tanstack/react-query";
 
 const cx = classNames.bind(styles);
-//mock 데이터를 사용했으니 실제 데이터로 변경해 주세요.
-const dashboardData = dashboardListData.dashboards;
+
+interface DashBoradData {
+  id: number;
+  title: string;
+  color: string;
+  createdAt: string;
+  updatedAt: string;
+  createdByMe: true;
+  userId: number;
+}
 
 interface BaseContainerProps {
   currentPath: string;
@@ -15,8 +24,26 @@ interface BaseContainerProps {
 }
 
 export default function BaseContainer({ currentPath, children }: BaseContainerProps) {
-  const [dashBoardTilte, setDashBoardTitle] = useState(dashboardData[0].title);
-  const [isCreatedByMe, setIsCreatedByMe] = useState(dashboardData[0].createdByMe || false);
+  const [dashBoardTitle, setDashBoardTitle] = useState("");
+  const [isCreatedByMe, setIsCreatedByMe] = useState(false);
+
+  function setInitialValues(dashboardDatas: DashBoradData[]) {
+    if (dashboardDatas.length > 0) {
+      setDashBoardTitle(dashboardDatas[0].title);
+      setIsCreatedByMe(dashboardDatas[0].createdByMe);
+    }
+  }
+
+  const { data } = useQuery({
+    queryKey: ["headers"],
+    queryFn: () => getDashBoards("infiniteScroll", 60),
+  });
+
+  const dashboardDatas = data?.dashboards || [];
+
+  useEffect(() => {
+    setInitialValues(dashboardDatas);
+  }, [dashboardDatas]);
 
   function handleChangeDashBoardTitle(title: string, createdByMe: boolean) {
     setDashBoardTitle(title);
@@ -24,12 +51,14 @@ export default function BaseContainer({ currentPath, children }: BaseContainerPr
   }
 
   return (
-    <div className={cx("container")}>
-      <Sidebar handleChangeDashBoardTitle={handleChangeDashBoardTitle} />
-      <div className={cx("contents")}>
-        <Navbar currentPath={currentPath} dashBoardTilte={dashBoardTilte} isCreatedByMe={isCreatedByMe} />
-        {children}
+    <div className={cx("grid")}>
+      <div className={cx("grid-sidebar")}>
+        <Sidebar dashboardDatas={dashboardDatas} handleChangeDashBoardTitle={handleChangeDashBoardTitle} />
       </div>
+      <div className={cx("grid-navbar")}>
+        <Navbar currentPath={currentPath} dashBoardTitle={dashBoardTitle} isCreatedByMe={isCreatedByMe} />
+      </div>
+      <div className={cx("grid-content")}>{children}</div>
     </div>
   );
 }

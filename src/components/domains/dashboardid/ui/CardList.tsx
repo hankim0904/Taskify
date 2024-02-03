@@ -1,7 +1,7 @@
 import styles from "./CardList.module.scss";
 import classNames from "classnames/bind";
 
-import NiceModal, { useModal } from "@ebay/nice-modal-react";
+import { useModal } from "@ebay/nice-modal-react";
 import CardModal from "@/components/commons/Modals/CardModal/CardModal";
 
 import Image from "next/image";

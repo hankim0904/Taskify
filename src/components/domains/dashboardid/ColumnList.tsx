@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import { useQuery } from "@tanstack/react-query";
-import { getColumnList } from "@/components/domains/dashboardid/queries";
+import { getColumnList } from "@/components/domains/dashboardid/api/queries";
+import { getColumnListQueryKey } from "@/components/domains/dashboardid/api/queryKeys";
 
 import styles from "./ColumnList.module.scss";
 import classNames from "classnames/bind";
@@ -12,11 +13,12 @@ const cx = classNames.bind(styles);
 export default function ColumnList() {
   const router = useRouter();
   const dashboardId = router.query.dashboardid;
-  const {
-    data: columnListData,
-    isError,
-    isLoading,
-  } = useQuery({ queryKey: ["columnList", dashboardId], queryFn: () => getColumnList(dashboardId) });
+
+  const { data: columnListData } = useQuery({
+    queryKey: getColumnListQueryKey(dashboardId),
+    queryFn: () => getColumnList(dashboardId),
+    staleTime: 300 * 1000,
+  });
 
   const columnList = columnListData?.data ?? [];
 

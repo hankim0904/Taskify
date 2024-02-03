@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styles from "./DashboardList.module.scss";
 import skeletonStyles from "./ui/DashboardButtonSkUi.module.scss";
 import classNames from "classnames/bind";
@@ -22,11 +22,10 @@ interface DashboardData {
 
 export default function DashboardList() {
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [cursorId, setCursorId] = useState<number | null>(null);
 
   const { data, isLoading } = useQuery({
-    queryKey: ["headers", currentPage, cursorId],
-    queryFn: () => getDashBoards(currentPage, cursorId),
+    queryKey: ["dashboardList", currentPage],
+    queryFn: () => getDashBoards("pagination", 5, currentPage),
   });
 
   const dashboardDatas = data?.dashboards;
@@ -35,16 +34,6 @@ export default function DashboardList() {
   const showModal = () => {
     NiceModal.show(DashboardCreationModal);
   };
-
-  useEffect(() => {
-    if (data?.dashboards) {
-      const lastDashboard = data?.dashboards[data.dashboards.length - 1];
-
-      setCursorId(lastDashboard.id);
-    }
-  }, [data]);
-
-  console.log(dashboardDatas);
 
   if (isLoading) {
     return (
@@ -90,13 +79,13 @@ export default function DashboardList() {
           <PageChangeButton
             isForward={false}
             onClick={() => {
-              setCurrentPage((currentPage) => currentPage - 1);
+              setCurrentPage(currentPage => currentPage - 1);
             }}
             disabled={currentPage <= 1}
           />
           <PageChangeButton
             onClick={() => {
-              setCurrentPage((currentPage) => currentPage + 1);
+              setCurrentPage(currentPage => currentPage + 1);
             }}
             disabled={currentPage >= totalPage}
           />

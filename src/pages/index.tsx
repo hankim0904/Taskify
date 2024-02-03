@@ -26,7 +26,7 @@ export default function Home() {
           </Link>
         </div>
         <div>
-          <Link href="/edit">
+          <Link href="dashboard/:dashboradid/edit">
             <Button state="reject">edit-dashboard</Button>
           </Link>
         </div>

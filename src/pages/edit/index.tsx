@@ -87,8 +87,7 @@ export default function Edit() {
           showModal={showModal}
           isMemberEdit={false}
           memberList={invitedMemberList}
-          title="초대 내역"
-        ></DashboradEditMemberBox>
+          title="초대 내역"></DashboradEditMemberBox>
         <ResponseBtn state="delete" ph={2} fs={1.8}>
           대시보드 삭제하기
         </ResponseBtn>
