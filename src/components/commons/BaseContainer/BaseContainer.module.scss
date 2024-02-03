@@ -1,12 +1,19 @@
 .grid {
-  height: 100%;
   display: grid;
-  grid-template-columns: auto 1fr;
+  grid-template-columns: 30rem 1fr;
   grid-template-rows: auto 1fr;
   grid-template-areas:
     "sidebar navbar"
     "sidebar content";
   scrollbar-gutter: stable;
+
+  @include responsive("T") {
+    grid-template-columns: 16.8rem 1fr;
+  }
+
+  @include responsive("M") {
+    grid-template-columns: 6.7rem 1fr;
+  }
 
   &-sidebar {
     grid-area: sidebar;
@@ -18,6 +25,6 @@
 
   &-content {
     grid-area: content;
-    overflow: auto;
+    overflow: hidden;
   }
 }

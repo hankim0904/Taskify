@@ -11,7 +11,6 @@ import { getColumnList, deleteColumn, putColumnName, postColumn } from "@/compon
 import { getColumnListQueryKey } from "@/components/domains/dashboardid/api/queryKeys";
 import { useRouter } from "next/router";
 
-
 const cx = classNames.bind(styles);
 
 interface Props {
@@ -44,7 +43,7 @@ function ColumnModal({ isEdit, onCancel, columnId }: Props) {
   const columnList = columnListData.data;
 
   const postColumnMutation = useMutation({
-    mutationFn: (newColumn) => postColumn(newColumn),
+    mutationFn: newColumn => postColumn(newColumn),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: getColumnListQueryKey(dashboardId) });
       onCancel();
@@ -60,7 +59,7 @@ function ColumnModal({ isEdit, onCancel, columnId }: Props) {
   });
 
   const putColumnNameMutation = useMutation({
-    mutationFn: (changedName) => putColumnName(columnId, changedName),
+    mutationFn: changedName => putColumnName(columnId, changedName),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: getColumnListQueryKey(dashboardId) });
       onCancel();
@@ -72,10 +71,10 @@ function ColumnModal({ isEdit, onCancel, columnId }: Props) {
   }
 
   function handelonClickDelete() {
-    setIsSureDelete((prev) => !prev);
+    setIsSureDelete(prev => !prev);
   }
 
-  const handleOnSubmit: SubmitHandler<FieldValues> = (data) => {
+  const handleOnSubmit: SubmitHandler<FieldValues> = data => {
     if (isEdit) {
       putColumnNameMutation.mutate({ title: data.columnName });
     } else {
@@ -106,14 +105,14 @@ function ColumnModal({ isEdit, onCancel, columnId }: Props) {
                   if (columnList.length >= 10 && !isEdit) return "컬럼은 최대 10개까지 생성할 수 있습니다";
                   return true;
                 },
-                alreadyExist: (value) => {
-                  const isDuplicatedColumnName = columnList.some((column) => column.title === value);
+                alreadyExist: value => {
+                  const isDuplicatedColumnName = columnList.some(column => column.title === value);
                   if (isDuplicatedColumnName) return "중복된 컬럼 이름입니다";
                   return true;
                 },
               },
             }}
-             />
+          />
           <div className={cx("btn-line")}>
             <ResponseBtn onClick={onCancel} state="cancel" ph={1.4} fs={1.6}>
               취소

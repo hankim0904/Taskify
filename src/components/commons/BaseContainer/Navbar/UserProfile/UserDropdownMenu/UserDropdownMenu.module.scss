@@ -1,0 +1,59 @@
+.dropdown-menu {
+  position: absolute;
+  top: 5rem;
+  padding: 1rem 2rem;
+  background-color: white;
+  border: 1px solid #ddd;
+  z-index: 1;
+
+  @include responsive("M") {
+    left: auto;
+    right: 0;
+  }
+
+  &::before {
+    content: "";
+    @include pos-center-x(absolute);
+    top: -8px;
+
+    border-color: #ddd transparent;
+    border-style: solid;
+    border-width: 0 6px 8px 6.5px;
+
+    @include responsive("M") {
+      left: auto;
+      right: 0.5rem;
+    }
+  }
+
+  &::after {
+    content: "";
+    display: block;
+    left: 75px;
+    @include pos-center-x(absolute);
+    top: -7px;
+    transform: translateX(-50%);
+    border-color: #fff transparent;
+    border-style: solid;
+    border-width: 0 6px 8px 6.5px;
+
+    @include responsive("M") {
+      left: auto;
+      right: 0.5rem;
+    }
+  }
+
+  button {
+    width: 100%;
+    text-align: center;
+  }
+
+  .text {
+    @include text-style(1.4, 600, $black-200);
+    line-height: 3;
+    white-space: nowrap;
+    &:hover {
+      color: $purple;
+    }
+  }
+}

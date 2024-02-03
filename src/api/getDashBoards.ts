@@ -3,7 +3,7 @@ import { axiosInstance } from "./axiosInstance";
 export default async function getDashBoards(
   navigationMethod: "infiniteScroll" | "pagination",
   size?: number,
-  pageNum?: number
+  pageNum?: number,
 ) {
   // 실제데이터 삽입시 엑세스토큰부분 변경
   const accessToken =

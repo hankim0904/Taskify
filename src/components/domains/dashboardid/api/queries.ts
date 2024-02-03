@@ -1,7 +1,7 @@
 import { axiosInstance } from "@/api/axiosInstance";
 
 const accessToken =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NzE0LCJ0ZWFtSWQiOiIyLTkiLCJpYXQiOjE3MDY2OTg1NTQsImlzcyI6InNwLXRhc2tpZnkifQ.oEoe6s1NCVsFlTn1Gara6-eMRIE-zGcfBwQl7SFlEe4";
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NzkyLCJ0ZWFtSWQiOiIyLTkiLCJpYXQiOjE3MDY4NTI4OTgsImlzcyI6InNwLXRhc2tpZnkifQ.T-nZJzh7UKvzXXZARLI4W1Nq8CB-491fx-N16fUWW-g";
 
 export const getColumnList = async (dashboardId: string | string[] | undefined) => {
   const response = await axiosInstance.get("columns", {
@@ -37,7 +37,7 @@ export const putColumnName = async (columnId: number, changedName) => {
   return response.data;
 };
 
-export const postColumn = async (newColumn) => {
+export const postColumn = async newColumn => {
   const response = await axiosInstance.post("columns", newColumn, {
     headers: { Authorization: `Bearer ${accessToken}` },
   });
