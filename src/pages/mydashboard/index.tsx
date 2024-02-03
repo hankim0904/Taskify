@@ -5,13 +5,19 @@ import BaseContainer from "@/components/commons/BaseContainer/BaseContainer";
 import { useRouter } from "next/router";
 import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
 import getDashBoards from "@/api/getDashBoards";
+import getReceivedDashboardInvitations from "@/api/getReceivedDashboardInvitations";
 
 export async function getServerSideProps() {
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
-    queryKey: ["headers"],
-    queryFn: () => getDashBoards(),
+    queryKey: ["dashboardList"],
+    queryFn: () => getDashBoards("pagination", 5, 1),
+  });
+
+  await queryClient.prefetchQuery({
+    queryKey: ["receivedDashboardInvitationsList"],
+    queryFn: () => getReceivedDashboardInvitations(),
   });
 
   return {

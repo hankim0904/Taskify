@@ -1,0 +1,7 @@
+.container {
+  height: 100vh;
+
+  @include responsive("T") {
+    height: auto;
+  }
+}

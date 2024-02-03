@@ -173,7 +173,7 @@
 }
 
 .small-box-img-container {
-  position: relative;
+  @include flexbox();
   height: 26rem;
   background-color: $black-100;
   border-radius: 8px 8px 0px 0px;
@@ -181,17 +181,17 @@
 }
 
 .small-box-img-item1 {
-  @include pos-center();
+  position: relative;
   width: 85%;
   height: 12.3rem;
 }
 .small-box-img-item2 {
-  @include pos-center();
+  position: relative;
   width: 85%;
   height: 23.1rem;
 }
 .small-box-img-item3 {
-  @include pos-center();
+  position: relative;
   width: 85%;
   height: 19.5rem;
 }

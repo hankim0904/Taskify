@@ -17,8 +17,8 @@
     opacity: 0.5;
     pointer-events: none;
   }
+}
 
-  & > img {
-    filter: invert(5%) sepia(3%) saturate(261%) hue-rotate(314deg) brightness(97%) contrast(91%);
-  }
+.page-change-btn-svg {
+  filter: invert(5%) sepia(3%) saturate(261%) hue-rotate(314deg) brightness(97%) contrast(91%);
 }

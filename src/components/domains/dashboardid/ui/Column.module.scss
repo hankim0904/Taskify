@@ -1,6 +1,6 @@
 .column {
   width: 35.4rem;
-  height: 100vh;
+  height: calc(100vh - 11rem);
   padding: 2.2rem 2rem 0 2rem;
   border-right: 0.1rem solid $gray-200;
 
@@ -10,6 +10,7 @@
     padding: 2.2rem 2rem 2rem;
     border-right: none;
     border-bottom: 0.1rem solid $gray-200;
+    scrollbar-gutter: stable;
   }
 
   @include responsive("M") {
@@ -24,11 +25,30 @@
     }
   }
 
-  &-cards {
+  &-pages {
+    @include column-flexbox(start, stretch);
+    gap: 1.6rem;
+    height: calc(100% - 11rem);
     margin-top: 1.6rem;
+    overflow: scroll;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    @include responsive("T") {
+      max-height: 21rem;
+    }
 
     @include responsive("M") {
+      max-height: 36.2rem;
       margin-top: 1rem;
+      gap: 1rem;
+    }
+
+    &-end {
+      height: 0.1rem;
+      flex-shrink: 0;
     }
   }
 }
