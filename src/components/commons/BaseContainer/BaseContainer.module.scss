@@ -1,7 +1,23 @@
-.container {
-  display: flex;
-}
+.grid {
+  height: 100%;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    "sidebar navbar"
+    "sidebar content";
+  scrollbar-gutter: stable;
 
-.contents {
-  flex: 1;
+  &-sidebar {
+    grid-area: sidebar;
+  }
+
+  &-navbar {
+    grid-area: navbar;
+  }
+
+  &-content {
+    grid-area: content;
+    overflow: auto;
+  }
 }

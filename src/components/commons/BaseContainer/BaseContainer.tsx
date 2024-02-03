@@ -24,12 +24,14 @@ export default function BaseContainer({ currentPath, children }: BaseContainerPr
   }
 
   return (
-    <div className={cx("container")}>
-      <Sidebar handleChangeDashBoardTitle={handleChangeDashBoardTitle} />
-      <div className={cx("contents")}>
-        <Navbar currentPath={currentPath} dashBoardTilte={dashBoardTilte} isCreatedByMe={isCreatedByMe} />
-        {children}
+    <div className={cx("grid")}>
+      <div className={cx("grid-sidebar")}>
+        <Sidebar handleChangeDashBoardTitle={handleChangeDashBoardTitle} />
       </div>
+      <div className={cx("grid-navbar")}>
+        <Navbar currentPath={currentPath} dashBoardTilte={dashBoardTilte} isCreatedByMe={isCreatedByMe} />
+      </div>
+      <div className={cx("grid-content")}>{children}</div>
     </div>
   );
 }
