@@ -22,7 +22,7 @@ interface Props {
 //초대 취소시 유저 아이디 필요
 
 export default function DashboradEditMemberBox({ title, isMemberEdit }: Props) {
-  const modal = useModal(ColumnModal, { isEdit: false });
+  const modal = useModal(TaskModal, { isEdit: false });
   const [invitationPage, setInvitationPage] = useState(1);
   const [memberPage, setMemberPage] = useState(1);
   const [page, setPage] = useState(1);
