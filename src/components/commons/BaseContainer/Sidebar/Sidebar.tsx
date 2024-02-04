@@ -5,9 +5,8 @@ import { useEffect, useState } from "react";
 import styles from "./Sidebar.module.scss";
 import classNames from "classnames/bind";
 import Dashboard from "../../Dashboard/Dashboard";
-import PageChangeButton from "../../../commons/Buttons/PageChangeButton";
-import { useQuery } from "@tanstack/react-query";
-import getDashBoards from "@/api/getDashBoards";
+import NiceModal from "@ebay/nice-modal-react";
+import DashboardCreationModal from "../../Modals/DashboardCreationModal/DashboardCreationModal";
 
 const cx = classNames.bind(styles);
 
@@ -56,6 +55,10 @@ export default function Sidebar({
     }
   }
 
+  function showModal() {
+    NiceModal.show(DashboardCreationModal);
+  }
+
   return (
     <div className={cx("sidebar")}>
       <div className={cx("logo")}>
@@ -74,8 +77,14 @@ export default function Sidebar({
 
       <div className={cx("dash-boards")}>
         <div className={cx("header")}>
-          <span className={cx("title")}>Dash Boards</span>
-          <button className={cx("create-btn")}>
+          <span
+            className={cx("title")}
+            onClick={() => {
+              router.push("/mydashboard");
+            }}>
+            Dash Boards
+          </span>
+          <button className={cx("create-btn")} onClick={showModal}>
             <Image fill src="/assets/icons/ic-plus-box.svg" alt="대시보드 생성" />
           </button>
         </div>

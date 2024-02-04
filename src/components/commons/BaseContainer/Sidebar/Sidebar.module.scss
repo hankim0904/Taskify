@@ -59,7 +59,7 @@
 
       .title {
         @include text-style(1.2, 700, $gray-500);
-
+        cursor: pointer;
         @include responsive("M") {
           display: none;
         }

@@ -34,7 +34,7 @@ export default function BaseContainer({ currentPath, children }: BaseContainerPr
   const dashboardId: string | string[] | undefined = router.query.dashboardid;
 
   const { data } = useQuery({
-    queryKey: ["sideDashboardList", currentPage],
+    queryKey: ["dashboardList", currentPage, 18],
     queryFn: () => getDashBoards("pagination", 18, currentPage),
   });
 
@@ -66,6 +66,8 @@ export default function BaseContainer({ currentPath, children }: BaseContainerPr
           setSelectedDashboard={setSelectedDashboard}
         />
         <div className={cx("page-change")}>
+          <span className={cx("page-change-text")}>{`${totalPage} 페이지 중 ${currentPage}`}</span>
+
           <span className={cx("page-change-btn")}>
             <PageChangeButton
               isForward={false}
