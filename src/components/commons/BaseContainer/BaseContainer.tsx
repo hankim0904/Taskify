@@ -26,7 +26,6 @@ interface BaseContainerProps {
 }
 
 export default function BaseContainer({ currentPath, children }: BaseContainerProps) {
-  const [isCreatedByMe, setIsCreatedByMe] = useState(false);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [selectedDashboard, setSelectedDashboard] = useState<DashboardData | null>(null);
 
@@ -53,7 +52,6 @@ export default function BaseContainer({ currentPath, children }: BaseContainerPr
 
   function handleChangeDashBoardTitle(selectedDashboard: DashboardData) {
     setDashBoardTitle(selectedDashboard.title);
-    setIsCreatedByMe(selectedDashboard.createdByMe);
   }
 
   return (
@@ -86,12 +84,7 @@ export default function BaseContainer({ currentPath, children }: BaseContainerPr
         </div>
       </div>
       <div className={cx("grid-navbar")}>
-        <Navbar
-          currentPath={currentPath}
-          selectedDashboard={selectedDashboard}
-          dashBoardTitle={dashBoardTitle}
-          isCreatedByMe={isCreatedByMe}
-        />
+        <Navbar currentPath={currentPath} selectedDashboard={selectedDashboard} dashBoardTitle={dashBoardTitle} />
       </div>
       <div className={cx("grid-content")}>{children}</div>
     </div>

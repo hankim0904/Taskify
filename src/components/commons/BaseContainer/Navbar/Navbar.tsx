@@ -29,7 +29,6 @@ interface NavbarProps {
   currentPath: string;
   selectedDashboard: DashboardData | null;
   dashBoardTitle: any;
-  isCreatedByMe: boolean;
 }
 
 type Member = {
@@ -38,9 +37,8 @@ type Member = {
   nickname: string;
 };
 
-export default function Navbar({ currentPath, selectedDashboard, dashBoardTitle, isCreatedByMe }: NavbarProps) {
+export default function Navbar({ currentPath, selectedDashboard, dashBoardTitle }: NavbarProps) {
   const [isTablet, setIsTablet] = useState(false);
-
   const modal = useModal(InviteModal);
   const router = useRouter();
   const dashboardId = router.query.dashboardid;
@@ -56,6 +54,8 @@ export default function Navbar({ currentPath, selectedDashboard, dashBoardTitle,
     queryKey: ["userMe"],
     queryFn: () => getUsersMe(),
   });
+
+  console.log(memberData);
 
   const displayedMembers: Member[] = memberList.slice(0, isTablet ? MAX_DISPLAY_TABLET : MAX_DISPLAY_PC);
   const remainingMembersCount: number = memberTotalCount ? memberTotalCount - displayedMembers.length : 0;
@@ -86,10 +86,17 @@ export default function Navbar({ currentPath, selectedDashboard, dashBoardTitle,
   return (
     <div className={cx("navbar")}>
       <div className={cx("navbar-title")}>
-        <span className={cx("dashboard-name")}>{selectedDashboard?.title || dashBoardTitle}</span>
-        <span className={cx("created-icon")}>
-          {isCreatedByMe && <Image fill src="/assets/icons/ic-crown.svg" alt="왕관 모양 아이콘" />}
-        </span>
+        {currentPath.includes("/dashboard") && (
+          <>
+            <span className={cx("dashboard-name")}>{selectedDashboard?.title || dashBoardTitle}</span>
+            <span className={cx("created-icon")}>
+              {selectedDashboard?.createdByMe && <Image fill src="/assets/icons/ic-crown.svg" alt="왕관 모양 아이콘" />}
+            </span>
+          </>
+        )}
+
+        {router.pathname === "/mydashboard" && <span className={cx("dashboard-name")}>내 대시보드</span>}
+        {router.pathname === "/mypage" && <span className={cx("dashboard-name")}>계정관리</span>}
       </div>
 
       {currentPath.includes("/dashboard") && (
