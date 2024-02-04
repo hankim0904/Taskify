@@ -17,8 +17,8 @@ const accessToken =
 
 export default function ProfileChangeForm() {
   const { control, handleSubmit } = useForm({ mode: "onChange" });
-  const [previewImage, setPreviewImage] = useState(null);
-  const [profileImageUrl, setProfileImageUrl] = useState(null);
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const [profileImageUrl, setProfileImageUrl] = useState<string | null>(null);
 
   const { data: userMeData } = useQuery({
     queryKey: ["userMe"],
@@ -26,12 +26,13 @@ export default function ProfileChangeForm() {
   });
 
   const onSubmit: SubmitHandler<FieldValues> = data => {
-    putChangeUserProfile(data.nickname, profileImageUrl);
+    putChangeUserProfile(data.nickname, profileImageUrl!);
     // error 면 submit 안됨 ,SubmitHandler<FieldValues> handleSubmit 안에 들어가는 type 입니다
   };
 
-  async function handleUploadImage(e) {
-    const file = e.target.files[0];
+  async function handleUploadImage(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files && e.target.files[0];
+
     if (file) {
       const reader = new FileReader();
 
@@ -67,9 +68,13 @@ export default function ProfileChangeForm() {
         <div className={cx("contents")}>
           <div>
             <div className={cx("contents-upload-image")}>
-              <Image fill src={userMeData?.profileImageUrl} alt="현재 이미지" style={{ objectFit: "cover" }} />
+              {userMeData?.profileImageUrl ? (
+                <Image fill src={userMeData?.profileImageUrl} alt="현재 이미지" style={{ objectFit: "cover" }} />
+              ) : (
+                <Image fill src={defaultImage} alt="현재 이미지" style={{ objectFit: "cover" }} />
+              )}
               {
-                previewImage && <Image fill src={previewImage} alt="preview" style={{ objectFit: "cover" }} />
+                previewImage && <Image fill src={previewImage} alt="미리 보기" style={{ objectFit: "cover" }} />
                 // <Image width={30} height={30} src="/assets/icons/ic-plus-without-background.svg" alt="이미지 업로드" />
               }
             </div>
