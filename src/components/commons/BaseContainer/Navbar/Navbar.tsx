@@ -55,8 +55,6 @@ export default function Navbar({ currentPath, selectedDashboard, dashBoardTitle 
     queryFn: () => getUsersMe(),
   });
 
-  console.log(memberData);
-
   const displayedMembers: Member[] = memberList.slice(0, isTablet ? MAX_DISPLAY_TABLET : MAX_DISPLAY_PC);
   const remainingMembersCount: number = memberTotalCount ? memberTotalCount - displayedMembers.length : 0;
 

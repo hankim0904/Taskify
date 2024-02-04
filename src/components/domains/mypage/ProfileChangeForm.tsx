@@ -4,6 +4,8 @@ import Input from "@/components/commons/Input/Input";
 import ResponseBtn from "@/components/commons/Buttons/ResponseButton";
 import styles from "./ProfileChangeForm.module.scss";
 import classNames from "classnames/bind";
+import getUsersMe from "@/api/getUsersMe";
+import { useQuery } from "@tanstack/react-query";
 
 const cx = classNames.bind(styles);
 
@@ -14,6 +16,11 @@ export default function ProfileChangeForm() {
   const onSubmit: SubmitHandler<FieldValues> = data => {
     console.log(data); // error 면 submit 안됨 ,SubmitHandler<FieldValues> handleSubmit 안에 들어가는 type 입니다
   };
+
+  const { data: userMeData } = useQuery({
+    queryKey: ["userMe"],
+    queryFn: () => getUsersMe(),
+  });
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -29,7 +36,7 @@ export default function ProfileChangeForm() {
           <div className={cx("contents-input-area")}>
             <div className={cx("contents-input-area-email")}>
               <span className={cx("label")}>이메일</span>
-              <input className={cx("input-box")} value="dhfma3394@naver.com" disabled />
+              <input className={cx("input-box")} value={`${userMeData?.email}`} disabled />
             </div>
             <div className={cx("contents-input-area-nickname")}>
               <Input
