@@ -16,9 +16,9 @@ const accessToken =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Njg5LCJ0ZWFtSWQiOiIyLTkiLCJpYXQiOjE3MDY2NzgwMzEsImlzcyI6InNwLXRhc2tpZnkifQ.xTJzppjh39utbp7V6-yYsFFXYzDmDT4jFUxabGtVZlY";
 
 export default function ProfileChangeForm() {
-  const [previewImage, setPreviewImage] = useState(null);
   const { control, handleSubmit } = useForm({ mode: "onChange" });
-  // control , handleSubmit필수, { mode: 'onChange' } - onChange 시 error 나옴,
+  const [previewImage, setPreviewImage] = useState(null);
+  const [profileImageUrl, setProfileImageUrl] = useState(null);
 
   const { data: userMeData } = useQuery({
     queryKey: ["userMe"],
@@ -26,7 +26,7 @@ export default function ProfileChangeForm() {
   });
 
   const onSubmit: SubmitHandler<FieldValues> = data => {
-    putChangeUserProfile(data.nickname, data["profile-image"]);
+    putChangeUserProfile(data.nickname, profileImageUrl);
     // error 면 submit 안됨 ,SubmitHandler<FieldValues> handleSubmit 안에 들어가는 type 입니다
   };
 
@@ -48,7 +48,8 @@ export default function ProfileChangeForm() {
         const res = await axiosInstance.post("users/me/image", formData, {
           headers: { Authorization: `Bearer ${accessToken}`, "Content-Type": "multipart/form-data" },
         });
-        console.log(res.data.profileImageUrl);
+
+        setProfileImageUrl(res.data.profileImageUrl);
       } catch (e) {
         console.log(e);
       }
@@ -66,7 +67,7 @@ export default function ProfileChangeForm() {
         <div className={cx("contents")}>
           <div>
             <div className={cx("contents-upload-image")}>
-              <Image fill src={userMeData?.profileImageUrl} alt="현재 이미지" />
+              <Image fill src={userMeData?.profileImageUrl} alt="현재 이미지" style={{ objectFit: "cover" }} />
               {
                 previewImage && <Image fill src={previewImage} alt="preview" style={{ objectFit: "cover" }} />
                 // <Image width={30} height={30} src="/assets/icons/ic-plus-without-background.svg" alt="이미지 업로드" />
