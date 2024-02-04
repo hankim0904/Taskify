@@ -5,6 +5,8 @@ import classNames from "classnames/bind";
 import ResponseBtn from "../../Buttons/ResponseButton";
 import NiceModal, { NiceModalHandler, useModal } from "@ebay/nice-modal-react";
 import ModalBackground from "../ModalBackground";
+import postDashboardInvitations from "@/api/postDashboardInvitations";
+import { useRouter } from "next/router";
 
 const cx = classNames.bind(styles);
 
@@ -20,9 +22,11 @@ export default NiceModal.create(() => {
 
 function InviteModal({ onCancel }: Props) {
   const { control, handleSubmit, formState } = useForm({ mode: "onBlur" });
+  const rotuer = useRouter();
 
   function handleOnSubmit(data: any) {
-    console.log(data);
+    const dashboardId = rotuer.query.dashboardid;
+    postDashboardInvitations(dashboardId, data.columnName);
   }
   return (
     <>

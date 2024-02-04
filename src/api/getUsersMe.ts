@@ -1,4 +1,3 @@
-import { resolveSoa } from "dns";
 import { axiosInstance } from "./axiosInstance";
 
 export default async function getUsersMe() {
@@ -11,8 +10,6 @@ export default async function getUsersMe() {
         Authorization: `Bearer ${accessToken}`,
       },
     });
-
-    console.log(res);
 
     return res.data;
   } catch (e) {
