@@ -8,7 +8,6 @@ import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import InviteModal from "../../Modals/InviteModal/InviteModal";
 import { useModal } from "@ebay/nice-modal-react";
-import UserDropdownMenu from "./UserProfile/UserDropdownMenu/UserDropdownMenu";
 import UserProfile from "./UserProfile/UserProfile";
 
 const cx = classNames.bind(styles);
@@ -16,9 +15,20 @@ const cx = classNames.bind(styles);
 const MAX_DISPLAY_PC = 4;
 const MAX_DISPLAY_TABLET = 2;
 
+interface DashboardData {
+  id: number;
+  title: string;
+  color: string;
+  createdAt: string;
+  updatedAt: string;
+  createdByMe: boolean;
+  userId: number;
+}
+
 interface NavbarProps {
   currentPath: string;
-  dashBoardTitle: string;
+  selectedDashboard: DashboardData | null;
+  dashBoardTitle: any;
   isCreatedByMe: boolean;
 }
 
@@ -28,7 +38,7 @@ type Member = {
   nickname: string;
 };
 
-export default function Navbar({ currentPath, dashBoardTitle, isCreatedByMe }: NavbarProps) {
+export default function Navbar({ currentPath, selectedDashboard, dashBoardTitle, isCreatedByMe }: NavbarProps) {
   const [isTablet, setIsTablet] = useState(false);
 
   const modal = useModal(InviteModal);
@@ -76,7 +86,7 @@ export default function Navbar({ currentPath, dashBoardTitle, isCreatedByMe }: N
   return (
     <div className={cx("navbar")}>
       <div className={cx("navbar-title")}>
-        <span className={cx("dashboard-name")}>{dashBoardTitle}</span>
+        <span className={cx("dashboard-name")}>{selectedDashboard?.title || dashBoardTitle}</span>
         <span className={cx("created-icon")}>
           {isCreatedByMe && <Image fill src="/assets/icons/ic-crown.svg" alt="왕관 모양 아이콘" />}
         </span>
@@ -97,7 +107,7 @@ export default function Navbar({ currentPath, dashBoardTitle, isCreatedByMe }: N
                 src="/assets/icons/ic-plus-box.svg"
                 alt="초대 아이콘"
               />
-              <span className={cx("text")} onClick={() => modal.show(InviteModal)}>
+              <span className={cx("text")} onClick={() => modal.show()}>
                 초대하기
               </span>
             </button>

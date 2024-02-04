@@ -1,14 +1,17 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./Sidebar.module.scss";
 import classNames from "classnames/bind";
 import Dashboard from "../../Dashboard/Dashboard";
+import PageChangeButton from "../../../commons/Buttons/PageChangeButton";
+import { useQuery } from "@tanstack/react-query";
+import getDashBoards from "@/api/getDashBoards";
 
 const cx = classNames.bind(styles);
 
-interface DashBoradData {
+interface DashboardData {
   id: number;
   title: string;
   color: string;
@@ -19,21 +22,38 @@ interface DashBoradData {
 }
 
 interface SidebarPorps {
-  dashboardDatas: DashBoradData[];
-  handleChangeDashBoardTitle: (title: string, createdByMe: boolean) => void;
+  handleChangeDashBoardTitle: (selectedDashboard: DashboardData) => void;
+  dashboardDatas: any;
+  selectedDashboardId: any;
+  setSelectedDashboard: any;
 }
 
-export default function Sidebar({ dashboardDatas, handleChangeDashBoardTitle }: SidebarPorps) {
+export default function Sidebar({
+  handleChangeDashBoardTitle,
+  dashboardDatas,
+  selectedDashboardId,
+  setSelectedDashboard,
+}: SidebarPorps) {
   const [selectedIdx, setSelectedIdx] = useState(0);
   const router = useRouter();
 
-  console.log(dashboardDatas);
+  useEffect(() => {
+    const selectedDashboard = dashboardDatas.find((data: DashboardData) => data.id === Number(selectedDashboardId));
 
-  function handleSelectDashBoard(index: number, dashboardId: number) {
-    if (index !== selectedIdx) {
-      setSelectedIdx(index);
+    if (selectedDashboard) {
+      setSelectedIdx(selectedDashboard.id);
     }
-    router.push(`/dashboard/${dashboardId}`);
+  }, [selectedDashboardId, dashboardDatas]);
+
+  function handleSelectDashBoard(dashboardId: number) {
+    const selectedDashboard = dashboardDatas.find((data: DashboardData) => data.id === dashboardId);
+
+    if (selectedDashboard) {
+      setSelectedIdx(selectedDashboard.id);
+      handleChangeDashBoardTitle(selectedDashboard);
+      setSelectedDashboard(selectedDashboard);
+      router.push(`/dashboard/${dashboardId}`);
+    }
   }
 
   return (
@@ -61,13 +81,12 @@ export default function Sidebar({ dashboardDatas, handleChangeDashBoardTitle }: 
         </div>
 
         <div className={cx("contents")}>
-          {dashboardDatas.map((data, index) => (
+          {dashboardDatas.map((data: DashboardData) => (
             <div
               key={data.id}
-              className={cx("board-list", { selected: index === selectedIdx })}
+              className={cx("board-list", { selected: data.id === selectedIdx })}
               onClick={() => {
-                handleSelectDashBoard(index, data.id);
-                handleChangeDashBoardTitle(data.title, data.createdByMe);
+                handleSelectDashBoard(data.id);
               }}>
               <Dashboard color={data.color} isHost={data.createdByMe} isSidebar={true}>
                 {data.title}
