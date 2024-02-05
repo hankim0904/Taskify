@@ -6,18 +6,19 @@ import { useRouter } from "next/router";
 import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
 import getDashBoards from "@/api/getDashBoards";
 import getReceivedDashboardInvitations from "@/api/getReceivedDashboardInvitations";
+import withAuthNoneExist from "@/utils/withAuthNoneExist";
 
 export async function getServerSideProps() {
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
     queryKey: ["dashboardList"],
-    queryFn: () => getDashBoards("pagination", 5, 1),
+    queryFn: () => getDashBoards("pagination", null, 5, 1),
   });
 
   await queryClient.prefetchQuery({
     queryKey: ["receivedDashboardInvitationsList"],
-    queryFn: () => getReceivedDashboardInvitations(),
+    queryFn: () => getReceivedDashboardInvitations(null, null),
   });
 
   return {
@@ -27,7 +28,7 @@ export async function getServerSideProps() {
   };
 }
 
-export default function MydashboardPage({ dehydratedState }: any) {
+export default withAuthNoneExist(function MydashboardPage({ dehydratedState }: any) {
   const router = useRouter();
   const currentPath = router.pathname;
 
@@ -38,4 +39,4 @@ export default function MydashboardPage({ dehydratedState }: any) {
       </BaseContainer>
     </HydrationBoundary>
   );
-}
+});

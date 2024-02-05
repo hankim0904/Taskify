@@ -1,13 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useAuth } from "@/contexts/AuthContext";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import NiceModal from "@ebay/nice-modal-react";
 import styles from "./DashboardList.module.scss";
 import skeletonStyles from "./ui/DashboardButtonSkUi.module.scss";
 import classNames from "classnames/bind";
 import { MixButton } from "@/components/commons/Buttons/MixButton";
 import DashboardButton from "./ui/DashboardButton";
 import PageChangeButton from "../../commons/Buttons/PageChangeButton";
-import NiceModal from "@ebay/nice-modal-react";
 import DashboardCreationModal from "@/components/commons/Modals/DashboardCreationModal/DashboardCreationModal";
-import { useQuery } from "@tanstack/react-query";
 import getDashBoards from "@/api/getDashBoards";
 
 const cx = classNames.bind(styles);
@@ -22,10 +23,12 @@ interface DashboardData {
 
 export default function DashboardList() {
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const { accessToken } = useAuth();
+  const queryClient = useQueryClient();
 
   const { data, isLoading } = useQuery({
     queryKey: ["dashboardList", currentPage],
-    queryFn: () => getDashBoards("pagination", 5, currentPage),
+    queryFn: () => getDashBoards("pagination", accessToken, 5, currentPage),
   });
 
   const dashboardDatas = data?.dashboards;
@@ -34,6 +37,16 @@ export default function DashboardList() {
   const showModal = () => {
     NiceModal.show(DashboardCreationModal);
   };
+
+  useEffect(() => {
+    const nextPage = currentPage + 1;
+    if (data && currentPage < totalPage) {
+      queryClient.prefetchQuery({
+        queryKey: ["dashboardList", nextPage],
+        queryFn: () => getDashBoards("pagination", accessToken, 5, nextPage),
+      });
+    }
+  }, [currentPage, data]);
 
   if (isLoading) {
     return (
@@ -79,13 +92,13 @@ export default function DashboardList() {
           <PageChangeButton
             isForward={false}
             onClick={() => {
-              setCurrentPage(currentPage => currentPage - 1);
+              setCurrentPage((currentPage) => currentPage - 1);
             }}
             disabled={currentPage <= 1}
           />
           <PageChangeButton
             onClick={() => {
-              setCurrentPage(currentPage => currentPage + 1);
+              setCurrentPage((currentPage) => currentPage + 1);
             }}
             disabled={currentPage >= totalPage}
           />
