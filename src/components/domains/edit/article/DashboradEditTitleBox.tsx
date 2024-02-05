@@ -9,27 +9,22 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 import { getDashBoardTittle, getDashBoardTittleQueryKey } from "./getEditData";
 import { putDashBoard } from "./putDashBoard";
+import { DashBoradData } from "@/pages/dashboard/[dashboardid]/edit";
 
 getDashBoardTittleQueryKey;
 
 const cx = classNames.bind(styles);
 
-export default function DashboradEditTitleBox() {
+export default function DashboradEditTitleBox({ titleData }: { titleData: DashBoradData }) {
   const { control, handleSubmit, formState, setValue } = useForm();
-  const parms = useParams();
-  const dashboardId = parms.dashboardid;
-
-  const queryClient = useQueryClient();
-  const { data: titleData } = useQuery({
-    queryKey: getDashBoardTittleQueryKey(dashboardId),
-    queryFn: () => getDashBoardTittle(dashboardId),
-  });
+  const { dashboardid } = useParams();
   const [color, setColor] = useState(titleData?.color);
+  const queryClient = useQueryClient();
 
   const editDashboardMutation = useMutation({
-    mutationFn: (putData: { title: string; color: string }) => putDashBoard(dashboardId, putData),
+    mutationFn: (putData: { title: string; color: string }) => putDashBoard(dashboardid, putData),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: getDashBoardTittleQueryKey(dashboardId) });
+      queryClient.invalidateQueries({ queryKey: getDashBoardTittleQueryKey(dashboardid) });
     },
   });
 
@@ -42,10 +37,13 @@ export default function DashboradEditTitleBox() {
   };
 
   const handleOnsubmit: SubmitHandler<FieldValues> = (data) => {
-    console.log(data.dashboardName, colorList[color]);
-    const newTitle = { title: data.dashboardName, color: colorList[color] };
-    editDashboardMutation.mutate(newTitle);
-    setValue("dashboardName", "");
+    if (!titleData.createdByMe) {
+      alert("사용자가 만든 대시보드가 아닙니다.");
+    } else {
+      const newTitle = { title: data.dashboardName, color: colorList[color] };
+      editDashboardMutation.mutate(newTitle);
+      setValue("dashboardName", "");
+    }
   };
 
   return (
