@@ -15,6 +15,6 @@ export default async function postDashboardInvitations(dashboardId: string | str
     );
     console.log(res.data);
   } catch (e) {
-    throw new Error(`${e}`);
+    console.log(e);
   }
 }
