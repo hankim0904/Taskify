@@ -1,10 +1,13 @@
-import { useRouter } from "next/router";
-import { useAuth } from "@/contexts/AuthContext";
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import NiceModal from "@ebay/nice-modal-react";
+
+import { useAuth } from "@/contexts/AuthContext";
+import { axiosInstance } from "@/api/axiosInstance";
 import Input from "@/components/commons/Input/Input";
 import { SignButton } from "@/components/commons/Buttons/SignButton";
-import { axiosInstance } from "@/api/axiosInstance";
+import SignModal from "@/components/commons/Modals/SignModal/SignModal";
 
 import classNames from "classnames/bind";
 import styles from "./Signin.module.scss";
@@ -20,19 +23,22 @@ export default function Signin() {
     formState: { isValid },
   } = useForm({ mode: "onBlur" });
 
+  const showModal = (text: string) => {
+    NiceModal.show(SignModal, { text });
+  };
+
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    console.log(data);
-    const response = await axiosInstance.post("auth/login", {
-      email: data.email,
-      password: data.password,
-    });
-    if (response.status === 201) {
-      console.log("성공");
-      console.log(response);
-      login(response.data.accessToken);
-      router.push("mydashboard");
-    } else if (response.status === 404) {
-      console.log("실패");
+    try {
+      const response = await axiosInstance.post("auth/login", {
+        email: data.email,
+        password: data.password,
+      });
+      if (response.status === 201) {
+        login(response.data.accessToken);
+        router.push("mydashboard");
+      }
+    } catch (error: any) {
+      showModal(`${error.response.data.message}` || `${error.message}`);
     }
   };
 

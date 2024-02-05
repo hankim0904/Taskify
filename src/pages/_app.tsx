@@ -8,12 +8,12 @@ import "@/styles/base.scss";
 
 function Providers({ children }: { children: ReactNode }) {
   return (
-    <QueryClientProvider client={new QueryClient()}>
-      <NiceModal.Provider>
-        <AuthProvider>{children}</AuthProvider>
-      </NiceModal.Provider>
-      <ReactQueryDevtools initialIsOpen={false} />
-    </QueryClientProvider>
+    <AuthProvider>
+      <QueryClientProvider client={new QueryClient()}>
+        <NiceModal.Provider>{children}</NiceModal.Provider>
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
+    </AuthProvider>
   );
 }
 

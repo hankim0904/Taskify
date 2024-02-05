@@ -2,26 +2,18 @@ import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useAuth } from "@/contexts/AuthContext";
 
-const withAuthNoneExist = (WrappedComponent: React.ComponentType) => {
-  const AuthenticatedComponent = () => {
+const withAuthNoneExist = <P extends {}>(WrappedComponent: React.ComponentType<P>) => {
+  const AuthenticatedComponent = (props: P) => {
     const router = useRouter();
     const { accessToken } = useAuth();
 
     useEffect(() => {
-      const checkAuth = async () => {
-        try {
-          if (!accessToken) {
-            router.push("signin");
-          }
-        } catch (error) {
-          console.log(error);
-        }
-      };
-
-      checkAuth();
+      if (!accessToken) {
+        router.push("signin");
+      }
     }, [accessToken]);
 
-    return <WrappedComponent />;
+    return <WrappedComponent {...props} />;
   };
 
   return AuthenticatedComponent;

@@ -1,10 +1,13 @@
+import Link from "next/link";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import Link from "next/link";
-import Input from "@/components/commons/Input/Input";
-import { SignButton } from "@/components/commons/Buttons/SignButton";
+import NiceModal from "@ebay/nice-modal-react";
+
 import { axiosInstance } from "@/api/axiosInstance";
+import Input from "@/components/commons/Input/Input";
+import SignModal from "@/components/commons/Modals/SignModal/SignModal";
+import { SignButton } from "@/components/commons/Buttons/SignButton";
 
 import classNames from "classnames/bind";
 import styles from "./Signup.module.scss";
@@ -22,19 +25,22 @@ export default function Signup() {
     clearErrors,
   } = useForm({ mode: "onBlur" });
 
+  const showModal = (text: string, customFunction?: () => void) => {
+    NiceModal.show(SignModal, { text, customFunction });
+  };
+
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    console.log(data);
-    const response = await axiosInstance.post("users", {
-      email: data.email,
-      nickname: data.nickname,
-      password: data.password,
-    });
-    if (response.status === 201) {
-      console.log("성공");
-      // 모달창을 띄우고 모달창의 확인 버튼을 눌렀을 시 로그인 페이지로 이동시키도록 수정
-      router.push("signin");
-    } else if (response.status === 409) {
-      console.log("중복 이메일");
+    try {
+      const response = await axiosInstance.post("users", {
+        email: data.email,
+        nickname: data.nickname,
+        password: data.password,
+      });
+      if (response.status === 201) {
+        showModal("가입이 완료되었습니다!", () => router.push("signin"));
+      }
+    } catch (error: any) {
+      showModal(`${error.response.data.message}` || `${error.message}`);
     }
   };
 

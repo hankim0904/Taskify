@@ -3,6 +3,7 @@ import classNames from "classnames/bind";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import ResponseBtn from "@/components/commons/Buttons/ResponseButton";
 import postReceivedDashboardInvitation from "@/api/postReceivedDashboardInvitationRespond";
+import { motion } from "framer-motion";
 
 const cx = classNames.bind(styles);
 
@@ -25,7 +26,13 @@ export default function Invitation({ title, inviter, path }: InvitationProp) {
   });
 
   return (
-    <div className={cx("invitation")}>
+    <motion.div
+      className={cx("invitation")}
+      initial={{ x: 200, opacity: 0 }}
+      whileInView={{ x: 0, opacity: 1 }}
+      transition={{ duration: 1 }}
+      viewport={{ once: true }}
+    >
       <span className={cx("invitation-title")}>
         <h1>이름</h1>
         <p>{title}</p>
@@ -54,6 +61,6 @@ export default function Invitation({ title, inviter, path }: InvitationProp) {
           거절
         </ResponseBtn>
       </span>
-    </div>
+    </motion.div>
   );
 }
