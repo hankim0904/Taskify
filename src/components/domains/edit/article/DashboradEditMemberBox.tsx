@@ -6,7 +6,7 @@ import Image from "next/image";
 import { useModal } from "@ebay/nice-modal-react";
 //import InviteModal from "@/components/commons/Modals/InviteModal/InviteModal";
 import TaskModal from "@/components/commons/Modals/TaskModals/TaskModal";
-import { MutationFunction, keepPreviousData, useMutation, useQuery } from "@tanstack/react-query";
+import { MutationFunction, keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   getDashBoardMembers,
   getDashBoardMembersQueryKey,
@@ -25,11 +25,25 @@ interface Props {
   isMemberEdit: boolean;
 }
 
+interface Members {
+  nickname: string;
+  email: string;
+  id: number;
+  profileImageUrl: string;
+}
+
+interface Invitation {
+  invitee: {
+    email: string;
+  }[];
+}
+
 //초대 취소시 유저 아이디 필요
 
 export default function DashboradEditMemberBox({ title, isMemberEdit }: Props) {
   const modal = useModal(TaskModal, { isEdit: false });
   const [page, setPage] = useState(1);
+  const queryClient = useQueryClient();
 
   const { dashboardid } = useParams();
 
@@ -46,10 +60,26 @@ export default function DashboradEditMemberBox({ title, isMemberEdit }: Props) {
     enabled: isMemberEdit,
     placeholderData: keepPreviousData,
   });
-
   const members = memberData?.members;
-  const invitedMembers = invitationsData?.invitations.map((invitation: any) => invitation.invitee);
+  const invitedMembers = invitationsData?.invitations.map((invitation: Invitation) => invitation.invitee);
   const memberList = isMemberEdit ? members : invitedMembers;
+  const totalPage = Math.ceil(isMemberEdit ? memberData.totalCount / 5 : invitationsData?.totalCount / 5);
+
+  useEffect(() => {
+    const nextPage = page + 1;
+    queryClient.prefetchQuery({
+      queryKey: getDashBoardMembersQueryKey(dashboardid, nextPage),
+      queryFn: () => getDashBoardMembers(dashboardid, nextPage),
+    });
+  }, [memberData]);
+
+  useEffect(() => {
+    const nextPage = page + 1;
+    queryClient.prefetchQuery({
+      queryKey: getDashboardInvitationsQueryKey(dashboardid, nextPage),
+      queryFn: () => getDashboardInvitations(dashboardid, nextPage),
+    });
+  }, [invitedMembers]);
 
   return (
     <article className={cx("dashborad-edit-box", { email: !isMemberEdit })}>
@@ -64,6 +94,7 @@ export default function DashboradEditMemberBox({ title, isMemberEdit }: Props) {
           ></PageChangeButton>
           <PageChangeButton
             isForward={true}
+            disabled={page >= totalPage}
             onClick={() => {
               setPage((old) => old + 1);
             }}
@@ -82,7 +113,7 @@ export default function DashboradEditMemberBox({ title, isMemberEdit }: Props) {
       <h3 className={cx("little-title")}>{isMemberEdit ? "이름" : "이메일"}</h3>
 
       <ul className={cx("list")}>
-        {memberList?.map((member: any, index: number) => (
+        {memberList?.map((member: Members, index: number) => (
           <li className={cx("list-item")} key={`${member.id}_${index}`}>
             {isMemberEdit ? (
               <div className={cx("member-name")}>

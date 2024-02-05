@@ -25,8 +25,8 @@ interface FormValues {
   assigneeUserId?: number;
   dashboardId?: number;
   columnId?: number;
-  title?: string;
-  description?: string;
+  title: string;
+  description: string;
   dueDate?: string;
   tags?: string[];
   imageUrl?: string;
@@ -43,9 +43,9 @@ export default NiceModal.create(({ isEdit = false }: Props) => {
 function TaskModal({ isEdit = false, onCancel, columnId = 10115 }: Props) {
   const [card, setCard] = useState({});
   const [startDate, setStartDate] = useState(new Date());
-  const [imgFile, setImgFile] = useState<any>();
+  const [imgFile, setImgFile] = useState<unknown>();
   const router = useRouter();
-  const dashboardId: any = router.query.dashboardid;
+  const dashboardId: unknown = router.query.dashboardid;
   const { control, setValue, handleSubmit, formState, getValues, watch } = useForm({
     mode: "onBlur",
   });
@@ -66,7 +66,7 @@ function TaskModal({ isEdit = false, onCancel, columnId = 10115 }: Props) {
     console.log(fileUrl);
   };
 
-  async function handleOnSubmit(data: any) {
+  async function handleOnSubmit(data: unknown) {
     data.dueDate ?? setValue("dueDate", startDate);
     data.assigneeUserId = 689;
 
