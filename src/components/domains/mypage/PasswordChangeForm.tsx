@@ -3,29 +3,18 @@ import Input from "@/components/commons/Input/Input";
 import ResponseBtn from "@/components/commons/Buttons/ResponseButton";
 import styles from "./PasswordChangeForm.module.scss";
 import classNames from "classnames/bind";
-import getUsersMe from "@/api/getUsersMe";
-import { useQuery } from "@tanstack/react-query";
 import putChangePassword from "@/api/putChangePassword";
+import { useAuth } from "@/contexts/AuthContext";
 
 const cx = classNames.bind(styles);
 
 export default function PasswordChangeForm() {
+  const { accessToken } = useAuth();
   const { control, handleSubmit } = useForm({ mode: "onChange" });
 
-  const onSubmit: SubmitHandler<FieldValues> = async data => {
-    console.log(data.currentPassword);
-    try {
-      const res = await putChangePassword(data.currentPassword, data.newPassword);
-      console.log(res);
-    } catch (error) {
-      alert(error.message);
-    }
+  const onSubmit: SubmitHandler<FieldValues> = data => {
+    putChangePassword(accessToken, data.currentPassword, data.newPassword);
   };
-
-  const { data: userMeData } = useQuery({
-    queryKey: ["userMe"],
-    queryFn: () => getUsersMe(),
-  });
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

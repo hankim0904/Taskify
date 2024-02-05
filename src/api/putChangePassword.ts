@@ -1,8 +1,16 @@
 import { axiosInstance } from "./axiosInstance";
+import PasswordChangeModal from "@/components/commons/Modals/PasswordChangeModal/PasswordChangeModal";
+import SignModal from "@/components/commons/Modals/SignModal/SignModal";
+import NiceModal from "@ebay/nice-modal-react";
 
-export default async function putChangePassword(password: string, newPassword: string) {
-  const accessToken =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ODA2LCJ0ZWFtSWQiOiIyLTkiLCJpYXQiOjE3MDcwNjczMDcsImlzcyI6InNwLXRhc2tpZnkifQ.BPGtVVENzyAKB4-7gXGR7d1WVbDacD22BERhSIbGzj0";
+export default async function putChangePassword(accessToken: string | null, password: string, newPassword: string) {
+  const confirmReloadingModal = (text: string) => {
+    NiceModal.show(PasswordChangeModal, { text });
+  };
+
+  const showModal = (text: string) => {
+    NiceModal.show(SignModal, { text });
+  };
 
   try {
     const res = await axiosInstance.put(
@@ -18,10 +26,11 @@ export default async function putChangePassword(password: string, newPassword: s
         },
       },
     );
-    console.log(res.data);
-    return res.data;
+
+    if (res.status === 204) {
+      confirmReloadingModal("변경이 완료되었습니다.");
+    }
   } catch (error) {
-    const errorMessage = error.response.data.message;
-    throw new Error(errorMessage);
+    showModal(error.response.data.message);
   }
 }
