@@ -1,4 +1,4 @@
-import { axiosInstance } from "./axiosInstance";
+import { axiosInstance } from "./axiosInterceptor";
 
 export default async function putChangeUserProfile(nickname: string, profileImageUrl: string) {
   const accessToken =
@@ -16,7 +16,7 @@ export default async function putChangeUserProfile(nickname: string, profileImag
           Authorization: `Bearer ${accessToken}`,
           "Content-Type": "application/json",
         },
-      },
+      }
     );
     console.log(res.data);
     return res.data;
