@@ -11,7 +11,7 @@ export const getDashBoardTittle = async (dashboardId?: string | string[] | undef
   return await res.data;
 };
 
-export const getDashBoardMembers = async (dashboardId: string | string[] | undefined, page = 1, size = 2) => {
+export const getDashBoardMembers = async (dashboardId: string | string[] | undefined, page = 1, size = 4) => {
   const res = await axiosInstance.get("members", {
     params: { page, size, dashboardId: dashboardId },
     headers: { Authorization: `Bearer ${testAccessToken}` },
@@ -20,7 +20,7 @@ export const getDashBoardMembers = async (dashboardId: string | string[] | undef
   return await res.data;
 };
 
-export const getDashboardInvitations = async (dashboardId: string | string[] | undefined, page = 1, size = 6) => {
+export const getDashboardInvitations = async (dashboardId: string | string[] | undefined, page = 1, size = 5) => {
   const res = await axiosInstance.get(`dashboards/${dashboardId}/invitations`, {
     headers: { Authorization: `Bearer ${testAccessToken}` },
     params: { page, size },
@@ -28,3 +28,15 @@ export const getDashboardInvitations = async (dashboardId: string | string[] | u
 
   return res.data;
 };
+
+export const getDashBoardTittleQueryKey = (dashboardId: string | string[] | undefined) => ["dashboards", dashboardId];
+export const getDashBoardMembersQueryKey = (dashboardId: string | string[] | undefined, page: number) => [
+  "members",
+  dashboardId,
+  page,
+];
+export const getDashboardInvitationsQueryKey = (dashboardId: string | string[] | undefined, page: number) => [
+  "invitations",
+  dashboardId,
+  page,
+];

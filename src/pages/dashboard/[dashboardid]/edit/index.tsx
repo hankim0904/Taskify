@@ -8,11 +8,9 @@ import BaseContainer from "@/components/commons/BaseContainer/BaseContainer";
 import { useRouter } from "next/router";
 import { GetServerSidePropsContext } from "next";
 import { DehydratedState, HydrationBoundary, QueryClient, dehydrate } from "@tanstack/react-query";
-import {
-  getDashBoardTittle,
-  getDashBoardMembers,
-  getDashboardInvitations,
-} from "@/components/domains/edit/article/getEditData";
+import * as F from "@/components/domains/edit/article/getEditData";
+import Link from "next/link";
+import NiceModal from "@ebay/nice-modal-react";
 
 const cx = classNames.bind(styles);
 
@@ -26,26 +24,23 @@ interface DashBoradData {
   userId: number;
 }
 
-const getDashBoardTittleQueryKey = (dashboardId: string | string[] | undefined) => ["dashboards", dashboardId];
-const getDashBoardMembersQueryKey = (dashboardId: string | string[] | undefined) => [,];
-const getDashboardInvitationsQueryKey = (dashboardId: string | string[] | undefined) => [];
-
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const queryClient = new QueryClient();
   const dashboardId = context.query.dashboardid;
+  let page = 1;
 
   await Promise.all([
     queryClient.prefetchQuery({
-      queryKey: getDashBoardTittleQueryKey(dashboardId),
-      queryFn: () => getDashBoardTittle(dashboardId),
+      queryKey: F.getDashBoardTittleQueryKey(dashboardId),
+      queryFn: () => F.getDashBoardTittle(dashboardId),
     }),
     queryClient.prefetchQuery({
-      queryKey: ["members", dashboardId],
-      queryFn: () => getDashBoardMembers(dashboardId, 1),
+      queryKey: F.getDashBoardMembersQueryKey(dashboardId, page),
+      queryFn: () => F.getDashBoardMembers(dashboardId, page),
     }),
     queryClient.prefetchQuery({
-      queryKey: ["invitations", dashboardId],
-      queryFn: () => getDashboardInvitations(dashboardId, 1),
+      queryKey: F.getDashboardInvitationsQueryKey(dashboardId, page),
+      queryFn: () => F.getDashboardInvitations(dashboardId, page),
     }),
   ]);
 

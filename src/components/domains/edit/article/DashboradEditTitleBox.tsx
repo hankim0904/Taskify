@@ -7,7 +7,9 @@ import { FieldValues, useForm, useWatch } from "react-hook-form";
 import ColorList from "@/components/commons/ColorList/ColorList";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
-import { getDashBoardTittle } from "./getEditData";
+import { getDashBoardTittle, getDashBoardTittleQueryKey } from "./getEditData";
+
+getDashBoardTittleQueryKey;
 
 const cx = classNames.bind(styles);
 
@@ -17,9 +19,11 @@ export default function DashboradEditTitleBox() {
   const parms = useParams();
   const dashboardId = parms.dashboardid;
 
-  const { data } = useQuery({ queryKey: ["dashboards", dashboardId], queryFn: () => getDashBoardTittle(dashboardId) });
+  const { data } = useQuery({
+    queryKey: getDashBoardTittleQueryKey(dashboardId),
+    queryFn: () => getDashBoardTittle(dashboardId),
+  });
 
-  console.log(data);
   function handleOnsubmit(data: FieldValues): void {
     console.log(data);
   }
@@ -27,13 +31,13 @@ export default function DashboradEditTitleBox() {
   return (
     <section className={cx("dashborad-edit-box")}>
       <article className={cx("title-line")}>
-        <h2 className={cx("title")}>{data.title}</h2>
+        <h2 className={cx("title")}>{data?.title}</h2>
         <ColorList setColor={setColor} />
       </article>
       <form className={cx("edit-form")} onSubmit={handleSubmit(handleOnsubmit)}>
         <Input
           name="dashboardName"
-          placeholder={data.title}
+          placeholder={data?.title}
           labelName="대시보드 이름"
           type="text"
           control={control}
@@ -46,5 +50,3 @@ export default function DashboradEditTitleBox() {
     </section>
   );
 }
-
-//function Edit

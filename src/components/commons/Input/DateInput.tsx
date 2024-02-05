@@ -12,9 +12,10 @@ interface IProps extends UseControllerProps {
   name: string;
   labelName: string;
   setValue?: UseFormSetValue<FieldValues>;
+  startDate: Date;
 }
 
-export default function DateInput({ labelName, ...props }: IProps) {
+export default function DateInput({ labelName, startDate, ...props }: IProps) {
   const { field, fieldState } = useController(props);
 
   return (
@@ -25,7 +26,7 @@ export default function DateInput({ labelName, ...props }: IProps) {
         locale={ko}
         dateFormat="yyyy.MM.dd  h:mm aa"
         className={cx("input")}
-        minDate={new Date()}
+        minDate={startDate}
         placeholderText="날짜를 선택해주세요"
         onChange={field.onChange}
         selected={field.value}

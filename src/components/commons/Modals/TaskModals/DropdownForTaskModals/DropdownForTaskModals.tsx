@@ -13,14 +13,14 @@ const members = [
     userId: 0,
     email: "asdf@asdf.asdf",
     nickname: "ddd",
-    profileImageUrl: "/a",
+    profileImageUrl: "/assets/icons/ic-more.svg",
   },
   {
     id: 1,
     userId: 0,
     email: "qwer@qwer.qwer",
     nickname: "qqqqq",
-    profileImageUrl: "/a",
+    profileImageUrl: "/assets/icons/ic-plus-box.svg",
   },
   {
     id: 2,
@@ -76,12 +76,12 @@ export default function Dropdown({ setValue, ...props }: Props) {
 
   return (
     <div className={cx("dropdown-area")}>
-      <label className={cx("label")}>{props.name === "assignee" ? "담당자" : "상태"}</label>
+      <label className={cx("label")}>{props.name === "assigneeUserId" ? "담당자" : "상태"}</label>
       <input
         className={cx("input")}
         list="member"
         type="text"
-        placeholder={props.name === "assignee" ? "이름을 입력해 주세요" : "상태"}
+        placeholder={props.name === "assigneeUserId" ? "이름을 입력해 주세요" : "상태"}
         {...field}
       />
       <Image
@@ -93,7 +93,7 @@ export default function Dropdown({ setValue, ...props }: Props) {
         src="/assets/icons/ic-arrow-drop-down.svg"
       />
       <ul className={cx("members", { close: !openSelectList })}>
-        {props.name === "assignee"
+        {props.name === "assigneeUserId"
           ? filteredList.map((member) => (
               <li className={cx("list-item")} key={member.id}>
                 <button
