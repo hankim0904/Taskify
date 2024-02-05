@@ -16,7 +16,8 @@ import {
 import { useEffect, useState } from "react";
 import ColumnModal from "@/components/commons/Modals/ColumnModals/ColumnModal";
 import { useParams } from "next/navigation";
-import { deleteDashBoard, deleteInvitations } from "./deleteData";
+import { deleteDashBoard, deleteInvitations, deleteMembers } from "./deleteData";
+import { isElement } from "react-dom/test-utils";
 
 const cx = classNames.bind(styles);
 
@@ -30,12 +31,16 @@ interface Members {
   email: string;
   id: number;
   profileImageUrl: string;
+  invitee?: {
+    email: string;
+  };
 }
 
 interface Invitation {
+  id: number;
   invitee: {
     email: string;
-  }[];
+  };
 }
 
 //초대 취소시 유저 아이디 필요
@@ -61,7 +66,10 @@ export default function DashboradEditMemberBox({ title, isMemberEdit }: Props) {
     placeholderData: keepPreviousData,
   });
   const members = memberData?.members;
-  const invitedMembers = invitationsData?.invitations.map((invitation: Invitation) => invitation.invitee);
+  const invitedMembers = invitationsData?.invitations.map((invitation: Invitation) => ({
+    id: invitation.id,
+    invitee: invitation.invitee,
+  }));
   const memberList = isMemberEdit ? members : invitedMembers;
   const totalPage = Math.ceil(isMemberEdit ? memberData.totalCount / 5 : invitationsData?.totalCount / 5);
 
@@ -80,6 +88,28 @@ export default function DashboradEditMemberBox({ title, isMemberEdit }: Props) {
       queryFn: () => getDashboardInvitations(dashboardid, nextPage),
     });
   }, [invitedMembers]);
+
+  const deleteMemberMutation = useMutation({
+    mutationFn: (membersId: number) => deleteMembers(membersId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: getDashBoardMembersQueryKey(dashboardid, page) });
+    },
+  });
+
+  const deleteInvitationMutation = useMutation({
+    mutationFn: (invitationsId: number) => deleteInvitations(dashboardid, invitationsId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: getDashboardInvitationsQueryKey(dashboardid, page) });
+    },
+  });
+
+  const handelDelteMember = (id: number) => {
+    if (isMemberEdit) {
+      deleteMemberMutation.mutate(id);
+    } else {
+      deleteInvitationMutation.mutate(id);
+    }
+  };
 
   return (
     <article className={cx("dashborad-edit-box", { email: !isMemberEdit })}>
@@ -127,9 +157,11 @@ export default function DashboradEditMemberBox({ title, isMemberEdit }: Props) {
                 {member.nickname}
               </div>
             ) : (
-              <>{member.email}</>
+              <>{member.invitee?.email}</>
             )}
-            <ResponseBtn state="reject">{isMemberEdit ? "삭제" : "취소"}</ResponseBtn>
+            <ResponseBtn onClick={() => handelDelteMember(member.id)} state="reject">
+              {isMemberEdit ? "삭제" : "취소"}
+            </ResponseBtn>
           </li>
         ))}
       </ul>
