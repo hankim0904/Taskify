@@ -51,7 +51,6 @@ export default function Input({ placeholder, type, labelName, isModal = false, .
         {...field}
       />
 
-
       {inputType !== "checkbox" && <p className={cx("error-message")}>{fieldState.error?.message}</p>}
 
       {type === "password" ? (
