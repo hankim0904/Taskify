@@ -1,36 +1,40 @@
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import Input from "../../Input/Input";
-import styles from "./ColumnModal.module.scss";
-import classNames from "classnames/bind";
-import ResponseBtn from "../../Buttons/ResponseButton";
 import { useState } from "react";
-import NiceModal, { useModal } from "@ebay/nice-modal-react";
-import ModalBackground from "../ModalBackground";
+import { useRouter } from "next/router";
+
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getColumnList, deleteColumn, putColumnName, postColumn } from "@/components/domains/dashboardid/api/queries";
 import { getColumnListQueryKey } from "@/components/domains/dashboardid/api/queryKeys";
-import { useRouter } from "next/router";
+
+import styles from "./ColumnModal.module.scss";
+import classNames from "classnames/bind";
+
+import NiceModal, { useModal } from "@ebay/nice-modal-react";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+
+import Input from "../../Input/Input";
+import ResponseBtn from "../../Buttons/ResponseButton";
+import ModalBackground from "../ModalBackground";
+import { ChangedName, NewColumn } from "@/components/domains/dashboardid/api/type";
 
 const cx = classNames.bind(styles);
 
 interface Props {
   isEdit?: boolean;
-  onCancel: () => void;
   columnId?: number;
+  onCancel: () => void;
 }
 
 export default NiceModal.create(({ isEdit = false, columnId }: Props) => {
   const modal = useModal();
-
-  return <ColumnModal isEdit={isEdit} onCancel={modal.remove} columnId={columnId} />;
+  return <ColumnModal isEdit={isEdit} columnId={columnId} onCancel={modal.remove} />;
 });
 
-function ColumnModal({ isEdit, onCancel, columnId }: Props) {
+function ColumnModal({ isEdit, columnId, onCancel }: Props) {
   const router = useRouter();
   const dashboardId = router.query.dashboardid;
   const queryClient = useQueryClient();
   const [isSureDelete, setIsSureDelete] = useState(false);
-  const { control, handleSubmit, formState, watch } = useForm<any>({
+  const { control, handleSubmit, formState } = useForm<any>({
     mode: "all",
     defaultValues: { columnName: "" },
   });
@@ -42,28 +46,24 @@ function ColumnModal({ isEdit, onCancel, columnId }: Props) {
   });
   const columnList = columnListData.data;
 
+  const mutationSuccess = () => {
+    queryClient.invalidateQueries({ queryKey: getColumnListQueryKey(dashboardId) });
+    onCancel();
+  };
+
   const postColumnMutation = useMutation({
-    mutationFn: newColumn => postColumn(newColumn),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: getColumnListQueryKey(dashboardId) });
-      onCancel();
-    },
+    mutationFn: (newColumn: NewColumn) => postColumn(newColumn),
+    onSuccess: mutationSuccess,
   });
 
   const deleteColumnMutation = useMutation({
     mutationFn: () => deleteColumn(columnId),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: getColumnListQueryKey(dashboardId) });
-      onCancel();
-    },
+    onSuccess: mutationSuccess,
   });
 
   const putColumnNameMutation = useMutation({
-    mutationFn: changedName => putColumnName(columnId, changedName),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: getColumnListQueryKey(dashboardId) });
-      onCancel();
-    },
+    mutationFn: (changedName: ChangedName) => putColumnName(columnId, changedName),
+    onSuccess: mutationSuccess,
   });
 
   function handleDeleteColumn() {
@@ -71,19 +71,20 @@ function ColumnModal({ isEdit, onCancel, columnId }: Props) {
   }
 
   function handelonClickDelete() {
-    setIsSureDelete(prev => !prev);
+    setIsSureDelete((prev) => !prev);
   }
 
-  const handleOnSubmit: SubmitHandler<FieldValues> = data => {
+  const handleOnSubmit: SubmitHandler<FieldValues> = (data) => {
     if (isEdit) {
-      putColumnNameMutation.mutate({ title: data.columnName });
+      const changedName = { title: data.columnName };
+      putColumnNameMutation.mutate(changedName);
     } else {
-      postColumnMutation.mutate({
+      const NewColumn = {
         title: data.columnName,
         dashboardId: Number(dashboardId),
-      });
+      };
+      postColumnMutation.mutate(NewColumn);
     }
-    console.log(data);
   };
 
   return !isSureDelete ? (
@@ -105,9 +106,14 @@ function ColumnModal({ isEdit, onCancel, columnId }: Props) {
                   if (columnList.length >= 10 && !isEdit) return "컬럼은 최대 10개까지 생성할 수 있습니다";
                   return true;
                 },
-                alreadyExist: value => {
-                  const isDuplicatedColumnName = columnList.some(column => column.title === value);
+                alreadyExist: (value) => {
+                  const isDuplicatedColumnName = columnList.some((column: { title: string }) => column.title === value);
                   if (isDuplicatedColumnName) return "중복된 컬럼 이름입니다";
+                  return true;
+                },
+                limitLetterNumber: (value) => {
+                  if (value.length > 15)
+                    return `컬럼 이름은 15자를 초과하지 않도록 입력해 주세요 (현재 글자수: ${value.length}/15)`;
                   return true;
                 },
               },

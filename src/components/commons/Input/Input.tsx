@@ -53,6 +53,7 @@ export default function Input({ placeholder, type, labelName, isModal = false, i
           { file: inputType === "file" }
         )}
         placeholder={placeholder}
+        maxLength={16}
         {...field}
       />
 

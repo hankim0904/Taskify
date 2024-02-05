@@ -2,11 +2,11 @@ import styles from "./CardList.module.scss";
 import classNames from "classnames/bind";
 
 import { useModal } from "@ebay/nice-modal-react";
-import CardModal from "@/components/commons/Modals/CardModal/CardModal";
+import CardDetailModal from "@/components/commons/Modals/CardDetailModal/CardDetailModal";
 
 import Image from "next/image";
 import DescriptionTag from "@/components/commons/tag/DescriptionTag/DescriptionTag";
-import { formatDate } from "../utils/formatDate";
+import { formatDate } from "../../../../utils/formatDate";
 
 const cx = classNames.bind(styles);
 
@@ -31,10 +31,12 @@ interface Card {
 
 interface CardListProp {
   cardList: Card[] | [];
+  columnTitle: string;
 }
 
-export default function CardList({ cardList }: CardListProp) {
-  const modal = useModal(CardModal);
+export default function CardList({ cardList, columnTitle }: CardListProp) {
+  const modal = useModal(CardDetailModal);
+
   return (
     <div className={cx("cards")}>
       {cardList.map(({ id, title, tags, dueDate, assignee: { profileImageUrl }, imageUrl }) => {
@@ -43,7 +45,7 @@ export default function CardList({ cardList }: CardListProp) {
         );
         const isExistTag = tags.length === 0 ? false : true;
         return (
-          <div className={cx("card")} key={id} onClick={() => modal.show(CardModal)}>
+          <div className={cx("card")} key={id} onClick={() => modal.show({ id, columnTitle })}>
             {isExistImg && (
               <div className={cx("card-img")}>
                 <Image fill src={imageUrl} alt="카드 이미지" objectFit="cover" />

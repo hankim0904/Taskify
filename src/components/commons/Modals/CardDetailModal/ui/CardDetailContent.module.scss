@@ -1,0 +1,56 @@
+.main {
+  @include column-flexbox(center, start);
+  gap: 1.6rem;
+
+  &-tags {
+    @include flexbox(start, stretch);
+    gap: 2rem;
+    height: 100%;
+
+    @include responsive("M") {
+      gap: 1.2rem;
+    }
+
+    &-line {
+      width: 0.1rem;
+      min-height: 2.2rem;
+      background-color: $gray-300;
+
+      @include responsive("M") {
+        min-height: 2rem;
+      }
+    }
+
+    &-description {
+      @include flexbox(start, normal);
+      gap: 0.6rem;
+      flex-wrap: wrap;
+
+      span {
+        border-radius: 0.4rem;
+        overflow: hidden;
+      }
+    }
+  }
+
+  &-description {
+    @include text-style(1.4);
+  }
+
+  &-image {
+    position: relative;
+    width: 42rem;
+    height: 26.2rem;
+    border-radius: 0.6rem;
+    overflow: hidden;
+
+    @include responsive("T") {
+      width: 100%;
+      height: 24.5rem;
+    }
+
+    @include responsive("M") {
+      height: 16.75rem;
+    }
+  }
+}

@@ -1,0 +1,23 @@
+.header {
+  @include flexbox(between, center);
+
+  &-title {
+    @include text-style(2.4, 700, $black-200);
+  }
+
+  &-buttons {
+    @include flexbox(normal, center);
+    gap: 2.4rem;
+  }
+
+  &-close {
+    position: relative;
+    width: 3.2rem;
+    height: 3.2rem;
+
+    @include responsive("M") {
+      width: 2.4rem;
+      height: 2.4rem;
+    }
+  }
+}

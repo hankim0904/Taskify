@@ -1,0 +1,17 @@
+.card {
+  @include pos-center();
+  z-index: $modal;
+  width: 73rem;
+  padding: 3.2rem 2.8rem 3.2rem;
+  border-radius: 0.8rem;
+  background-color: $white;
+
+  @include responsive("T") {
+    width: calc(100% - 6.4rem);
+  }
+
+  @include responsive("M") {
+    width: calc(100% - 4.8rem);
+    padding: 4rem 2rem 2.8rem;
+  }
+}

@@ -77,17 +77,16 @@
   }
 
   &-tag {
-    @include flexbox(start, center);
+    @include flexbox(start, normal);
     gap: 0.6rem;
     margin-bottom: 1rem;
+    flex-wrap: wrap;
 
     @include responsive("T") {
       margin-bottom: 0;
     }
 
     span {
-      width: 100%;
-
       border-radius: 0.4rem;
       overflow: hidden;
     }
@@ -139,6 +138,7 @@
 
 .flex-box-inner {
   @include flexbox(between, center);
+  align-self: end;
   width: 100%;
 }
 

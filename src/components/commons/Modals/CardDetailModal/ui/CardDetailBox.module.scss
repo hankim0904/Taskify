@@ -1,0 +1,35 @@
+.box {
+  &-title {
+    @include text-style(1.2, 600);
+
+    @include responsive("M") {
+      @include text-style(1, 600);
+    }
+  }
+
+  &-detail {
+    @include text-style(1.4, 400, $black-200);
+
+    @include responsive("M") {
+      @include text-style(1.2, 400, $black-200);
+    }
+  }
+
+  &-assignee {
+    &-image {
+      position: relative;
+      display: inline-block;
+      width: 3.4rem;
+      height: 3.4rem;
+      border-radius: 50%;
+      overflow: hidden;
+
+      @include responsive("M") {
+        width: 2.6rem;
+        height: 2.6rem;
+      }
+    }
+  }
+  &-date {
+  }
+}
