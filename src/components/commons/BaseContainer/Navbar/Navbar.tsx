@@ -8,7 +8,6 @@ import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import InviteModal from "../../Modals/InviteModal/InviteModal";
 import { useModal } from "@ebay/nice-modal-react";
-import UserDropdownMenu from "./UserProfile/UserDropdownMenu/UserDropdownMenu";
 import UserProfile from "./UserProfile/UserProfile";
 
 const cx = classNames.bind(styles);
@@ -16,10 +15,21 @@ const cx = classNames.bind(styles);
 const MAX_DISPLAY_PC = 4;
 const MAX_DISPLAY_TABLET = 2;
 
+interface DashboardData {
+  id: number;
+  title: string;
+  color: string;
+  createdAt: string;
+  updatedAt: string;
+  createdByMe: boolean;
+  userId: number;
+}
+
 interface NavbarProps {
   currentPath: string;
-  dashBoardTitle: string;
-  isCreatedByMe: boolean;
+  selectedDashboard: DashboardData | null;
+  dashBoardTitle: any;
+  isCreatedByMe: any;
 }
 
 type Member = {
@@ -28,9 +38,8 @@ type Member = {
   nickname: string;
 };
 
-export default function Navbar({ currentPath, dashBoardTitle, isCreatedByMe }: NavbarProps) {
+export default function Navbar({ currentPath, selectedDashboard, dashBoardTitle, isCreatedByMe }: NavbarProps) {
   const [isTablet, setIsTablet] = useState(false);
-
   const modal = useModal(InviteModal);
   const router = useRouter();
   const dashboardId = router.query.dashboardid;
@@ -46,6 +55,8 @@ export default function Navbar({ currentPath, dashBoardTitle, isCreatedByMe }: N
     queryKey: ["userMe"],
     queryFn: () => getUsersMe(),
   });
+
+  console.log(memberData);
 
   const displayedMembers: Member[] = memberList.slice(0, isTablet ? MAX_DISPLAY_TABLET : MAX_DISPLAY_PC);
   const remainingMembersCount: number = memberTotalCount ? memberTotalCount - displayedMembers.length : 0;
@@ -76,10 +87,19 @@ export default function Navbar({ currentPath, dashBoardTitle, isCreatedByMe }: N
   return (
     <div className={cx("navbar")}>
       <div className={cx("navbar-title")}>
-        <span className={cx("dashboard-name")}>{dashBoardTitle}</span>
-        <span className={cx("created-icon")}>
-          {isCreatedByMe && <Image fill src="/assets/icons/ic-crown.svg" alt="왕관 모양 아이콘" />}
-        </span>
+        {currentPath.includes("/dashboard") && (
+          <>
+            <span className={cx("dashboard-name")}>{selectedDashboard?.title || dashBoardTitle}</span>
+
+            <span className={cx("created-icon")}>
+              {isCreatedByMe && <Image fill src="/assets/icons/ic-crown.svg" alt="왕관 모양 아이콘" />}
+              {selectedDashboard?.createdByMe && <Image fill src="/assets/icons/ic-crown.svg" alt="왕관 모양 아이콘" />}
+            </span>
+          </>
+        )}
+
+        {router.pathname === "/mydashboard" && <span className={cx("dashboard-name")}>내 대시보드</span>}
+        {router.pathname === "/mypage" && <span className={cx("dashboard-name")}>계정관리</span>}
       </div>
 
       {currentPath.includes("/dashboard") && (
@@ -97,7 +117,7 @@ export default function Navbar({ currentPath, dashBoardTitle, isCreatedByMe }: N
                 src="/assets/icons/ic-plus-box.svg"
                 alt="초대 아이콘"
               />
-              <span className={cx("text")} onClick={() => modal.show(InviteModal)}>
+              <span className={cx("text")} onClick={() => modal.show()}>
                 초대하기
               </span>
             </button>

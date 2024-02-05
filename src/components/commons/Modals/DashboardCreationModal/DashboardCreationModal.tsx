@@ -44,7 +44,7 @@ function DashboardCreationModal({ onCancel }: { onCancel: () => void }) {
     pink: "#e876ea",
   };
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+  const onSubmit: SubmitHandler<FieldValues> = data => {
     const DashboardDotColor = colorList[color];
     const newDashboard = {
       title: data.dashBoardName,
