@@ -17,6 +17,21 @@
 
   &-sidebar {
     grid-area: sidebar;
+    border-right: 0.1rem solid #d9d9d9;
+
+    .page-change {
+      @include flexbox(start, center);
+      gap: 1.6rem;
+      margin-left: 2.8rem;
+
+      &-text {
+        @include text-style(1.4, 400, $black-200);
+      }
+
+      &-btn {
+        @include flexbox(start, center);
+      }
+    }
   }
 
   &-navbar {

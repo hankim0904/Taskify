@@ -3,13 +3,13 @@
   padding: 0.7rem 0;
   width: 100%;
   border: 1px solid $border-color;
-  border-radius: 0.4rem;
+  border-radius: 0.8rem;
   gap: 0.8rem;
 
-  @include text-style(1.4, 500, $text-color);
+  @include text-style(1.6, 500, $text-color);
   @include flexbox;
   @include responsive("M") {
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     & img {
       width: 1.4rem;
       height: 1.4rem;

@@ -1,6 +1,5 @@
 import BaseContainer from "@/components/commons/BaseContainer/BaseContainer";
 import Image from "next/image";
-import Link from "next/link";
 import styles from "./mypage.module.scss";
 import classNames from "classnames/bind";
 import { useRouter } from "next/router";
@@ -16,7 +15,11 @@ export default function Mypage() {
   return (
     <BaseContainer currentPath={currentPath}>
       <div className={cx("mypage-container")}>
-        <div className={cx("mypage-container-backward")}>
+        <div
+          className={cx("mypage-container-backward")}
+          onClick={() => {
+            window.history.go(-1);
+          }}>
           <Image width={20} height={20} src="/assets/icons/ic-arrow-backward.svg" alt="뒤로가기" />
           <span>돌아가기</span>
         </div>

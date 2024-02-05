@@ -139,44 +139,4 @@
       }
     }
   }
-  &-user {
-    @include flexbox;
-    gap: 0.9rem;
-    position: relative;
-    border-left: 1px solid $gray-300;
-    padding-left: 3.2rem;
-    cursor: pointer;
-
-    @include responsive("T") {
-      padding-left: 2.4rem;
-    }
-
-    @include responsive("M") {
-      padding-left: 1.2rem;
-    }
-
-    &-circle {
-      position: relative;
-      width: 3.8rem;
-      height: 3.8rem;
-      border: 0.2rem solid $white;
-      border-radius: 50%;
-      background-color: #ffc85a;
-
-      &-nickname {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        @include text-style(1.6, 600, $white);
-      }
-    }
-    &-name {
-      @include text-style(1.6, 500, $black-200);
-
-      @include responsive("M") {
-        display: none;
-      }
-    }
-  }
 }

@@ -1,19 +1,31 @@
-import Image from "next/image";
 import { useForm, SubmitHandler, FieldValues } from "react-hook-form";
 import Input from "@/components/commons/Input/Input";
 import ResponseBtn from "@/components/commons/Buttons/ResponseButton";
 import styles from "./PasswordChangeForm.module.scss";
 import classNames from "classnames/bind";
+import getUsersMe from "@/api/getUsersMe";
+import { useQuery } from "@tanstack/react-query";
+import putChangePassword from "@/api/putChangePassword";
 
 const cx = classNames.bind(styles);
 
 export default function PasswordChangeForm() {
   const { control, handleSubmit } = useForm({ mode: "onChange" });
-  // control , handleSubmit필수, { mode: 'onChange' } - onChange 시 error 나옴,
 
-  const onSubmit: SubmitHandler<FieldValues> = data => {
-    console.log(data); // error 면 submit 안됨 ,SubmitHandler<FieldValues> handleSubmit 안에 들어가는 type 입니다
+  const onSubmit: SubmitHandler<FieldValues> = async data => {
+    console.log(data.currentPassword);
+    try {
+      const res = await putChangePassword(data.currentPassword, data.newPassword);
+      console.log(res);
+    } catch (error) {
+      alert(error.message);
+    }
   };
+
+  const { data: userMeData } = useQuery({
+    queryKey: ["userMe"],
+    queryFn: () => getUsersMe(),
+  });
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -43,7 +55,7 @@ export default function PasswordChangeForm() {
             </div>
             <div className={cx("contents-input-area-password")}>
               <Input
-                name="password"
+                name="newPasswordConfirm"
                 type="password"
                 labelName="새 비밀번호 확인"
                 control={control}
@@ -54,7 +66,7 @@ export default function PasswordChangeForm() {
           </div>
         </div>
         <div className={cx("contents-btn")}>
-          <ResponseBtn state="accept" ph={0.8}>
+          <ResponseBtn state="accept" type="submit" ph={0.8}>
             변경
           </ResponseBtn>
         </div>

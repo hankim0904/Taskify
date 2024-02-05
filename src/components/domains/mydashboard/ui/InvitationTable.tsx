@@ -5,6 +5,7 @@ import classNames from "classnames/bind";
 
 import Input from "@/components/commons/Input/Input";
 import Invitation from "./Invitation";
+import React from "react";
 
 const cx = classNames.bind(styles);
 
@@ -28,22 +29,29 @@ export interface Invitation {
   inviteAccepted: boolean | null;
   createdAt: string;
   updatedAt: string;
-}
-
-export interface IvitationTableProps {
   invitations: Invitation[];
 }
 
-export default function IvitationTable({ invitations }: IvitationTableProps) {
-  const { control, handleSubmit } = useForm({ mode: "onChange" });
+export interface IvitationTableProps {
+  pages: Invitation[];
+}
+
+export default function IvitationTable({ pages }: IvitationTableProps) {
+  const { control } = useForm({ mode: "onChange" });
   const searchValue = useWatch({
     name: "search",
     control,
     defaultValue: "",
   });
 
-  const filteredData = invitations.filter((item) => {
-    return item.dashboard.title.includes(searchValue) || item.inviter.nickname.includes(searchValue);
+  const filteredData = pages.map((item) => {
+    if (!searchValue) {
+      return item.invitations;
+    } else {
+      return item.invitations.filter((invitation) => {
+        return invitation.dashboard.title.includes(searchValue) || invitation.inviter.nickname.includes(searchValue);
+      });
+    }
   });
 
   return (
@@ -64,13 +72,17 @@ export default function IvitationTable({ invitations }: IvitationTableProps) {
           <span>초대자</span>
           <span>수락 여부</span>
         </div>
-        {filteredData.map(({ id, dashboard: { title }, inviter: { nickname } }) => (
-          <div className={cx("invitation-table-content")} key={id}>
-            <div className={cx("invitation-table-content-word")}>
-              <Invitation title={title} inviter={nickname} path={id} />
-            </div>
-            <hr className={cx("invitation-table-content-break")} />
-          </div>
+        {filteredData.map((invitations, index) => (
+          <React.Fragment key={index}>
+            {invitations.map(({ id, dashboard: { title }, inviter: { nickname } }) => (
+              <div className={cx("invitation-table-content")} key={id}>
+                <div className={cx("invitation-table-content-word")}>
+                  <Invitation title={title} inviter={nickname} path={id} />
+                </div>
+                <hr className={cx("invitation-table-content-break")} />
+              </div>
+            ))}
+          </React.Fragment>
         ))}
       </div>
     </div>

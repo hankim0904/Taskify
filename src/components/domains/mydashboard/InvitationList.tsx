@@ -2,24 +2,54 @@ import styles from "./InvitationList.module.scss";
 import classNames from "classnames/bind";
 import EmptyInvitation from "./ui/EmptyInvitation";
 import IvitationTable from "./ui/InvitationTable";
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import getReceivedDashboardInvitations from "@/api/getReceivedDashboardInvitations";
-import React from "react";
+import React, { useEffect, useRef } from "react";
+import { useAuth } from "@/contexts/AuthContext";
+import LodingSpinner from "@/components/commons/LodingSpinner/LodingSpinner";
 
 const cx = classNames.bind(styles);
 
 export default function InvitedDashboardList() {
-  const { data } = useQuery({
+  const { accessToken } = useAuth();
+  const { data, fetchNextPage, isFetchingNextPage } = useInfiniteQuery({
     queryKey: ["receivedDashboardInvitationsList"],
-    queryFn: () => getReceivedDashboardInvitations(),
+    queryFn: ({ pageParam }) => getReceivedDashboardInvitations(pageParam, accessToken),
+    initialPageParam: null,
+    getNextPageParam: (lastPage) => lastPage.cursorId,
   });
 
-  console.log(data);
+  const targetRef = useRef(null);
+
+  useEffect(() => {
+    const options = {
+      root: null,
+      threshold: 0.5,
+    };
+
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        fetchNextPage();
+      }
+    }, options);
+
+    if (targetRef.current) {
+      observer.observe(targetRef.current);
+    }
+
+    return () => {
+      if (targetRef.current) {
+        observer.unobserve(targetRef.current);
+      }
+    };
+  }, [fetchNextPage]);
 
   return (
     <article className={cx("invitation")}>
       <h1 className={cx("invitation-title")}>초대받은 대시보드</h1>
-      {data && data.invitations ? <IvitationTable invitations={data.invitations} /> : <EmptyInvitation />}
+      {data && data.pages ? <IvitationTable pages={data.pages} /> : <EmptyInvitation />}
+      <div className={cx("loding-container")}>{isFetchingNextPage ? <LodingSpinner /> : ""}</div>
+      <div ref={targetRef} style={{ width: "1px", height: "1px" }} />
     </article>
   );
 }

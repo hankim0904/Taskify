@@ -16,17 +16,27 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   const [accessToken, setAccessToken] = useState<string | null>(null);
 
   const login = useCallback((token: string) => {
-    localStorage.setItem("accessToken", token);
+    const expirationDate = new Date();
+    expirationDate.setFullYear(expirationDate.getFullYear() + 1);
+
+    document.cookie = `accessToken=${token}; expires=${expirationDate.toUTCString()}; path=/;`;
+
     setAccessToken(token);
   }, []);
 
   const logout = useCallback(() => {
-    localStorage.removeItem("accessToken");
+    document.cookie = "accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+
     setAccessToken(null);
   }, []);
 
   useEffect(() => {
-    setAccessToken(localStorage.getItem("accessToken"));
+    const cookieValue = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("accessToken="))
+      ?.split("=")[1];
+
+    setAccessToken(cookieValue || null);
   }, []);
 
   return <AuthContext.Provider value={{ accessToken, login, logout }}>{children}</AuthContext.Provider>;

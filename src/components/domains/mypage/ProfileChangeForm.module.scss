@@ -1,3 +1,22 @@
+@mixin button-style($bg-color, $border-color, $text-color) {
+  background-color: $bg-color;
+  padding: 0.7rem 0;
+  width: 100%;
+  border: 1px solid $border-color;
+  border-radius: 0.4rem;
+  gap: 0.8rem;
+
+  @include text-style(1.4, 500, $text-color);
+  @include flexbox;
+  @include responsive("M") {
+    font-size: 1.2rem;
+    & img {
+      width: 1.4rem;
+      height: 1.4rem;
+    }
+  }
+}
+
 .mypage-container {
   &-profile {
     margin-bottom: 1.2rem;
@@ -34,6 +53,7 @@
 
       &-upload-image {
         @include flexbox;
+        position: relative;
         width: 18.2rem;
         height: 18.2rem;
         border-radius: 0.6rem;
@@ -43,6 +63,15 @@
         @include responsive("M") {
           width: 10rem;
           height: 10rem;
+        }
+      }
+
+      .upload-image-btn {
+        @include button-style($white, $gray-300, $violet);
+        cursor: pointer;
+
+        &:hover {
+          background-color: $violet-100;
         }
       }
 

@@ -16,3 +16,8 @@
     }
   }
 }
+
+.loding-container {
+  width: 100%;
+  @include flexbox();
+}
