@@ -86,11 +86,11 @@ export default function Dropdown({ setValue, columnId, members, ...props }: Prop
       <ul className={cx("members", { close: !openSelectList })}>
         {props.name === "assignee"
           ? filteredList?.map((member: Member) => (
-              <li className={cx("list-item")} key={member.userId}>
+              <li className={cx("list-item")} key={member.id}>
                 <button
                   id={String(member.userId)}
                   type="button"
-                  onClick={() => handleSelectItem(member.userId, member.nickname)}
+                  onClick={() => handleSelectItem(member.id, member.nickname)}
                   className={cx("list-item-btn")}
                 >
                   {selectedItemId == member.id && (

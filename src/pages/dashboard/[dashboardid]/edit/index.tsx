@@ -89,7 +89,7 @@ export default function Edit({ dehydratedState }: { dehydratedState: DehydratedS
   const deleteDashboradMutation = useMutation({
     mutationFn: () => deleteDashBoard(dashboardid),
     onSuccess: () => {
-      alert("대시보드 삭제 성공"), router.push("/");
+      alert("대시보드 삭제 성공"), router.push("/mydashboard");
     },
   });
 
@@ -97,7 +97,8 @@ export default function Edit({ dehydratedState }: { dehydratedState: DehydratedS
     if (!titleData.createdByMe) {
       alert("사용자가 만든 대시보드가 아닙니다.");
     } else {
-      deleteDashboradMutation.mutate();
+      const result = confirm("대시보드를 정말 삭제하시겠습니까?");
+      result ? deleteDashboradMutation.mutate() : alert("대시보드 삭제 취소");
     }
   };
 
