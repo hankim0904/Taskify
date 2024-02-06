@@ -50,7 +50,7 @@ export default function Input({ placeholder, type, labelName, isModal = false, i
           { checkbox: inputType === "checkbox" },
           { error: isError },
           { search: type === "search" },
-          { file: inputType === "file" }
+          { file: inputType === "file" },
         )}
         placeholder={placeholder}
         maxLength={16}

@@ -6,7 +6,7 @@ import styles from "./ProfileChangeForm.module.scss";
 import classNames from "classnames/bind";
 import getUsersMe from "@/api/getUsersMe";
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import defaultImage from "./logo-codeit.png";
 import putChangeUserProfile from "@/api/putChangeUserProfile";
 import { axiosInstance } from "@/api/axiosInstance";
@@ -16,18 +16,32 @@ const accessToken =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Njg5LCJ0ZWFtSWQiOiIyLTkiLCJpYXQiOjE3MDY2NzgwMzEsImlzcyI6InNwLXRhc2tpZnkifQ.xTJzppjh39utbp7V6-yYsFFXYzDmDT4jFUxabGtVZlY";
 
 export default function ProfileChangeForm() {
-  const { control, handleSubmit } = useForm({ mode: "onChange" });
-  const [previewImage, setPreviewImage] = useState<string | null>(null);
-  const [profileImageUrl, setProfileImageUrl] = useState<string | null>(null);
+  const [previewImage, setPreviewImage] = useState<string | null>("");
+  const [profileImageUrl, setProfileImageUrl] = useState("");
+  const [hide, setHide] = useState(true);
+  const { control, handleSubmit, setValue } = useForm({
+    mode: "onChange",
+    defaultValues: {
+      nickname: "",
+    },
+  });
 
   const { data: userMeData } = useQuery({
     queryKey: ["userMe"],
     queryFn: () => getUsersMe(),
   });
 
+  useEffect(() => {
+    if (userMeData) {
+      setValue("nickname", userMeData.nickname);
+    }
+  });
   const onSubmit: SubmitHandler<FieldValues> = data => {
-    putChangeUserProfile(data.nickname, profileImageUrl!);
-    // error 면 submit 안됨 ,SubmitHandler<FieldValues> handleSubmit 안에 들어가는 type 입니다
+    if (profileImageUrl === "") {
+      putChangeUserProfile(data.nickname, null);
+    } else {
+      putChangeUserProfile(data.nickname, profileImageUrl);
+    }
   };
 
   async function handleUploadImage(e: React.ChangeEvent<HTMLInputElement>) {
@@ -52,13 +66,13 @@ export default function ProfileChangeForm() {
 
         setProfileImageUrl(res.data.profileImageUrl);
       } catch (e) {
-        console.log(e);
+        throw new Error(`${e}`);
       }
     }
   }
 
   function handleChangeDefaultImage() {
-    setPreviewImage(defaultImage);
+    setHide(!hide);
   }
 
   return (
@@ -66,39 +80,32 @@ export default function ProfileChangeForm() {
       <div className={cx("mypage-container-profile")}>
         <div className={cx("title")}>프로필</div>
         <div className={cx("contents")}>
-          <div>
-            <div className={cx("contents-upload-image")}>
-              {userMeData?.profileImageUrl ? (
-                <Image fill src={userMeData?.profileImageUrl} alt="현재 이미지" style={{ objectFit: "cover" }} />
-              ) : (
-                <Image fill src={defaultImage} alt="현재 이미지" style={{ objectFit: "cover" }} />
-              )}
-              {
-                previewImage && <Image fill src={previewImage} alt="미리 보기" style={{ objectFit: "cover" }} />
-                // <Image width={30} height={30} src="/assets/icons/ic-plus-without-background.svg" alt="이미지 업로드" />
-              }
-            </div>
+          <div className={cx("contents-upload-area")}>
+            {hide ? (
+              <div className={cx("contents-upload-image")}>
+                {userMeData?.profileImageUrl ? (
+                  <Image fill src={userMeData?.profileImageUrl} alt="현재 이미지" style={{ objectFit: "cover" }} />
+                ) : (
+                  <div className={cx("contents-basic-image")}>
+                    <span className={cx("nickname")}>유</span>
+                  </div>
+                )}
+                {previewImage && <Image fill src={previewImage} alt="미리 보기" style={{ objectFit: "cover" }} />}
+              </div>
+            ) : (
+              <div className={cx("contents-basic-image")}>
+                <span className={cx("nickname")}>유</span>
+              </div>
+            )}
 
             <label htmlFor="profile-image">
               <span className={cx("upload-image-btn")}>사진 선택</span>
-              {/* <ResponseBtn state="reject" ph={0.8} onClick={() => document.getElementById("profile-image").click()}>
-              사진 선택
-            </ResponseBtn> */}
             </label>
             <div onClick={handleChangeDefaultImage}>
-              <ResponseBtn state="cancel" ph={0.8}>
-                기본 이미지로 변경
-              </ResponseBtn>
+              <span className={cx("basic-image-btn")}>기본 이미지로 변경</span>
             </div>
             <div style={{ display: "none" }} onChange={handleUploadImage}>
               <Input name="profile-image" labelName="" type="file" control={control} />
-              {/* <input
-            type="file"
-            id="profile-image"
-            style={{ display: "none" }}
-            accept="image/*"
-            onChange={handleUploadImage}
-          /> */}
             </div>
           </div>
 
