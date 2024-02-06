@@ -46,3 +46,12 @@ export const getCardDetail = async (cardId: number) => {
 
   return response.data;
 };
+
+// 추가한 부분
+export const getComments = async (cardId: number) => {
+  const response = await axiosCSRInstance.get("comments", {
+    params: { size: 3, cardId: cardId },
+  });
+
+  return response.data;
+};
