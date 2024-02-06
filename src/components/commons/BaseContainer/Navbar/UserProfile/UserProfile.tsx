@@ -8,10 +8,10 @@ const cx = classNames.bind(styles);
 
 interface UserProfileProps {
   userMeData: any;
-  extractInitial: (nickname: string) => string | undefined;
+  extractFirstLetter: (nickname: string) => string | undefined;
 }
 
-export default function UserProfile({ userMeData, extractInitial }: UserProfileProps) {
+export default function UserProfile({ userMeData, extractFirstLetter }: UserProfileProps) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropMenuRef = useRef<HTMLDivElement | null>(null);
 
@@ -42,7 +42,7 @@ export default function UserProfile({ userMeData, extractInitial }: UserProfileP
       ) : (
         <>
           <div className={cx("navbar-user-circle")}>
-            <span className={cx("navbar-user-circle-nickname")}>{extractInitial(userMeData?.nickname)}</span>
+            <span className={cx("navbar-user-circle-nickname")}>{extractFirstLetter(userMeData?.nickname)}</span>
           </div>
           <div className={cx("navbar-user-name")}>{userMeData?.nickname}</div>
         </>

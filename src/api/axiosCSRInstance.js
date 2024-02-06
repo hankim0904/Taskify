@@ -5,20 +5,20 @@ export const axiosCSRInstance = axios.create({
 });
 
 axiosCSRInstance.interceptors.request.use(
-  (config) => {
+  config => {
     const cookieValue = document.cookie
       .split("; ")
-      .find((row) => row.startsWith("accessToken="))
+      .find(row => row.startsWith("accessToken="))
       ?.split("=")[1];
     const accessToken = cookieValue;
 
-    config.headers["Content-Type"] = "application/json";
+    config.headers["Content-Type"] === "multipart/form-data" ? "multipart/form-data" : "application/json";
     config.headers["Authorization"] = `Bearer ${accessToken}`;
 
     return config;
   },
-  (error) => {
+  error => {
     console.log(error);
     return Promise.reject(error);
-  }
+  },
 );
