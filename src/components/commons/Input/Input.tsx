@@ -11,10 +11,19 @@ interface InputProps extends UseControllerProps {
   labelName?: string;
   type: string;
   isModal?: boolean;
+  maxLength?: number;
   imgFile?: Blob | MediaSource | undefined | string;
 }
 
-export default function Input({ placeholder, type, labelName, isModal = false, imgFile, ...props }: InputProps) {
+export default function Input({
+  placeholder,
+  type,
+  labelName,
+  isModal = false,
+  imgFile,
+  maxLength = 16,
+  ...props
+}: InputProps) {
   const { field, fieldState } = useController(props);
   const [inputType, setInputType] = useState(type);
 
@@ -53,7 +62,7 @@ export default function Input({ placeholder, type, labelName, isModal = false, i
           { file: inputType === "file" },
         )}
         placeholder={placeholder}
-        maxLength={16}
+        maxLength={maxLength}
         {...field}
       />
 

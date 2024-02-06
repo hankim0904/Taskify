@@ -1,9 +1,10 @@
 import { axiosCSRInstance } from "./axiosCSRInstance";
 
-export default async function postDashboardInvitations(dashboardId: string | string[] | undefined, email: string) {
-  console.log(dashboardId, email);
-  const accessToken =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Njg5LCJ0ZWFtSWQiOiIyLTkiLCJpYXQiOjE3MDY2NzgwMzEsImlzcyI6InNwLXRhc2tpZnkifQ.xTJzppjh39utbp7V6-yYsFFXYzDmDT4jFUxabGtVZlY";
+export default async function postDashboardInvitations(
+  dashboardId: string | string[] | undefined,
+  email: string,
+  accessToken: string | null,
+) {
   try {
     const res = await axiosCSRInstance.post(
       `dashboards/${dashboardId}/invitations`,
@@ -11,10 +12,10 @@ export default async function postDashboardInvitations(dashboardId: string | str
       {
         headers: { Authorization: `Bearer ${accessToken}`, "Content-Type": "application/json" },
         params: { dashboardId: dashboardId },
-      }
+      },
     );
     console.log(res.data);
-  } catch (e) {
-    console.log(e);
+  } catch (error) {
+    alert(error.response.data.message);
   }
 }

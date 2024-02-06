@@ -15,11 +15,10 @@ import extractFirstLetter from "@/utils/extractFirstLetter";
 const cx = classNames.bind(styles);
 
 export default function ProfileChangeForm() {
-  const [previewImage, setPreviewImage] = useState<string | ArrayBuffer | null>("");
-  const [profileImageUrl, setProfileImageUrl] = useState("");
-  const [showBasicProfile, setShowBasicProfile] = useState(false);
-
-  const { accessToken } = useAuth();
+  const { data: userMeData } = useQuery({
+    queryKey: ["userMe"],
+    queryFn: () => getUsersMe(accessToken),
+  });
 
   const { control, handleSubmit, setValue } = useForm({
     mode: "onChange",
@@ -28,10 +27,11 @@ export default function ProfileChangeForm() {
     },
   });
 
-  const { data: userMeData } = useQuery({
-    queryKey: ["userMe"],
-    queryFn: () => getUsersMe(accessToken),
-  });
+  const [profileImageUrl, setProfileImageUrl] = useState(userMeData?.profileImageUrl);
+  const [previewImage, setPreviewImage] = useState<string | ArrayBuffer | null>("");
+  const [showBasicProfile, setShowBasicProfile] = useState(false);
+
+  const { accessToken } = useAuth();
 
   useEffect(() => {
     if (userMeData) {
@@ -49,7 +49,12 @@ export default function ProfileChangeForm() {
 
   async function handleUploadImage(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files && e.target.files[0];
+    const extension = file?.name.split(".").pop();
 
+    if (!["jpg", "jpeg", "png", "gif"].includes(extension.toLowerCase())) {
+      alert("이미지 파일을 선택해주세요.");
+      return false;
+    }
     if (file) {
       const reader = new FileReader();
 
