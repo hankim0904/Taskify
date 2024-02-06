@@ -51,18 +51,42 @@
         @include column-flexbox(center, none);
       }
 
+      &-upload-area {
+        @include column-flexbox(center, none);
+        gap: 1rem;
+
+        @include responsive("T") {
+        }
+      }
+
       &-upload-image {
         @include flexbox;
         position: relative;
         width: 18.2rem;
         height: 18.2rem;
-        border-radius: 0.6rem;
-        background: #f5f5f5;
-        cursor: pointer;
 
         @include responsive("M") {
           width: 10rem;
           height: 10rem;
+          left: 50%;
+          transform: translateX(-50%);
+        }
+
+        img {
+          border-radius: 50%;
+        }
+      }
+
+      &-basic-image {
+        position: relative;
+        width: 18.2rem;
+        height: 18.2rem;
+        border-radius: 50%;
+        background-color: $black-100;
+
+        .nickname {
+          @include pos-center(absolute);
+          @include text-style(3, 600, $white);
         }
       }
 
@@ -72,6 +96,15 @@
 
         &:hover {
           background-color: $violet-100;
+        }
+      }
+
+      .basic-image-btn {
+        @include button-style($white, $gray-300, $gray-500);
+        cursor: pointer;
+
+        &:hover {
+          background-color: $gray-200;
         }
       }
 

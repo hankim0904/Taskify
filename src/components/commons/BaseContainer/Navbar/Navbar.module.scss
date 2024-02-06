@@ -123,10 +123,7 @@
       }
 
       &-nickname {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
+        @include pos-center(absolute);
         @include text-style(1.6, 600, $white);
       }
 

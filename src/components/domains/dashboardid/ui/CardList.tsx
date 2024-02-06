@@ -7,27 +7,9 @@ import CardDetailModal from "@/components/commons/Modals/CardDetailModal/CardDet
 import Image from "next/image";
 import DescriptionTag from "@/components/commons/tag/DescriptionTag/DescriptionTag";
 import { formatDate } from "../../../../utils/formatDate";
+import { Card } from "../api/type";
 
 const cx = classNames.bind(styles);
-
-interface Card {
-  id: number;
-  title: string;
-  description: string;
-  tags: string[];
-  dueDate: string;
-  assignee: {
-    id: number;
-    nickname: string;
-    profileImageUrl: string | null;
-  };
-  imageUrl: string;
-  teamId: string;
-  dashboardId: number;
-  columnId: number;
-  createdAt: string;
-  updatedAt: string;
-}
 
 interface CardListProp {
   cardList: Card[] | [];
@@ -45,7 +27,7 @@ export default function CardList({ cardList, columnTitle }: CardListProp) {
         );
         const isExistTag = tags.length === 0 ? false : true;
         return (
-          <div className={cx("card")} key={id} onClick={() => modal.show({ id, columnTitle })}>
+          <div className={cx("card")} key={id} onClick={() => modal.show({ cardId: id, columnTitle })}>
             {isExistImg && (
               <div className={cx("card-img")}>
                 <Image fill src={imageUrl} alt="카드 이미지" objectFit="cover" />

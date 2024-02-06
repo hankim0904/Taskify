@@ -4,7 +4,7 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import NiceModal from "@ebay/nice-modal-react";
 
 import { useAuth } from "@/contexts/AuthContext";
-import { axiosInstance } from "@/api/axiosInstance";
+import { axiosSSRInstance } from "@/api/axiosSSRInstance";
 import Input from "@/components/commons/Input/Input";
 import { SignButton } from "@/components/commons/Buttons/SignButton";
 import SignModal from "@/components/commons/Modals/SignModal/SignModal";
@@ -29,7 +29,7 @@ export default function Signin() {
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
-      const response = await axiosInstance.post("auth/login", {
+      const response = await axiosSSRInstance.post("auth/login", {
         email: data.email,
         password: data.password,
       });

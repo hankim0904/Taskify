@@ -12,16 +12,24 @@ import DashboardLayout from "@/components/domains/dashboardid/DashboardLayout";
 import ColumnList from "@/components/domains/dashboardid/ColumnList";
 import AddColumn from "@/components/domains/dashboardid/AddColumn";
 import BaseContainer from "@/components/commons/BaseContainer/BaseContainer";
+import withAuthNoneExist from "@/utils/withAuthNoneExist";
+import getDashBoards from "@/api/getDashBoards";
 
 const cx = classNames.bind(styles);
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const queryClient = new QueryClient();
   const dashboardId = context.query.dashboardid;
+  const { accessToken } = context.req.cookies;
 
   await queryClient.prefetchQuery({
     queryKey: getColumnListQueryKey(dashboardId),
-    queryFn: () => getColumnList(dashboardId),
+    queryFn: () => getColumnList(dashboardId, accessToken),
+  });
+
+  await queryClient.prefetchQuery({
+    queryKey: ["sideBarDashboardList", 1, 18],
+    queryFn: () => getDashBoards("pagination", accessToken, 18, 1),
   });
 
   return {
@@ -31,7 +39,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   };
 }
 
-export default function DashboardPage({ dehydratedState }: { dehydratedState: DehydratedState }) {
+export default withAuthNoneExist(function DashboardPage({ dehydratedState }: { dehydratedState: DehydratedState }) {
   const router = useRouter();
   const currentPath = router.pathname;
 
@@ -44,4 +52,4 @@ export default function DashboardPage({ dehydratedState }: { dehydratedState: De
       </div>
     </HydrationBoundary>
   );
-}
+});

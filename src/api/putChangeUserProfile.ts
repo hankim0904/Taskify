@@ -1,11 +1,18 @@
-import { axiosInstance } from "./axiosInstance";
+import { axiosSSRInstance } from "./axiosSSRInstance";
+import NiceModal from "@ebay/nice-modal-react";
+import PasswordChangeModal from "@/components/commons/Modals/PasswordChangeModal/PasswordChangeModal";
 
-export default async function putChangeUserProfile(nickname: string, profileImageUrl: string) {
-  const accessToken =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Njg5LCJ0ZWFtSWQiOiIyLTkiLCJpYXQiOjE3MDY2NzgwMzEsImlzcyI6InNwLXRhc2tpZnkifQ.xTJzppjh39utbp7V6-yYsFFXYzDmDT4jFUxabGtVZlY";
+export default async function putChangeUserProfile(
+  nickname: string,
+  profileImageUrl: string | null,
+  accessToken: string
+) {
+  const confirmReloadingModal = (text: string) => {
+    NiceModal.show(PasswordChangeModal, { text });
+  };
 
   try {
-    const res = await axiosInstance.put(
+    const res = await axiosSSRInstance.put(
       "users/me",
       {
         nickname: nickname,
@@ -16,11 +23,12 @@ export default async function putChangeUserProfile(nickname: string, profileImag
           Authorization: `Bearer ${accessToken}`,
           "Content-Type": "application/json",
         },
-      },
+      }
     );
-    console.log(res.data);
-    return res.data;
+    if (res.status === 200) {
+      confirmReloadingModal("변경이 완료되었습니다.");
+    }
   } catch (e) {
-    console.log(e);
+    throw new Error(`${e}`);
   }
 }

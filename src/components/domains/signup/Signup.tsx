@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import NiceModal from "@ebay/nice-modal-react";
 
-import { axiosInstance } from "@/api/axiosInstance";
+import { axiosSSRInstance } from "@/api/axiosSSRInstance";
 import Input from "@/components/commons/Input/Input";
 import SignModal from "@/components/commons/Modals/SignModal/SignModal";
 import { SignButton } from "@/components/commons/Buttons/SignButton";
@@ -31,7 +31,7 @@ export default function Signup() {
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
-      const response = await axiosInstance.post("users", {
+      const response = await axiosSSRInstance.post("users", {
         email: data.email,
         nickname: data.nickname,
         password: data.password,

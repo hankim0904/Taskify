@@ -7,6 +7,7 @@ import getDashBoards from "@/api/getDashBoards";
 import { useQuery } from "@tanstack/react-query";
 import PageChangeButton from "../../commons/Buttons/PageChangeButton";
 import { useRouter } from "next/router";
+import { useAuth } from "@/contexts/AuthContext";
 
 const cx = classNames.bind(styles);
 
@@ -33,9 +34,11 @@ export default function BaseContainer({ currentPath, children }: BaseContainerPr
   const router = useRouter();
   const dashboardId: string | string[] | undefined = router.query.dashboardid;
 
+  const { accessToken } = useAuth();
+
   const { data } = useQuery({
-    queryKey: ["dashboardList", currentPage, 18],
-    queryFn: () => getDashBoards("pagination", 18, currentPage),
+    queryKey: ["sideBarDashboardList", currentPage, 18],
+    queryFn: () => getDashBoards("pagination", accessToken, 18, currentPage),
   });
 
   const totalPage = Math.ceil(data?.totalCount / 18);
@@ -72,13 +75,13 @@ export default function BaseContainer({ currentPath, children }: BaseContainerPr
             <PageChangeButton
               isForward={false}
               onClick={() => {
-                setCurrentPage(currentPage => currentPage - 1);
+                setCurrentPage((currentPage) => currentPage - 1);
               }}
               disabled={currentPage <= 1}
             />
             <PageChangeButton
               onClick={() => {
-                setCurrentPage(currentPage => currentPage + 1);
+                setCurrentPage((currentPage) => currentPage + 1);
               }}
               disabled={currentPage >= totalPage}
             />

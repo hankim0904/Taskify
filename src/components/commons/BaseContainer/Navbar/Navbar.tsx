@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 import InviteModal from "../../Modals/InviteModal/InviteModal";
 import { useModal } from "@ebay/nice-modal-react";
 import UserProfile from "./UserProfile/UserProfile";
+import { useAuth } from "@/contexts/AuthContext";
 
 const cx = classNames.bind(styles);
 
@@ -43,20 +44,19 @@ export default function Navbar({ currentPath, selectedDashboard, dashBoardTitle,
   const modal = useModal(InviteModal);
   const router = useRouter();
   const dashboardId = router.query.dashboardid;
+  const { accessToken } = useAuth();
 
   const { data: memberData } = useQuery({
     queryKey: ["memberList", dashboardId],
-    queryFn: () => getMembers(dashboardId),
+    queryFn: () => getMembers(accessToken, dashboardId),
   });
   const memberList: Member[] = memberData?.members || [];
   const memberTotalCount: number | undefined = memberData?.totalCount;
 
   const { data: userMeData } = useQuery({
     queryKey: ["userMe"],
-    queryFn: () => getUsersMe(),
+    queryFn: () => getUsersMe(accessToken),
   });
-
-  console.log(memberData);
 
   const displayedMembers: Member[] = memberList.slice(0, isTablet ? MAX_DISPLAY_TABLET : MAX_DISPLAY_PC);
   const remainingMembersCount: number = memberTotalCount ? memberTotalCount - displayedMembers.length : 0;
@@ -134,7 +134,8 @@ export default function Navbar({ currentPath, selectedDashboard, dashBoardTitle,
                       position: "relative",
                       right: `${index}rem`,
                       backgroundColor: "white",
-                    }}>
+                    }}
+                  >
                     <Image
                       fill
                       src={member.profileImageUrl}
@@ -148,15 +149,17 @@ export default function Navbar({ currentPath, selectedDashboard, dashBoardTitle,
                     style={{
                       position: "relative",
                       right: `${index}rem`,
-                    }}>
+                    }}
+                  >
                     <span className={cx("navbar-member-list-nickname")}>{extractInitial(member.nickname)}</span>
                   </div>
-                ),
+                )
               )}
             {memberTotalCount !== undefined && memberTotalCount > displayedMembers.length && (
               <div
                 className={cx("navbar-member-list", "count")}
-                style={{ position: "relative", right: `${displayedMembers.length}rem` }}>
+                style={{ position: "relative", right: `${displayedMembers.length}rem` }}
+              >
                 <span className={cx("navbar-member-list-count")}>+{remainingMembersCount}</span>
               </div>
             )}

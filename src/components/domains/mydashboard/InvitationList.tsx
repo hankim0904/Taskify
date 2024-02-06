@@ -13,7 +13,7 @@ const cx = classNames.bind(styles);
 export default function InvitedDashboardList() {
   const { accessToken } = useAuth();
   const { data, fetchNextPage, isFetchingNextPage } = useInfiniteQuery({
-    queryKey: ["receivedDashboardInvitationsList"],
+    queryKey: ["getReceivedDashboardInvitations"],
     queryFn: ({ pageParam }) => getReceivedDashboardInvitations(pageParam, accessToken),
     initialPageParam: null,
     getNextPageParam: (lastPage) => lastPage.cursorId,
