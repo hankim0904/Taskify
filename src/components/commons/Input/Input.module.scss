@@ -82,8 +82,32 @@
     width: 2rem;
     height: 2rem;
     padding: 0;
-    border: 0.1rem solid $gray-300;
+    -webkit-appearance: none;
+    appearance: none;
     border-radius: 0.4rem;
+
+    &:checked {
+      //체크를 했을 때 적용할 스타일
+      background-color: $violet;
+      border-color: $white;
+    }
+
+    &:checked:after {
+      content: "\2713";
+      color: $white;
+      position: absolute;
+      left: 0.48rem;
+      top: -0.1rem;
+      font-size: 1.5rem;
+      font-weight: 900;
+      transform: rotate(10deg);
+    }
+
+    &:not(:checked) {
+      // 체크를 풀었을 때 적용할 스타일(.error의 스타일을 덮어쓰기 위해서)
+      background-color: $white;
+      border-color: $gray-300;
+    }
   }
 }
 

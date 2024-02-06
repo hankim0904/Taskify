@@ -54,7 +54,7 @@ export default function Signin() {
           rules={{
             required: "이메일을 입력해 주세요.",
             pattern: {
-              value: /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/,
+              value: /^[\w!#-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/,
               message: "이메일 형식으로 작성해 주세요.",
             },
           }}
