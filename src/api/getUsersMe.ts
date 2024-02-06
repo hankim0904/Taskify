@@ -1,4 +1,4 @@
-import { axiosInstance } from "./axiosInstance";
+import { axiosInstance } from "./axiosInterceptor";
 
 export default async function getUsersMe() {
   const accessToken =

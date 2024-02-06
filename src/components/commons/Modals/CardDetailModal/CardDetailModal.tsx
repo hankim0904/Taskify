@@ -42,7 +42,7 @@ function CardDetailModal({ id, onCancel, columnTitle }: Props) {
     <>
       <div className={cx("card")}>
         <div className={cx("card-header")}>
-          <CardDetailHeader title={title} />
+          <CardDetailHeader title={title} onClick={onCancel} />
         </div>
         <div className={cx("card-content")}>
           <CardDetailContent

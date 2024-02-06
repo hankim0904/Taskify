@@ -5,13 +5,17 @@ import { useAuth } from "@/contexts/AuthContext";
 const withAuthNoneExist = <P extends {}>(WrappedComponent: React.ComponentType<P>) => {
   const AuthenticatedComponent = (props: P) => {
     const router = useRouter();
-    const { accessToken } = useAuth();
 
     useEffect(() => {
+      const accessToken = document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("accessToken="))
+        ?.split("=")[1];
+
       if (!accessToken) {
         router.push("signin");
       }
-    }, [accessToken]);
+    }, []);
 
     return <WrappedComponent {...props} />;
   };

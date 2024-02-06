@@ -18,10 +18,20 @@ export const deleteMembers = async (membersId: number) => {
   const res = await axiosInstance.delete(`/members/${membersId}`, {
     headers: { Authorization: `Bearer ${testAccessToken}` },
   });
+
+  if (res.status > 400) {
+    console.log(res.data);
+    throw new Error("Failed delete.");
+  }
 };
 
 export const deleteInvitations = async (dashboardId: string | string[] | undefined, invitationsId: number) => {
   const res = await axiosInstance.delete(`dashboards/${dashboardId}/invitations/${invitationsId}`, {
     headers: { Authorization: `Bearer ${testAccessToken}` },
   });
+
+  if (res.status > 400) {
+    console.log(res.data);
+    throw new Error("Failed delete.");
+  }
 };

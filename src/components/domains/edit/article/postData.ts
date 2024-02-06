@@ -8,3 +8,13 @@ export const postCard = async (data: unknown) => {
     headers: { Authorization: `Bearer ${testAccessToken}`, "Content-Type": "application/json" },
   });
 };
+
+export const postUploadCardImg = async (columnId: number, Imgurl: string) => {
+  const res = await axiosInstance.post(
+    `columns/${columnId}`,
+    { imageUrl: Imgurl },
+    {
+      headers: { Authorization: `Bearer ${testAccessToken}`, "Content-Type": "application/json" },
+    }
+  );
+};

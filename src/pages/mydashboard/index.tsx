@@ -7,13 +7,15 @@ import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query
 import getDashBoards from "@/api/getDashBoards";
 import getReceivedDashboardInvitations from "@/api/getReceivedDashboardInvitations";
 import withAuthNoneExist from "@/utils/withAuthNoneExist";
+import { GetServerSidePropsContext } from "next";
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
   const queryClient = new QueryClient();
+  const accessToken = context.req.cookies.accessToken || "";
 
   await queryClient.prefetchQuery({
-    queryKey: ["dashboardList"],
-    queryFn: () => getDashBoards("pagination", null, 5, 1),
+    queryKey: ["dashboardList", 1],
+    queryFn: () => getDashBoards("pagination", accessToken, 5, 1),
   });
 
   await queryClient.prefetchQuery({

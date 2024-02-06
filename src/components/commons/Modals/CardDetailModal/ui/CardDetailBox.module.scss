@@ -1,35 +1,62 @@
 .box {
-  &-title {
-    @include text-style(1.2, 600);
+  @include column-flexbox(start, start);
+  gap: 2rem;
+  width: 100%;
+  padding: 1.6rem;
+  border-radius: 0.8rem;
+  border: 0.1rem solid $gray-300;
+  background: $white;
 
-    @include responsive("M") {
-      @include text-style(1, 600);
-    }
-  }
-
-  &-detail {
-    @include text-style(1.4, 400, $black-200);
-
-    @include responsive("M") {
-      @include text-style(1.2, 400, $black-200);
-    }
+  @include responsive("M") {
+    flex-direction: row;
+    @include flexbox(start, center);
+    padding: 1.2rem 1.6rem 1rem;
+    gap: 6.2em;
   }
 
   &-assignee {
-    &-image {
-      position: relative;
-      display: inline-block;
-      width: 3.4rem;
-      height: 3.4rem;
-      border-radius: 50%;
-      overflow: hidden;
+    &-profile {
+      @include flexbox(start, center);
+      gap: 0.8rem;
 
-      @include responsive("M") {
-        width: 2.6rem;
-        height: 2.6rem;
+      &-image {
+        position: relative;
+        display: inline-block;
+        width: 3.4rem;
+        height: 3.4rem;
+        border-radius: 50%;
+        overflow: hidden;
+
+        @include responsive("M") {
+          width: 2.6rem;
+          height: 2.6rem;
+        }
       }
     }
   }
-  &-date {
+}
+
+.title {
+  @include text-style(1.2, 600);
+
+  @include responsive("M") {
+    @include text-style(1, 600);
+  }
+}
+
+.detail {
+  @include text-style(1.4, 400, $black-200);
+
+  @include responsive("M") {
+    @include text-style(1.2, 400, $black-200);
+  }
+}
+
+.flex {
+  @include column-flexbox(start, start);
+  gap: 0.6rem;
+
+  @include responsive("M") {
+    gap: 0.4rem;
   }
 }

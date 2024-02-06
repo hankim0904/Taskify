@@ -24,7 +24,7 @@ export default async function putChangePassword(accessToken: string | null, pass
           Authorization: `Bearer ${accessToken}`,
           "Content-Type": "application/json",
         },
-      },
+      }
     );
 
     if (res.status === 204) {
