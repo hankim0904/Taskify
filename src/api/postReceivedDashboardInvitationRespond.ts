@@ -1,21 +1,10 @@
-import { axiosInstance } from "./axiosInterceptor";
+import { axiosCSRInstance } from "./axiosCSRInstance";
 
 export default async function postReceivedDashboardInvitation(isAccepted: boolean, path?: number) {
-  const accessToken =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Njg5LCJ0ZWFtSWQiOiIyLTkiLCJpYXQiOjE3MDY4NTMxMDMsImlzcyI6InNwLXRhc2tpZnkifQ.zD8I9TQVFAoPoN06us4vfBwiMf6RTofNlWxyTdEKZGQ";
-
   try {
-    const res = await axiosInstance.put(
-      `invitations/${path}`,
-      {
-        inviteAccepted: isAccepted,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
-    );
+    const res = await axiosCSRInstance.put(`invitations/${path}`, {
+      inviteAccepted: isAccepted,
+    });
 
     return res.data;
   } catch (e) {

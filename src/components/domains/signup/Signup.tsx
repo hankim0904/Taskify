@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import NiceModal from "@ebay/nice-modal-react";
 
-import { axiosInstance } from "@/api/axiosInstance";
+import { axiosSSRInstance } from "@/api/axiosSSRInstance";
 import Input from "@/components/commons/Input/Input";
 import SignModal from "@/components/commons/Modals/SignModal/SignModal";
 import { SignButton } from "@/components/commons/Buttons/SignButton";
@@ -29,9 +29,9 @@ export default function Signup() {
     NiceModal.show(SignModal, { text, customFunction });
   };
 
-  const onSubmit: SubmitHandler<FieldValues> = async data => {
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
-      const response = await axiosInstance.post("users", {
+      const response = await axiosSSRInstance.post("users", {
         email: data.email,
         nickname: data.nickname,
         password: data.password,
@@ -102,7 +102,7 @@ export default function Signup() {
           placeholder="비밀번호를 한번 더 입력해 주세요"
           rules={{
             required: "비밀번호를 한번 더 입력해 주세요.",
-            validate: value => (value === watch("password") ? true : "비밀번호가 일치하지 않습니다."),
+            validate: (value) => (value === watch("password") ? true : "비밀번호가 일치하지 않습니다."),
           }}
         />
         <Input

@@ -1,4 +1,4 @@
-import { axiosInstance } from "./axiosInstance";
+import { axiosCSRInstance } from "./axiosCSRInstance";
 import PasswordChangeModal from "@/components/commons/Modals/PasswordChangeModal/PasswordChangeModal";
 import SignModal from "@/components/commons/Modals/SignModal/SignModal";
 import NiceModal from "@ebay/nice-modal-react";
@@ -13,7 +13,7 @@ export default async function putChangePassword(accessToken: string | null, pass
   };
 
   try {
-    const res = await axiosInstance.put(
+    const res = await axiosCSRInstance.put(
       "auth/password",
       {
         password: password,

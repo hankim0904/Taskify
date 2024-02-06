@@ -27,7 +27,7 @@ export default function CardList({ cardList, columnTitle }: CardListProp) {
         );
         const isExistTag = tags.length === 0 ? false : true;
         return (
-          <div className={cx("card")} key={id} onClick={() => modal.show({ id, columnTitle })}>
+          <div className={cx("card")} key={id} onClick={() => modal.show({ cardId: id, columnTitle })}>
             {isExistImg && (
               <div className={cx("card-img")}>
                 <Image fill src={imageUrl} alt="카드 이미지" objectFit="cover" />

@@ -1,11 +1,8 @@
-import { axiosInstance } from "./axiosInterceptor";
+import { axiosCSRInstance } from "./axiosCSRInstance";
 
-export default async function getUsersMe() {
-  const accessToken =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Njg5LCJ0ZWFtSWQiOiIyLTkiLCJpYXQiOjE3MDY2NzgwMzEsImlzcyI6InNwLXRhc2tpZnkifQ.xTJzppjh39utbp7V6-yYsFFXYzDmDT4jFUxabGtVZlY";
-
+export default async function getUsersMe(accessToken) {
   try {
-    const res = await axiosInstance.get("users/me", {
+    const res = await axiosCSRInstance.get("users/me", {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },

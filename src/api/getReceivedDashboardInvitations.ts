@@ -1,8 +1,8 @@
-import { axiosInstance } from "./axiosInterceptor";
+import { axiosSSRInstance } from "./axiosSSRInstance";
 
 export default async function getReceivedDashboardInvitations(cursorId: number | null, accessToken: string | null) {
   try {
-    const res = await axiosInstance.get(`invitations`, {
+    const res = await axiosSSRInstance.get(`invitations`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },

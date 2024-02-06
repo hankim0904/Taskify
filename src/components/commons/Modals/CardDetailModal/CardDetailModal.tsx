@@ -15,20 +15,20 @@ import { formatDate } from "@/utils/formatDate";
 const cx = classNames.bind(styles);
 
 interface Props {
-  id: number;
+  cardId: number;
   columnTitle: string;
   onCancel: () => void;
 }
 
-export default NiceModal.create(({ id, columnTitle }: Props) => {
+export default NiceModal.create(({ cardId, columnTitle }: Props) => {
   const modal = useModal();
-  return <CardDetailModal id={id} columnTitle={columnTitle} onCancel={modal.remove} />;
+  return <CardDetailModal cardId={cardId} columnTitle={columnTitle} onCancel={modal.remove} />;
 });
 
-function CardDetailModal({ id, onCancel, columnTitle }: Props) {
+function CardDetailModal({ cardId, onCancel, columnTitle }: Props) {
   const { data: cardDetailData, isLoading } = useQuery({
-    queryKey: getCardDetailQueryKey(id),
-    queryFn: () => getCardDetail(id),
+    queryKey: getCardDetailQueryKey(cardId),
+    queryFn: () => getCardDetail(cardId),
     staleTime: 300 * 1000,
   });
 

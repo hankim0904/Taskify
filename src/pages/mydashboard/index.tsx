@@ -19,9 +19,14 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   });
 
   await queryClient.prefetchQuery({
-    queryKey: ["receivedDashboardInvitationsList"],
-    queryFn: () => getReceivedDashboardInvitations(null, null),
+    queryKey: ["sideBarDashboardList", 1, 18],
+    queryFn: () => getDashBoards("pagination", accessToken, 18, 1),
   });
+
+  // await queryClient.prefetchQuery({
+  //   queryKey: ["receivedDashboardInvitationsList"],
+  //   queryFn: () => getReceivedDashboardInvitations(null, accessToken),
+  // });
 
   return {
     props: {

@@ -1,4 +1,4 @@
-import { axiosInstance } from "./axiosInterceptor";
+import { axiosSSRInstance } from "./axiosSSRInstance";
 
 export default async function getDashBoards(
   navigationMethod: "infiniteScroll" | "pagination",
@@ -7,7 +7,7 @@ export default async function getDashBoards(
   pageNum?: number
 ) {
   try {
-    const res = await axiosInstance.get(`dashboards`, {
+    const res = await axiosSSRInstance.get(`dashboards`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },

@@ -21,6 +21,7 @@ import Link from "next/link";
 import NiceModal from "@ebay/nice-modal-react";
 import { deleteDashBoard } from "@/components/domains/edit/article/deleteData";
 import { useParams } from "next/navigation";
+import getDashBoards from "@/api/getDashBoards";
 
 const cx = classNames.bind(styles);
 
@@ -37,20 +38,29 @@ export interface DashBoradData {
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const queryClient = new QueryClient();
   const dashboardId = context.query.dashboardid;
+  const { accessToken } = context.req.cookies;
+
   let page = 1;
 
   await Promise.all([
     queryClient.prefetchQuery({
       queryKey: F.getDashBoardTittleQueryKey(dashboardId),
-      queryFn: () => F.getDashBoardTittle(dashboardId),
+      queryFn: () => F.getDashBoardTittle(dashboardId, accessToken),
+      staleTime: 5 * 1000,
     }),
     queryClient.prefetchQuery({
       queryKey: F.getDashBoardMembersQueryKey(dashboardId, page),
-      queryFn: () => F.getDashBoardMembers(dashboardId, page),
+      queryFn: () => F.getDashBoardMembers(dashboardId, page, accessToken),
+      staleTime: 5 * 1000,
     }),
     queryClient.prefetchQuery({
       queryKey: F.getDashboardInvitationsQueryKey(dashboardId, page),
-      queryFn: () => F.getDashboardInvitations(dashboardId, page),
+      queryFn: () => F.getDashboardInvitations(dashboardId, page, accessToken),
+      staleTime: 5 * 1000,
+    }),
+    await queryClient.prefetchQuery({
+      queryKey: ["sideBarDashboardList", 1, 18],
+      queryFn: () => getDashBoards("pagination", accessToken, 18, 1),
     }),
   ]);
 

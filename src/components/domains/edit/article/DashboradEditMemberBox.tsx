@@ -116,7 +116,9 @@ export default function DashboradEditMemberBox({ title, isMemberEdit }: Props) {
       <section className={cx("title-line")}>
         <h2 className={cx("title")}>{title}</h2>
         <div className={cx("title-right-contents")}>
-          <p>1 페이지 중 {page}</p>
+          <p>
+            {totalPage} 페이지 중 {page}
+          </p>
           <PageChangeButton
             isForward={false}
             disabled={page === 1}
@@ -147,13 +149,13 @@ export default function DashboradEditMemberBox({ title, isMemberEdit }: Props) {
           <li className={cx("list-item")} key={`${member.id}_${index}`}>
             {isMemberEdit ? (
               <div className={cx("member-name")}>
-                <Image
+                {/* <Image
                   className={cx("profileImg")}
                   width={38}
                   height={38}
                   alt="프로필 이미지"
                   src={member.profileImageUrl}
-                />
+                /> */}
                 {member.nickname}
               </div>
             ) : (

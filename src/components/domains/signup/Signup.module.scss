@@ -34,6 +34,7 @@
 
 .paragraph {
   @include text-style(1.6, $color: $black-200);
+  padding-bottom: 5rem;
 }
 
 .signIn-Link {

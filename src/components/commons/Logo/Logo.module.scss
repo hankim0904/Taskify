@@ -1,6 +1,7 @@
 .container {
   @include column-flexbox();
   gap: 1rem;
+  margin-top: 5rem;
 }
 
 .logo {

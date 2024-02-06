@@ -9,16 +9,18 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import defaultImage from "./logo-codeit.png";
 import putChangeUserProfile from "@/api/putChangeUserProfile";
-import { axiosInstance } from "@/api/axiosInstance";
+import { axiosCSRInstance } from "@/api/axiosCSRInstance";
+import { useAuth } from "@/contexts/AuthContext";
 
 const cx = classNames.bind(styles);
-const accessToken =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Njg5LCJ0ZWFtSWQiOiIyLTkiLCJpYXQiOjE3MDY2NzgwMzEsImlzcyI6InNwLXRhc2tpZnkifQ.xTJzppjh39utbp7V6-yYsFFXYzDmDT4jFUxabGtVZlY";
 
 export default function ProfileChangeForm() {
   const [previewImage, setPreviewImage] = useState<string | null>("");
   const [profileImageUrl, setProfileImageUrl] = useState("");
   const [hide, setHide] = useState(true);
+
+  const { accessToken } = useAuth();
+
   const { control, handleSubmit, setValue } = useForm({
     mode: "onChange",
     defaultValues: {
@@ -36,11 +38,11 @@ export default function ProfileChangeForm() {
       setValue("nickname", userMeData.nickname);
     }
   });
-  const onSubmit: SubmitHandler<FieldValues> = data => {
+  const onSubmit: SubmitHandler<FieldValues> = (data) => {
     if (profileImageUrl === "") {
-      putChangeUserProfile(data.nickname, null);
+      putChangeUserProfile(data.nickname, null, accessToken);
     } else {
-      putChangeUserProfile(data.nickname, profileImageUrl);
+      putChangeUserProfile(data.nickname, profileImageUrl, accessToken);
     }
   };
 
@@ -60,7 +62,7 @@ export default function ProfileChangeForm() {
       formData.append("image", file);
 
       try {
-        const res = await axiosInstance.post("users/me/image", formData, {
+        const res = await axiosCSRInstance.post("users/me/image", formData, {
           headers: { Authorization: `Bearer ${accessToken}`, "Content-Type": "multipart/form-data" },
         });
 

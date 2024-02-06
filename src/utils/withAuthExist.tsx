@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useAuth } from "@/contexts/AuthContext";
-import { axios } from "@/api/axiosInstance";
+import { axiosSSRInstance } from "@/api/axiosSSRInstance";
 
 const withAuthExist = (WrappedComponent: React.ComponentType) => {
   const AuthenticatedComponent = () => {
@@ -12,7 +12,7 @@ const withAuthExist = (WrappedComponent: React.ComponentType) => {
       const checkAuth = async () => {
         try {
           if (accessToken) {
-            const response = await axios.get("dashboards?navigationMethod=infiniteScroll", {
+            const response = await axiosSSRInstance.get("dashboards?navigationMethod=infiniteScroll", {
               headers: {
                 Authorization: `Bearer ${accessToken}`,
               },

@@ -1,20 +1,17 @@
-import { axiosInstance } from "@/api/axiosInstance";
-
-const testAccessToken =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Njg5LCJ0ZWFtSWQiOiIyLTkiLCJpYXQiOjE3MDY2NzgwMzEsImlzcyI6InNwLXRhc2tpZnkifQ.xTJzppjh39utbp7V6-yYsFFXYzDmDT4jFUxabGtVZlY";
+import { axiosCSRInstance } from "@/api/axiosCSRInstance";
 
 export const postCard = async (data: unknown) => {
-  const res = await axiosInstance.post(`cards`, data, {
-    headers: { Authorization: `Bearer ${testAccessToken}`, "Content-Type": "application/json" },
+  const res = await axiosCSRInstance.post(`cards`, data, {
+    headers: { "Content-Type": "application/json" },
   });
 };
 
 export const postUploadCardImg = async (columnId: number, Imgurl: string) => {
-  const res = await axiosInstance.post(
+  const res = await axiosCSRInstance.post(
     `columns/${columnId}`,
     { imageUrl: Imgurl },
     {
-      headers: { Authorization: `Bearer ${testAccessToken}`, "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json" },
     }
   );
 };

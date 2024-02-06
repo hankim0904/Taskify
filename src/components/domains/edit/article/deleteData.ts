@@ -1,12 +1,7 @@
-import { axiosInstance } from "@/api/axiosInstance";
-
-const testAccessToken =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Njg5LCJ0ZWFtSWQiOiIyLTkiLCJpYXQiOjE3MDY2NzgwMzEsImlzcyI6InNwLXRhc2tpZnkifQ.xTJzppjh39utbp7V6-yYsFFXYzDmDT4jFUxabGtVZlY";
+import { axiosCSRInstance } from "@/api/axiosCSRInstance";
 
 export const deleteDashBoard = async (dashboardId: string | string[] | undefined) => {
-  const res = await axiosInstance.delete(`dashboards/${dashboardId}`, {
-    headers: { Authorization: `Bearer ${testAccessToken}` },
-  });
+  const res = await axiosCSRInstance.delete(`dashboards/${dashboardId}`);
 
   if (res.status > 400) {
     console.log(res.data);
@@ -15,9 +10,7 @@ export const deleteDashBoard = async (dashboardId: string | string[] | undefined
 };
 
 export const deleteMembers = async (membersId: number) => {
-  const res = await axiosInstance.delete(`/members/${membersId}`, {
-    headers: { Authorization: `Bearer ${testAccessToken}` },
-  });
+  const res = await axiosCSRInstance.delete(`/members/${membersId}`);
 
   if (res.status > 400) {
     console.log(res.data);
@@ -26,9 +19,7 @@ export const deleteMembers = async (membersId: number) => {
 };
 
 export const deleteInvitations = async (dashboardId: string | string[] | undefined, invitationsId: number) => {
-  const res = await axiosInstance.delete(`dashboards/${dashboardId}/invitations/${invitationsId}`, {
-    headers: { Authorization: `Bearer ${testAccessToken}` },
-  });
+  const res = await axiosCSRInstance.delete(`dashboards/${dashboardId}/invitations/${invitationsId}`);
 
   if (res.status > 400) {
     console.log(res.data);

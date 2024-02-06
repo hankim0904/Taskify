@@ -37,7 +37,7 @@ export default function BaseContainer({ currentPath, children }: BaseContainerPr
   const { accessToken } = useAuth();
 
   const { data } = useQuery({
-    queryKey: ["dashboardList", currentPage, 18],
+    queryKey: ["sideBarDashboardList", currentPage, 18],
     queryFn: () => getDashBoards("pagination", accessToken, 18, currentPage),
   });
 
@@ -75,13 +75,13 @@ export default function BaseContainer({ currentPath, children }: BaseContainerPr
             <PageChangeButton
               isForward={false}
               onClick={() => {
-                setCurrentPage(currentPage => currentPage - 1);
+                setCurrentPage((currentPage) => currentPage - 1);
               }}
               disabled={currentPage <= 1}
             />
             <PageChangeButton
               onClick={() => {
-                setCurrentPage(currentPage => currentPage + 1);
+                setCurrentPage((currentPage) => currentPage + 1);
               }}
               disabled={currentPage >= totalPage}
             />
