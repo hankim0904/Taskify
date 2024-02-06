@@ -7,8 +7,8 @@ import { FieldValues, SubmitHandler, useForm, useWatch } from "react-hook-form";
 import ColorList from "@/components/commons/ColorList/ColorList";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
-import { getDashBoardTittle, getDashBoardTittleQueryKey } from "./getEditData";
-import { putDashBoard } from "./putDashBoard";
+import { getDashBoardTittle, getDashBoardTittleQueryKey } from "../../../../api/getEditData";
+import { putDashBoard } from "@/api/putDashBoard";
 import { DashBoradData } from "@/pages/dashboard/[dashboardid]/edit";
 
 getDashBoardTittleQueryKey;

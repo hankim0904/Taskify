@@ -16,9 +16,10 @@ import {
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
-import * as A from "@/components/domains/edit/article/getEditData";
-import { deleteDashBoard } from "@/components/domains/edit/article/deleteData";
+import * as A from "@/api/getEditData";
+import { deleteDashBoard } from "@/api/deleteDashBoradData";
 import { useParams } from "next/navigation";
+import { putDashBoard } from "@/api/putDashBoard";
 import getDashBoards from "@/api/getDashBoards";
 
 const cx = classNames.bind(styles);
