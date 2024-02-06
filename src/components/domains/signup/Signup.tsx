@@ -29,7 +29,7 @@ export default function Signup() {
     NiceModal.show(SignModal, { text, customFunction });
   };
 
-  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+  const onSubmit: SubmitHandler<FieldValues> = async data => {
     try {
       const response = await axiosInstance.post("users", {
         email: data.email,
@@ -102,7 +102,7 @@ export default function Signup() {
           placeholder="비밀번호를 한번 더 입력해 주세요"
           rules={{
             required: "비밀번호를 한번 더 입력해 주세요.",
-            validate: (value) => (value === watch("password") ? true : "비밀번호가 일치하지 않습니다."),
+            validate: value => (value === watch("password") ? true : "비밀번호가 일치하지 않습니다."),
           }}
         />
         <Input
