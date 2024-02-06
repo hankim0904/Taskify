@@ -11,7 +11,7 @@ interface InputProps extends UseControllerProps {
   labelName?: string;
   type: string;
   isModal?: boolean;
-  imgFile?: Blob | MediaSource | undefined | string;
+  imgFile?: string;
 }
 
 export default function Input({ placeholder, type, labelName, isModal = false, imgFile, ...props }: InputProps) {
@@ -35,7 +35,7 @@ export default function Input({ placeholder, type, labelName, isModal = false, i
         {inputType === "file" && (
           <div className={cx("file-type-lable")}>
             {imgFile ? (
-              <img alt="이미지" src={imgFile as string} />
+              <img alt="이미지" src={imgFile} />
             ) : (
               <Image width={28} height={28} src="/assets/icons/ic-plus-without-background.svg" alt="이미지 추가하기" />
             )}

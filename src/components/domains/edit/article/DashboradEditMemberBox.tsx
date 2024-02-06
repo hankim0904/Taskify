@@ -71,7 +71,7 @@ export default function DashboradEditMemberBox({ title, isMemberEdit }: Props) {
     invitee: invitation.invitee,
   }));
   const memberList = isMemberEdit ? members : invitedMembers;
-  const totalPage = Math.ceil(isMemberEdit ? memberData.totalCount / 5 : invitationsData?.totalCount / 5);
+  const totalPage = Math.ceil(isMemberEdit ? memberData?.totalCount / 5 : invitationsData?.totalCount / 5);
 
   useEffect(() => {
     const nextPage = page + 1;

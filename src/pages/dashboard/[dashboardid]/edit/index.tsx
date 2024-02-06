@@ -16,9 +16,7 @@ import {
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
-import * as F from "@/components/domains/edit/article/getEditData";
-import Link from "next/link";
-import NiceModal from "@ebay/nice-modal-react";
+import * as A from "@/components/domains/edit/article/getEditData";
 import { deleteDashBoard } from "@/components/domains/edit/article/deleteData";
 import { useParams } from "next/navigation";
 import getDashBoards from "@/api/getDashBoards";
@@ -44,18 +42,18 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
   await Promise.all([
     queryClient.prefetchQuery({
-      queryKey: F.getDashBoardTittleQueryKey(dashboardId),
-      queryFn: () => F.getDashBoardTittle(dashboardId, accessToken),
+      queryKey: A.getDashBoardTittleQueryKey(dashboardId),
+      queryFn: () => A.getDashBoardTittle(dashboardId, accessToken),
       staleTime: 5 * 1000,
     }),
     queryClient.prefetchQuery({
-      queryKey: F.getDashBoardMembersQueryKey(dashboardId, page),
-      queryFn: () => F.getDashBoardMembers(dashboardId, page, accessToken),
+      queryKey: A.getDashBoardMembersQueryKey(dashboardId, page),
+      queryFn: () => A.getDashBoardMembers(dashboardId, page, accessToken),
       staleTime: 5 * 1000,
     }),
     queryClient.prefetchQuery({
-      queryKey: F.getDashboardInvitationsQueryKey(dashboardId, page),
-      queryFn: () => F.getDashboardInvitations(dashboardId, page, accessToken),
+      queryKey: A.getDashboardInvitationsQueryKey(dashboardId, page),
+      queryFn: () => A.getDashboardInvitations(dashboardId, page, accessToken),
       staleTime: 5 * 1000,
     }),
     await queryClient.prefetchQuery({
@@ -76,12 +74,11 @@ export default function Edit({ dehydratedState }: { dehydratedState: DehydratedS
   const router = useRouter();
   const currentPath = router.pathname;
   const isOpenModal = false;
-  const queryClient = useQueryClient();
   const { dashboardid } = useParams();
 
   const { data: titleData } = useQuery({
-    queryKey: F.getDashBoardTittleQueryKey(dashboardid),
-    queryFn: () => F.getDashBoardTittle(dashboardid),
+    queryKey: A.getDashBoardTittleQueryKey(dashboardid),
+    queryFn: () => A.getDashBoardTittle(dashboardid),
   });
 
   function gobackButton() {

@@ -6,12 +6,13 @@ export const postCard = async (data: unknown) => {
   });
 };
 
-export const postUploadCardImg = async (columnId: number, Imgurl: string) => {
+export const postUploadCardImg = async (columnId: number, Imgurl: unknown) => {
   const res = await axiosCSRInstance.post(
-    `columns/${columnId}`,
+    `columns/${columnId}/card-image'`,
     { imageUrl: Imgurl },
     {
       headers: { "Content-Type": "application/json" },
     }
   );
+  return await res.data;
 };

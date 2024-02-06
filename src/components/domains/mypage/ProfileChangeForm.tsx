@@ -33,17 +33,9 @@ export default function ProfileChangeForm() {
     queryFn: () => getUsersMe(),
   });
 
-  useEffect(() => {
-    if (userMeData) {
-      setValue("nickname", userMeData.nickname);
-    }
-  });
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    if (profileImageUrl === "") {
-      putChangeUserProfile(data.nickname, null, accessToken);
-    } else {
-      putChangeUserProfile(data.nickname, profileImageUrl, accessToken);
-    }
+    putChangeUserProfile(data.nickname, profileImageUrl!);
+    // error 면 submit 안됨 ,SubmitHandler<FieldValues> handleSubmit 안에 들어가는 type 입니다
   };
 
   async function handleUploadImage(e: React.ChangeEvent<HTMLInputElement>) {
