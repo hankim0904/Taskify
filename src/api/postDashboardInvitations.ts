@@ -1,4 +1,4 @@
-import { axiosInstance } from "./axiosInstance";
+import { axiosInstance } from "./axiosInterceptor";
 
 export default async function postDashboardInvitations(dashboardId: string | string[] | undefined, email: string) {
   console.log(dashboardId, email);
@@ -11,7 +11,7 @@ export default async function postDashboardInvitations(dashboardId: string | str
       {
         headers: { Authorization: `Bearer ${accessToken}`, "Content-Type": "application/json" },
         params: { dashboardId: dashboardId },
-      },
+      }
     );
     console.log(res.data);
   } catch (e) {

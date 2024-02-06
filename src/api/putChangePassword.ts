@@ -1,4 +1,4 @@
-import { axiosInstance } from "./axiosInstance";
+import { axiosInstance } from "./axiosInterceptor";
 
 export default async function putChangePassword(password: string, newPassword: string) {
   const accessToken =
@@ -16,7 +16,7 @@ export default async function putChangePassword(password: string, newPassword: s
           Authorization: `Bearer ${accessToken}`,
           "Content-Type": "application/json",
         },
-      },
+      }
     );
     console.log(res.data);
     return res.data;

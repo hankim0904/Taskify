@@ -11,6 +11,7 @@ export default function CardDetailDropdownMenu() {
       <button className={cx("dropdown-btn")}>
         <Image fill src="/assets/icons/ic-more.svg" alt="할 일 카드 모달 메뉴 버튼" />
       </button>
+      <ul></ul>
     </div>
   );
 }

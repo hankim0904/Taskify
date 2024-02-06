@@ -5,13 +5,39 @@
   padding: 3.2rem 2.8rem 3.2rem;
   border-radius: 0.8rem;
   background-color: $white;
+  display: grid;
+  grid-template-columns: 1fr 20rem;
+  grid-template-areas:
+    "header header"
+    "content box";
+  gap: 2.4rem;
 
   @include responsive("T") {
     width: calc(100% - 6.4rem);
+    grid-template-columns: 1fr 18rem;
   }
 
   @include responsive("M") {
     width: calc(100% - 4.8rem);
-    padding: 4rem 2rem 2.8rem;
+    padding: 1.4rem 2rem 2.8rem;
+    grid-template-columns: 1fr;
+
+    grid-template-areas:
+      "header"
+      "box"
+      "content";
+    gap: 1.6rem;
+  }
+
+  &-header {
+    grid-area: header;
+  }
+
+  &-content {
+    grid-area: content;
+  }
+
+  &-box {
+    grid-area: box;
   }
 }

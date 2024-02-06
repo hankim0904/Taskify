@@ -1,4 +1,4 @@
-import { axiosInstance } from "./axiosInstance";
+import { axiosInstance } from "./axiosInterceptor";
 
 export default async function postDashBoard(title: string, color: string) {
   const accessToken =
@@ -16,7 +16,7 @@ export default async function postDashBoard(title: string, color: string) {
           Authorization: `Bearer ${accessToken}`,
           "Content-Type": "application/json",
         },
-      },
+      }
     );
   } catch (e) {
     throw new Error(`${e}`);
