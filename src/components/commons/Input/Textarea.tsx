@@ -22,7 +22,7 @@ export default function Textarea({ isModal, placeholder, labelName, ...props }: 
         {isModal && <span className={cx("modalRequired")}> *</span>}
       </label>
       <textarea id={props.name} className={cx("textarea", { error: isError })} placeholder={placeholder} {...field} />
-      <p className={cx("error-message")}>{isError && fieldState.error?.message}</p>
+      {isModal && <p className={cx("error-message")}>{isError && fieldState.error?.message}</p>}
     </div>
   );
 }

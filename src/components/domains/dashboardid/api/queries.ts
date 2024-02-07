@@ -55,3 +55,13 @@ export const deleteCard = async (cardId: number | undefined) => {
 
   return response.status;
 };
+
+export const getComments = async (cardId: number) => {
+  const response = await axiosCSRInstance.get("comments", {
+    params: { size: 3, cardId: cardId },
+  });
+
+  return response.data;
+};
+
+
