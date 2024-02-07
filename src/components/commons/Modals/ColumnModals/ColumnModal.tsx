@@ -80,11 +80,11 @@ function ColumnModal({ isEdit, columnId, onCancel }: Props) {
       const changedName = { title: data.columnName };
       putColumnNameMutation.mutate(changedName);
     } else {
-      const NewColumn = {
+      const newColumn = {
         title: data.columnName,
         dashboardId: Number(dashboardId),
       };
-      postColumnMutation.mutate(NewColumn);
+      postColumnMutation.mutate(newColumn);
     }
   };
 

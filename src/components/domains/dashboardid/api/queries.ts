@@ -1,6 +1,6 @@
 import { axiosSSRInstance } from "@/api/axiosSSRInstance";
 import { axiosCSRInstance } from "@/api/axiosCSRInstance";
-import { ChangedName, NewColumn } from "./type";
+import { ChangedName, NewColumn, EditedComments, NewComments } from "./type";
 
 export const getColumnList = async (
   dashboardId: string | string[] | undefined,
@@ -56,10 +56,36 @@ export const deleteCard = async (cardId: number | undefined) => {
   return response.status;
 };
 
-export const getComments = async (cardId: number) => {
+export const getComments = async (cursorId: null | number, cardId: number) => {
   const response = await axiosCSRInstance.get("comments", {
-    params: { size: 3, cardId: cardId },
+    params: { size: 3, cursorId: cursorId, cardId: cardId },
   });
+
+  return response.data;
+};
+
+export const putComments = async (editedComments: EditedComments) => {
+  const response = await axiosCSRInstance.put(`comments/${editedComments.commentId}`, {
+    content: editedComments.content,
+  });
+
+  return response.data;
+};
+
+export const postComments = async (newComments: NewComments) => {
+  const response = await axiosCSRInstance.post("comments", newComments);
+
+  return response.data;
+};
+
+export const delelteComments = async (commentId: number) => {
+  const response = await axiosCSRInstance.delete(`comments/${commentId}`);
+
+  return response.data;
+};
+
+export const getMe = async () => {
+  const response = await axiosCSRInstance.get("users/me");
 
   return response.data;
 };
