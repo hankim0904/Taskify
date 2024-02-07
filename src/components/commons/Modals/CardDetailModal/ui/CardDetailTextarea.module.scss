@@ -1,0 +1,29 @@
+.form {
+  position: relative;
+
+  & > :first-child > :first-child {
+    font-size: 1.6rem;
+
+    @include responsive("M") {
+      font-size: 1.4rem;
+    }
+  }
+
+  & > :first-child > :nth-child(2) {
+    font-size: 1.4rem;
+
+    @include responsive("M") {
+      font-size: 1.2rem;
+    }
+  }
+
+  & > :nth-child(2) {
+    position: absolute;
+    bottom: 1.2rem;
+    right: 1.2rem;
+    width: 8.3rem;
+    height: 3.2rem;
+    border-radius: 0.4rem;
+    font-size: 1.2rem;
+  }
+}

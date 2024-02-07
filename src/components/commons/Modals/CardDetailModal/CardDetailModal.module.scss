@@ -1,6 +1,7 @@
 .card {
   @include pos-center();
   z-index: $modal;
+  max-width: 73rem;
   width: 73rem;
   padding: 3.2rem 2.8rem 3.2rem;
   border-radius: 0.8rem;
@@ -9,7 +10,9 @@
   grid-template-columns: 1fr 20rem;
   grid-template-areas:
     "header header"
-    "content box";
+    "content box"
+    "textarea box"
+    "comments box";
   gap: 2.4rem;
 
   @include responsive("T") {
@@ -25,7 +28,9 @@
     grid-template-areas:
       "header"
       "box"
-      "content";
+      "content"
+      "textarea"
+      "comments";
     gap: 1.6rem;
   }
 
@@ -39,5 +44,13 @@
 
   &-box {
     grid-area: box;
+  }
+
+  &-textarea {
+    grid-area: textarea;
+  }
+
+  &-comments {
+    grid-area: comments;
   }
 }

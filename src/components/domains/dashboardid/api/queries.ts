@@ -2,7 +2,10 @@ import { axiosSSRInstance } from "@/api/axiosSSRInstance";
 import { axiosCSRInstance } from "@/api/axiosCSRInstance";
 import { ChangedName, NewColumn } from "./type";
 
-export const getColumnList = async (dashboardId: string | string[] | undefined, accessToken?: string | undefined) => {
+export const getColumnList = async (
+  dashboardId: string | string[] | undefined,
+  accessToken?: string | undefined | null
+) => {
   const response = accessToken
     ? await axiosSSRInstance.get("columns", {
         params: { dashboardId: dashboardId },
@@ -46,3 +49,19 @@ export const getCardDetail = async (cardId: number) => {
 
   return response.data;
 };
+
+export const deleteCard = async (cardId: number | undefined) => {
+  const response = await axiosCSRInstance.delete(`cards/${cardId}`);
+
+  return response.status;
+};
+
+export const getComments = async (cardId: number) => {
+  const response = await axiosCSRInstance.get("comments", {
+    params: { size: 3, cardId: cardId },
+  });
+
+  return response.data;
+};
+
+

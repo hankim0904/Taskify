@@ -22,7 +22,7 @@ interface ColumnProps {
 }
 
 export default function Column({ columnId, columnTitle }: ColumnProps) {
-  const modal = useModal(TaskModal);
+  const modal = useModal(TaskModal, { columnId: columnId });
   const bottomObserver = useRef<HTMLDivElement | null>(null);
 
   const {
@@ -52,7 +52,7 @@ export default function Column({ columnId, columnTitle }: ColumnProps) {
       <div className={cx("column-header")}>
         <ColumnHeader columnId={columnId} columnTitle={columnTitle} cardCount={cardCount} />
       </div>
-      <MixButton onClick={() => modal.show(columnId)} />
+      <MixButton onClick={() => modal.show()} />
       {cardCount !== 0 && (
         <div className={cx("column-pages")}>
           {cardPages.map((cardPage, i) => (

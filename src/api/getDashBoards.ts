@@ -2,7 +2,7 @@ import { axiosCSRInstance } from "./axiosCSRInstance";
 
 export default async function getDashBoards(
   navigationMethod: "infiniteScroll" | "pagination",
-  accessToken: string | null,
+  accessToken: string | null | undefined,
   size?: number,
   pageNum?: number,
   cursorId?: number | null,

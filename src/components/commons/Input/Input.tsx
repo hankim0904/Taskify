@@ -12,6 +12,10 @@ interface InputProps extends UseControllerProps {
   type: string;
   isModal?: boolean;
   maxLength?: number;
+  tagItem?: {
+    name: string;
+    style: {};
+  };
   imgFile?: Blob | MediaSource | undefined | string;
 }
 
@@ -20,6 +24,7 @@ export default function Input({
   type,
   labelName,
   isModal = false,
+  tagItem,
   imgFile,
   maxLength = 100,
   ...props

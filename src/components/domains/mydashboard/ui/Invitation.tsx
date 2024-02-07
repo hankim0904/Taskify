@@ -21,7 +21,7 @@ export default function Invitation({ title, inviter, path }: InvitationProp) {
       postReceivedDashboardInvitation(data.isAccepted, data.path),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["dashboardList"] });
-      queryClient.invalidateQueries({ queryKey: ["receivedDashboardInvitationsList"] });
+      queryClient.invalidateQueries({ queryKey: ["getReceivedDashboardInvitations"] });
     },
   });
 

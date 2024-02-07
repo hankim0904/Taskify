@@ -12,12 +12,14 @@ import {
   getDashBoardMembersQueryKey,
   getDashboardInvitations,
   getDashboardInvitationsQueryKey,
-} from "./getEditData";
+} from "../../../../api/getEditData";
 import { useEffect, useState } from "react";
 import ColumnModal from "@/components/commons/Modals/ColumnModals/ColumnModal";
 import { useParams } from "next/navigation";
-import { deleteDashBoard, deleteInvitations, deleteMembers } from "./deleteData";
+import { deleteDashBoard, deleteInvitations, deleteMembers } from "../../../../api/deleteDashBoradData";
 import { isElement } from "react-dom/test-utils";
+import InviteModal from "@/components/commons/Modals/InviteModal/InviteModal";
+import extractInitial from "@/utils/extractInitial";
 
 const cx = classNames.bind(styles);
 
@@ -46,7 +48,7 @@ interface Invitation {
 //초대 취소시 유저 아이디 필요
 
 export default function DashboradEditMemberBox({ title, isMemberEdit }: Props) {
-  const modal = useModal(TaskModal, { isEdit: false });
+  const modal = useModal(InviteModal);
   const [page, setPage] = useState(1);
   const queryClient = useQueryClient();
 
@@ -71,7 +73,7 @@ export default function DashboradEditMemberBox({ title, isMemberEdit }: Props) {
     invitee: invitation.invitee,
   }));
   const memberList = isMemberEdit ? members : invitedMembers;
-  const totalPage = Math.ceil(isMemberEdit ? memberData.totalCount / 5 : invitationsData?.totalCount / 5);
+  const totalPage = Math.ceil(isMemberEdit ? memberData?.totalCount / 5 : invitationsData?.totalCount / 5);
 
   useEffect(() => {
     const nextPage = page + 1;
@@ -149,13 +151,17 @@ export default function DashboradEditMemberBox({ title, isMemberEdit }: Props) {
           <li className={cx("list-item")} key={`${member.id}_${index}`}>
             {isMemberEdit ? (
               <div className={cx("member-name")}>
-                {/* <Image
-                  className={cx("profileImg")}
-                  width={38}
-                  height={38}
-                  alt="프로필 이미지"
-                  src={member.profileImageUrl}
-                /> */}
+                {member.profileImageUrl ? (
+                  <Image
+                    className={cx("profileImg")}
+                    width={38}
+                    height={38}
+                    alt="프로필 이미지"
+                    src={member.profileImageUrl}
+                  />
+                ) : (
+                  <div className={cx("profileImg-none")}>{extractInitial(member.nickname)}</div>
+                )}
                 {member.nickname}
               </div>
             ) : (

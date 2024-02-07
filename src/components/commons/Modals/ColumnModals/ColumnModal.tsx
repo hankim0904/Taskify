@@ -43,7 +43,7 @@ function ColumnModal({ isEdit, columnId, onCancel }: Props) {
     queryKey: getColumnListQueryKey(dashboardId),
     queryFn: () => getColumnList(dashboardId),
   });
-  const columnList = columnListData.data;
+  const columnList = columnListData?.data || [];
 
   const mutationSuccess = () => {
     queryClient.invalidateQueries({

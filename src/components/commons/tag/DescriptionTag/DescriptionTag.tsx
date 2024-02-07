@@ -16,9 +16,10 @@ function DescriptionTag({ tagName, tagStyle }: TagProps) {
     <div
       className={cx("description-tag")}
       style={{
-        backgroundColor: tagStyle.backgroundColor,
-        color: tagStyle.color,
-      }}>
+        backgroundColor: tagStyle?.backgroundColor,
+        color: tagStyle?.color,
+      }}
+    >
       <p className={cx("description-tag-item")}>{tagName}</p>
     </div>
   );
