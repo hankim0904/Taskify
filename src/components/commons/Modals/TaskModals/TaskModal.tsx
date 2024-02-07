@@ -158,7 +158,7 @@ function TaskModal({ isEdit = false, onCancel, columnId, cardId }: Props) {
       ? await putCardData(cardId, { postData, ...initialValues })
       : await postCardData({ ...postData, ...initialValues });
 
-    res.data ?? onCancel();
+    res.status === 201 && onCancel();
   }
 
   return (
