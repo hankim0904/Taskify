@@ -94,7 +94,7 @@ function TaskModal({ isEdit = false, onCancel, columnId, cardId }: Props) {
   //   initialValues = { ...card };
   // }
 
-  const onKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
+  const onKeyPress = (e: KeyboardEvent<HTMLFormElement>) => {
     const target = e.target as HTMLInputElement;
 
     if (target.id !== "tags" || e.key !== "Enter") return;

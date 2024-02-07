@@ -23,6 +23,8 @@ export default function DateInput({ labelName, startDate, ...props }: IProps) {
       <label className={cx("label")}>{labelName}</label>
       <DatePicker
         showTimeInput
+        showIcon
+        icon="/assets/icons/ic-calendar.svg"
         locale={ko}
         dateFormat="yyyy.MM.dd  h:mm aa"
         className={cx("input")}

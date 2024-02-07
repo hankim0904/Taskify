@@ -45,6 +45,12 @@ export default function Dropdown({ setValue, columnId, members, ...props }: Prop
 
   const states = columnListData?.data;
 
+  function handleSelectItem(id: number, name: string) {
+    setSelectedItemId(id === selectedItemId ? 0.1 : id);
+
+    field.value === name ? setValue(props.name, "") : setValue(props.name, name);
+  }
+
   const searchInput = useWatch<FieldValues, string>({
     control: props.control,
     name: props.name,
@@ -57,12 +63,6 @@ export default function Dropdown({ setValue, columnId, members, ...props }: Prop
 
   function handleOpenSelectList() {
     setOpenSelectList((prev) => !prev);
-  }
-
-  function handleSelectItem(id: number, name: string) {
-    setSelectedItemId(id === selectedItemId ? 0.1 : id);
-
-    field.value === name ? setValue(props.name, "") : setValue(props.name, name);
   }
 
   return (
