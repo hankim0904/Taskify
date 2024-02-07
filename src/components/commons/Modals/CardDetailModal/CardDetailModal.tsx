@@ -1,4 +1,4 @@
-import { useQuery, useQueries } from "@tanstack/react-query";
+import { useQueries } from "@tanstack/react-query";
 import { getCardDetail, getComments } from "@/components/domains/dashboardid/api/queries";
 import { getCardDetailQueryKey, getCommentsQueryKey } from "@/components/domains/dashboardid/api/queryKeys";
 
@@ -28,7 +28,6 @@ export default NiceModal.create(({ cardId, columnTitle }: Props) => {
 });
 
 function CardDetailModal({ cardId, onCancel, columnTitle }: Props) {
-  // 추가한 부분
   const queries = [
     { queryKey: getCardDetailQueryKey(cardId), queryFn: () => getCardDetail(cardId), staleTime: 300 * 1000 },
     { queryKey: getCommentsQueryKey(cardId), queryFn: () => getComments(cardId), staleTime: 300 * 1000 },
@@ -42,15 +41,7 @@ function CardDetailModal({ cardId, onCancel, columnTitle }: Props) {
   const cardDetailData = results[0].data;
   const commentsData = results[1].data;
 
-  // 하은님 기존 코드
-  // const { data: cardDetailData, isLoading } = useQuery({
-  //   queryKey: getCardDetailQueryKey(cardId),
-  //   queryFn: () => getCardDetail(cardId),
-  //   staleTime: 300 * 1000,
-  // });
-  // if (isLoading || !cardDetailData) return null;
-
-  const { title, description, tags, imageUrl, assignee, dueDate } = cardDetailData;
+  const { title, description, tags, imageUrl, assignee, dueDate, id, columnId } = cardDetailData;
   const formatedDate = formatDate(dueDate);
   let parsedTags = tags.map((tag: string) => JSON.parse(tag));
 
@@ -58,7 +49,13 @@ function CardDetailModal({ cardId, onCancel, columnTitle }: Props) {
     <>
       <div className={cx("card")}>
         <div className={cx("card-header")}>
-          <CardDetailHeader title={title} onClick={onCancel} />
+          <CardDetailHeader
+            title={title}
+            cardId={id}
+            columnId={columnId}
+            assigneeUserId={assignee.id}
+            onClick={onCancel}
+          />
         </div>
         <div className={cx("card-content")}>
           <CardDetailContent

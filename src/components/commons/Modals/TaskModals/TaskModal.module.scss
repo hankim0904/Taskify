@@ -33,16 +33,44 @@
   }
 }
 
+.input-file-upload {
+  width: 100%;
+  position: relative;
+}
+
+.input-file-img {
+  position: absolute;
+  top: 2.6rem;
+  border-radius: 0.6rem;
+}
+
 .dropdown-line {
   @include flexbox(start);
   width: 100%;
   gap: 1.6rem;
 }
 
+.tag-list {
+  @include flexbox(start);
+  flex-wrap: wrap;
+  width: 100%;
+  gap: 0.8rem;
+
+  > input {
+    flex: 1;
+  }
+}
+
+.tag {
+  border-radius: 0.4rem;
+  overflow: hidden;
+}
+
 .btn-line {
   @include flexbox(end, end);
   gap: 1.2rem;
   width: 100%;
+  margin-top: 2.8rem;
 
   & button {
     width: 12rem;

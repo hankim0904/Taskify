@@ -75,25 +75,25 @@
 
 .list {
   width: 100%;
-}
 
-.list-item {
-  @include inline-flexbox(between, center);
-  @include text-style(1.6, 400, $black-200);
+  &-item {
+    @include inline-flexbox(between, center);
+    @include text-style(1.6, 400, $black-200);
 
-  padding: 1.6rem 2.8rem;
-  width: 100%;
-  border-bottom: 1px solid $gray-200;
+    padding: 1.6rem 2.8rem;
+    width: 100%;
+    border-bottom: 1px solid $gray-200;
 
-  &:last-child {
-    border: none;
-  }
+    &:last-child {
+      border: none;
+    }
 
-  & button {
-    width: 8.4rem;
+    & button {
+      width: 8.4rem;
 
-    @media screen and (max-width: $mobile-breakpoint) {
-      width: 5.2rem;
+      @media screen and (max-width: $mobile-breakpoint) {
+        width: 5.2rem;
+      }
     }
   }
 }
@@ -101,6 +101,16 @@
 .profileImg {
   border-radius: 99rem;
   overflow: hidden;
+
+  &-none {
+    @include flexbox();
+    width: 3.8rem;
+    height: 3.8rem;
+    background-color: #ffc85a;
+    text-align: center;
+    color: $white;
+    border-radius: 99rem;
+  }
 }
 
 .member-name {

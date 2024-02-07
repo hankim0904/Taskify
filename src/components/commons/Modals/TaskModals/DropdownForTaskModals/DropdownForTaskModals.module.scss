@@ -82,5 +82,15 @@
 
   & .member-profileImg {
     border-radius: 99rem;
+
+    &-none {
+      @include flexbox();
+      width: 2.6rem;
+      height: 2.6rem;
+      background-color: #ffc85a;
+      text-align: center;
+      color: $white;
+      border-radius: 99rem;
+    }
   }
 }

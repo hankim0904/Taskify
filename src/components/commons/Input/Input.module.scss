@@ -32,21 +32,21 @@
     color: $violet;
   }
 
-  .file-type-lable {
-    @include flexbox(center, center);
-    @include text-style(2, 700, $violet);
-    //padding-bottom: 0.3 rem;
-    position: absolute;
-    top: 2.7rem;
-    background-color: rgba(245, 245, 245, 1);
-    width: 7.6rem;
-    height: 7.6rem;
-    border-radius: 0.6rem;
-  }
-
   &.modal {
     @include text-style(1.8, 500, $black-200);
   }
+}
+
+.lable-file-type {
+  @include flexbox(center, center);
+  @include text-style(2, 700, $violet);
+  //padding-bottom: 0.3 rem;
+  position: absolute;
+  top: 2.8rem;
+  background-color: rgba(245, 245, 245, 1);
+  width: 7.6rem;
+  height: 7.6rem;
+  border-radius: 0.6rem;
 }
 
 .input {
@@ -75,7 +75,7 @@
 
   &.file {
     margin-left: 1rem;
-    width: 1rem;
+    width: 3rem;
   }
 
   &.checkbox {
@@ -109,6 +109,10 @@
       border-color: $gray-300;
     }
   }
+}
+
+.input[id="tag"] {
+  display: inline-flex;
 }
 
 .input::placeholder {

@@ -1,4 +1,7 @@
 .dropdown {
+  position: relative;
+  z-index: $modal-dropdown;
+
   &-btn {
     position: relative;
     width: 2.8rem;
@@ -7,6 +10,43 @@
     @include responsive("M") {
       width: 2rem;
       height: 2rem;
+    }
+  }
+  &-menu {
+    @include column-flexbox(center, center);
+    @include text-style(1.4, 400, $black-200);
+    width: 9.3rem;
+    height: 8.2rem;
+    background-color: $white;
+    border: 0.1rem solid $gray-300;
+    border-radius: 0.6rem;
+    box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.08);
+    position: absolute;
+    right: 0.5rem;
+
+    @include responsive("M") {
+      @include text-style(1.2, 400, $black-200);
+      width: 8.6rem;
+      height: 7.4rem;
+    }
+
+    &-element {
+      padding: 0.6rem;
+      line-height: 2.4rem;
+      width: 100%;
+      height: 100%;
+
+      button {
+        width: 100%;
+        height: 100%;
+        text-align: center;
+
+        &:hover {
+          color: $violet;
+          border-radius: 0.4rem;
+          background-color: $violet-100;
+        }
+      }
     }
   }
 }

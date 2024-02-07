@@ -81,7 +81,8 @@ export default function Sidebar({
             className={cx("title")}
             onClick={() => {
               router.push("/mydashboard");
-            }}>
+            }}
+          >
             Dash Boards
           </span>
           <button className={cx("create-btn")} onClick={showModal}>
@@ -96,7 +97,8 @@ export default function Sidebar({
               className={cx("board-list", { selected: data.id === selectedIdx })}
               onClick={() => {
                 handleSelectDashBoard(data.id);
-              }}>
+              }}
+            >
               <Dashboard color={data.color} isHost={data.createdByMe} isSidebar={true}>
                 {data.title}
               </Dashboard>

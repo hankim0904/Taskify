@@ -1,7 +1,7 @@
 import { UseControllerProps, useController } from "react-hook-form";
 import styles from "./Input.module.scss";
 import classNames from "classnames/bind";
-import { SetStateAction, useState } from "react";
+import { KeyboardEvent, SetStateAction, useState } from "react";
 import Image from "next/image";
 
 const cx = classNames.bind(styles);
@@ -11,12 +11,21 @@ interface InputProps extends UseControllerProps {
   labelName?: string;
   type: string;
   isModal?: boolean;
-  imgFile?: Blob | MediaSource | undefined | string;
+  tagItem?: {
+    name: string;
+    style: {};
+  };
 }
 
-export default function Input({ placeholder, type, labelName, isModal = false, imgFile, ...props }: InputProps) {
+export default function Input({ placeholder, type, labelName, tagItem, isModal = false, ...props }: InputProps) {
   const { field, fieldState } = useController(props);
   const [inputType, setInputType] = useState(type);
+
+  const handleKeyPress = (e: KeyboardEvent) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+    }
+  };
 
   const handleChangePasswordType = () => {
     const changedType = inputType === "password" ? "text" : "password";
@@ -33,12 +42,8 @@ export default function Input({ placeholder, type, labelName, isModal = false, i
         {labelName}
         {isModal && props.rules?.required && <span className={cx("modalRequired")}> *</span>}
         {inputType === "file" && (
-          <div className={cx("file-type-lable")}>
-            {imgFile ? (
-              <img alt="이미지" src={imgFile as string} />
-            ) : (
-              <Image width={28} height={28} src="/assets/icons/ic-plus-without-background.svg" alt="이미지 추가하기" />
-            )}
+          <div className={cx("lable-file-type")}>
+            <Image width={28} height={28} src="/assets/icons/ic-plus-without-background.svg" alt="이미지 추가하기" />
           </div>
         )}
       </label>
@@ -50,11 +55,12 @@ export default function Input({ placeholder, type, labelName, isModal = false, i
           { checkbox: inputType === "checkbox" },
           { error: isError },
           { search: type === "search" },
-          { file: inputType === "file" },
+          { file: inputType === "file" }
         )}
         placeholder={placeholder}
         maxLength={16}
         {...field}
+        onKeyDown={props.name === "tags" ? handleKeyPress : undefined}
       />
 
       {inputType !== "checkbox" && <p className={cx("error-message")}>{fieldState.error?.message}</p>}

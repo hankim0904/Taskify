@@ -2,22 +2,31 @@ import styles from "./InvitationList.module.scss";
 import classNames from "classnames/bind";
 import EmptyInvitation from "./ui/EmptyInvitation";
 import IvitationTable from "./ui/InvitationTable";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 import getReceivedDashboardInvitations from "@/api/getReceivedDashboardInvitations";
 import React, { useEffect, useRef } from "react";
-import { useAuth } from "@/contexts/AuthContext";
 import LodingSpinner from "@/components/commons/LodingSpinner/LodingSpinner";
 
 const cx = classNames.bind(styles);
 
-export default function InvitedDashboardList() {
-  const { accessToken } = useAuth();
+export default function InvitedDashboardList({ accessToken }: { accessToken: string }) {
   const { data, fetchNextPage, isFetchingNextPage } = useInfiniteQuery({
     queryKey: ["getReceivedDashboardInvitations"],
     queryFn: ({ pageParam }) => getReceivedDashboardInvitations(pageParam, accessToken),
     initialPageParam: null,
     getNextPageParam: (lastPage) => lastPage.cursorId,
   });
+
+  const queryClient = useQueryClient();
+
+  const prefetchHandler = async () => {
+    await queryClient.prefetchInfiniteQuery({
+      queryKey: ["getReceivedDashboardInvitations"],
+      queryFn: ({ pageParam }) => getReceivedDashboardInvitations(pageParam, accessToken),
+      initialPageParam: null,
+      getNextPageParam: (lastPage: any) => lastPage.cursorId,
+    });
+  };
 
   const targetRef = useRef(null);
 
@@ -26,6 +35,8 @@ export default function InvitedDashboardList() {
       root: null,
       threshold: 0.5,
     };
+
+    prefetchHandler();
 
     const observer = new IntersectionObserver(([entry]) => {
       if (entry.isIntersecting) {
@@ -42,7 +53,7 @@ export default function InvitedDashboardList() {
         observer.unobserve(targetRef.current);
       }
     };
-  }, [fetchNextPage]);
+  }, [fetchNextPage, accessToken]);
 
   return (
     <article className={cx("invitation")}>

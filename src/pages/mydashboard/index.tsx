@@ -23,26 +23,31 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     queryFn: () => getDashBoards("pagination", accessToken, 18, 1),
   });
 
+  // TypeError: Cannot read properties of undefined (reading 'length')
   // await queryClient.prefetchQuery({
-  //   queryKey: ["receivedDashboardInvitationsList"],
+  //   queryKey: ["getReceivedDashboardInvitations"],
   //   queryFn: () => getReceivedDashboardInvitations(null, accessToken),
   // });
 
   return {
     props: {
       dehydratedState: dehydrate(queryClient),
+      accessToken,
     },
   };
 }
 
-export default withAuthNoneExist(function MydashboardPage({ dehydratedState }: any) {
+export default withAuthNoneExist(function MydashboardPage({ dehydratedState, accessToken }: any) {
   const router = useRouter();
   const currentPath = router.pathname;
 
   return (
     <HydrationBoundary state={dehydratedState}>
       <BaseContainer currentPath={currentPath}>
-        <MydashboardLayout dashboardList={<DashboardList />} invitedDashboardList={<InvitedDashboardList />} />
+        <MydashboardLayout
+          dashboardList={<DashboardList accessToken={accessToken} />}
+          invitedDashboardList={<InvitedDashboardList accessToken={accessToken} />}
+        />
       </BaseContainer>
     </HydrationBoundary>
   );

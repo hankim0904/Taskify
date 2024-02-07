@@ -2,7 +2,7 @@ import { axiosSSRInstance } from "./axiosSSRInstance";
 
 export default async function getDashBoards(
   navigationMethod: "infiniteScroll" | "pagination",
-  accessToken: string | null,
+  accessToken: string | null | undefined,
   size?: number,
   pageNum?: number
 ) {
