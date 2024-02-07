@@ -4,57 +4,52 @@ import classNames from "classnames/bind";
 import Image from "next/image";
 import { ChangeEvent, MouseEvent, useState } from "react";
 import ProgressTag from "@/components/commons/tag/ProgressTag/ProgressTag";
+import { useQuery } from "@tanstack/react-query";
+import { getColumnListQueryKey } from "@/components/domains/dashboardid/api/queryKeys";
+import { useRouter } from "next/router";
+import getMembers from "@/api/getMembers";
+import { useAuth } from "@/contexts/AuthContext";
+import extractInitial from "@/utils/extractInitial";
 
 const cx = classNames.bind(styles);
 
-const members = [
-  {
-    id: 0,
-    userId: 0,
-    email: "asdf@asdf.asdf",
-    nickname: "ddd",
-    profileImageUrl: "/assets/icons/ic-more.svg",
-  },
-  {
-    id: 1,
-    userId: 0,
-    email: "qwer@qwer.qwer",
-    nickname: "qqqqq",
-    profileImageUrl: "/assets/icons/ic-plus-box.svg",
-  },
-  {
-    id: 2,
-    userId: 0,
-    email: "qwerqwer@qwer.qwer",
-    nickname: "eeeee",
-    profileImageUrl: "/a",
-  },
-  {
-    id: 3,
-    userId: 0,
-    email: "d@asfsdf.sfsd",
-    nickname: "aaaaa",
-    profileImageUrl: "/a",
-  },
-  {
-    id: 4,
-    userId: 0,
-    email: "QWERwqe@asdf.sd",
-    nickname: "ccccc",
-    profileImageUrl: "/a",
-  },
-];
-
-const states = ["To Do", "On Progress", "Done"];
-
 interface Props extends UseControllerProps {
   setValue: UseFormSetValue<FieldValues>;
+  columnId?: number;
+  members?: Member[];
 }
 
-export default function Dropdown({ setValue, ...props }: Props) {
+interface Member {
+  id: number;
+  nickname: string;
+  profileImageUrl: string;
+  userId: number;
+}
+
+interface State {
+  id: number;
+  title: string;
+}
+
+export default function Dropdown({ setValue, columnId, members, ...props }: Props) {
   const { field } = useController(props);
-  const [selectedItemId, setSelectedItemId] = useState("");
+  const [selectedItemId, setSelectedItemId] = useState(0.1);
   const [openSelectList, setOpenSelectList] = useState(false);
+  const router = useRouter();
+  const { dashboardid } = router.query;
+  // const states = columnListData?.
+
+  const { data: columnListData } = useQuery({
+    queryKey: getColumnListQueryKey(dashboardid),
+  });
+
+  const states = columnListData?.data;
+
+  function handleSelectItem(id: number, name: string) {
+    setSelectedItemId(id === selectedItemId ? 0.1 : id);
+
+    field.value === name ? setValue(props.name, "") : setValue(props.name, name);
+  }
 
   const searchInput = useWatch<FieldValues, string>({
     control: props.control,
@@ -62,26 +57,22 @@ export default function Dropdown({ setValue, ...props }: Props) {
     defaultValue: "",
   });
 
+  const filteredList = members?.filter((member: Member) =>
+    member.nickname.toLowerCase().includes(searchInput.toLowerCase())
+  );
+
   function handleOpenSelectList() {
     setOpenSelectList((prev) => !prev);
   }
 
-  function handleSelectItem(id: string, name: string) {
-    setSelectedItemId(id === selectedItemId ? "" : id);
-
-    field.value === name ? setValue(props.name, "") : setValue(props.name, name);
-  }
-
-  const filteredList = members.filter((member) => member.nickname.toLowerCase().includes(searchInput.toLowerCase()));
-
   return (
     <div className={cx("dropdown-area")}>
-      <label className={cx("label")}>{props.name === "assigneeUserId" ? "담당자" : "상태"}</label>
+      <label className={cx("label")}>{props.name === "assignee" ? "담당자" : "상태"}</label>
       <input
         className={cx("input")}
         list="member"
         type="text"
-        placeholder={props.name === "assigneeUserId" ? "이름을 입력해 주세요" : "상태"}
+        placeholder={props.name === "assignee" ? "이름을 입력해 주세요" : "상태"}
         {...field}
       />
       <Image
@@ -93,16 +84,16 @@ export default function Dropdown({ setValue, ...props }: Props) {
         src="/assets/icons/ic-arrow-drop-down.svg"
       />
       <ul className={cx("members", { close: !openSelectList })}>
-        {props.name === "assigneeUserId"
-          ? filteredList.map((member) => (
+        {props.name === "assignee"
+          ? filteredList?.map((member: Member) => (
               <li className={cx("list-item")} key={member.id}>
                 <button
-                  id={String(member.id)}
+                  id={String(member.userId)}
                   type="button"
-                  onClick={() => handleSelectItem(String(member.id), member.nickname)}
+                  onClick={() => handleSelectItem(member.id, member.nickname)}
                   className={cx("list-item-btn")}
                 >
-                  {selectedItemId == String(member.id) && (
+                  {selectedItemId == member.id && (
                     <Image
                       className={cx("selected")}
                       src="/assets/icons/ic-check.svg"
@@ -111,21 +102,28 @@ export default function Dropdown({ setValue, ...props }: Props) {
                       alt="선택"
                     />
                   )}
-                  <Image
-                    className={cx("member-profileImg")}
-                    width={26}
-                    height={26}
-                    src={member.profileImageUrl}
-                    alt="프로필 이미지"
-                  />
+                  {member.profileImageUrl ? (
+                    <Image
+                      className={cx("member-profileImg")}
+                      width={26}
+                      height={26}
+                      src={member.profileImageUrl}
+                      alt="프로필 이미지"
+                    />
+                  ) : (
+                    <div className={cx("member-profileImg-none")}>{extractInitial(member.nickname)}</div>
+                  )}
                   {member.nickname}
                 </button>
               </li>
             ))
-          : states.map((state, index) => (
-              <li className={cx("list-item")} key={state}>
-                <button onClick={() => handleSelectItem(String(index), state)} className={cx("list-item-btn", "state")}>
-                  {selectedItemId == String(index) && (
+          : states.map((state: State) => (
+              <li className={cx("list-item")} key={state.id}>
+                <button
+                  onClick={() => handleSelectItem(state.id, state.title)}
+                  className={cx("list-item-btn", "state")}
+                >
+                  {selectedItemId == state.id && (
                     <Image
                       className={cx("selected")}
                       src="/assets/icons/ic-check.svg"
@@ -134,7 +132,7 @@ export default function Dropdown({ setValue, ...props }: Props) {
                       alt="선택"
                     />
                   )}
-                  <ProgressTag>{state}</ProgressTag>
+                  <ProgressTag>{state.title}</ProgressTag>
                 </button>
               </li>
             ))}

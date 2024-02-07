@@ -16,11 +16,10 @@ import {
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
-import * as F from "@/components/domains/edit/article/getEditData";
-import Link from "next/link";
-import NiceModal from "@ebay/nice-modal-react";
-import { deleteDashBoard } from "@/components/domains/edit/article/deleteData";
+import * as A from "@/api/getEditData";
+import { deleteDashBoard } from "@/api/deleteDashBoradData";
 import { useParams } from "next/navigation";
+import { putDashBoard } from "@/api/putDashBoard";
 import getDashBoards from "@/api/getDashBoards";
 
 const cx = classNames.bind(styles);
@@ -44,18 +43,18 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
   await Promise.all([
     queryClient.prefetchQuery({
-      queryKey: F.getDashBoardTittleQueryKey(dashboardId),
-      queryFn: () => F.getDashBoardTittle(dashboardId, accessToken),
+      queryKey: A.getDashBoardTittleQueryKey(dashboardId),
+      queryFn: () => A.getDashBoardTittle(dashboardId, accessToken),
       staleTime: 5 * 1000,
     }),
     queryClient.prefetchQuery({
-      queryKey: F.getDashBoardMembersQueryKey(dashboardId, page),
-      queryFn: () => F.getDashBoardMembers(dashboardId, page, accessToken),
+      queryKey: A.getDashBoardMembersQueryKey(dashboardId, page),
+      queryFn: () => A.getDashBoardMembers(dashboardId, page, accessToken),
       staleTime: 5 * 1000,
     }),
     queryClient.prefetchQuery({
-      queryKey: F.getDashboardInvitationsQueryKey(dashboardId, page),
-      queryFn: () => F.getDashboardInvitations(dashboardId, page, accessToken),
+      queryKey: A.getDashboardInvitationsQueryKey(dashboardId, page),
+      queryFn: () => A.getDashboardInvitations(dashboardId, page, accessToken),
       staleTime: 5 * 1000,
     }),
     await queryClient.prefetchQuery({
@@ -76,12 +75,11 @@ export default function Edit({ dehydratedState }: { dehydratedState: DehydratedS
   const router = useRouter();
   const currentPath = router.pathname;
   const isOpenModal = false;
-  const queryClient = useQueryClient();
   const { dashboardid } = useParams();
 
   const { data: titleData } = useQuery({
-    queryKey: F.getDashBoardTittleQueryKey(dashboardid),
-    queryFn: () => F.getDashBoardTittle(dashboardid),
+    queryKey: A.getDashBoardTittleQueryKey(dashboardid),
+    queryFn: () => A.getDashBoardTittle(dashboardid),
   });
 
   function gobackButton() {
@@ -91,7 +89,7 @@ export default function Edit({ dehydratedState }: { dehydratedState: DehydratedS
   const deleteDashboradMutation = useMutation({
     mutationFn: () => deleteDashBoard(dashboardid),
     onSuccess: () => {
-      alert("대시보드 삭제 성공"), router.push("/");
+      alert("대시보드 삭제 성공"), router.push("/mydashboard");
     },
   });
 
@@ -99,7 +97,8 @@ export default function Edit({ dehydratedState }: { dehydratedState: DehydratedS
     if (!titleData.createdByMe) {
       alert("사용자가 만든 대시보드가 아닙니다.");
     } else {
-      deleteDashboradMutation.mutate();
+      const result = confirm("대시보드를 정말 삭제하시겠습니까?");
+      result ? deleteDashboradMutation.mutate() : alert("대시보드 삭제 취소");
     }
   };
 

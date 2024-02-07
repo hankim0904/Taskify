@@ -1,10 +1,13 @@
-function convertToUTCString(inputDate: string) {
-  const date = new Date(inputDate);
+export default function formatDate(dateString: Date | string) {
+  if (dateString === undefined) return;
 
-  // UTC 형식의 문자열로 변환
-  const utcString = date.toISOString();
+  const date = new Date(dateString);
 
-  return utcString;
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+
+  return `${year}-${month}-${day} ${hours}:${minutes}`;
 }
-
-export { convertToUTCString };
