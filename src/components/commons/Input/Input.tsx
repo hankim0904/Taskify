@@ -21,7 +21,7 @@ export default function Input({
   labelName,
   isModal = false,
   imgFile,
-  maxLength = 16,
+  maxLength = 100,
   ...props
 }: InputProps) {
   const { field, fieldState } = useController(props);
