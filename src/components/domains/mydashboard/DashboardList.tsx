@@ -21,9 +21,8 @@ interface DashboardData {
   createdByMe: boolean;
 }
 
-export default function DashboardList() {
+export default function DashboardList({ accessToken }: { accessToken: string }) {
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const { accessToken } = useAuth();
   const queryClient = useQueryClient();
 
   const { data, isLoading } = useQuery({
@@ -77,8 +76,8 @@ export default function DashboardList() {
           <MixButton onClick={showModal}>새로운 대시보드</MixButton>
         </div>
         {dashboardDatas &&
-          dashboardDatas.map(({ id, title, color, createdByMe }: DashboardData) => (
-            <div className={cx("dashboard-btn-container")} key={id}>
+          dashboardDatas.map(({ id, title, color, createdByMe }: DashboardData, index: number) => (
+            <div className={cx("dashboard-btn-container")} key={`${id}-${index}`}>
               <DashboardButton id={id} color={color} isHost={createdByMe}>
                 {title}
               </DashboardButton>
