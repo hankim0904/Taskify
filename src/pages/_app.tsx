@@ -6,10 +6,12 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import NiceModal from "@ebay/nice-modal-react";
 import "@/styles/base.scss";
 
+const queryClient = new QueryClient();
+
 function Providers({ children }: { children: ReactNode }) {
   return (
     <AuthProvider>
-      <QueryClientProvider client={new QueryClient()}>
+      <QueryClientProvider client={queryClient}>
         <NiceModal.Provider>{children}</NiceModal.Provider>
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>

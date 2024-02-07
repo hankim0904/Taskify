@@ -25,7 +25,7 @@ export default NiceModal.create(({ cardId, columnTitle }: Props) => {
   return <CardDetailModal cardId={cardId} columnTitle={columnTitle} onCancel={modal.remove} />;
 });
 
-function CardDetailModal({ cardId, onCancel, columnTitle }: Props) {
+function CardDetailModal({ cardId, columnTitle, onCancel }: Props) {
   const { data: cardDetailData, isLoading } = useQuery({
     queryKey: getCardDetailQueryKey(cardId),
     queryFn: () => getCardDetail(cardId),
@@ -34,7 +34,7 @@ function CardDetailModal({ cardId, onCancel, columnTitle }: Props) {
 
   if (isLoading || !cardDetailData) return null;
 
-  const { title, description, tags, imageUrl, assignee, dueDate } = cardDetailData;
+  const { title, description, tags, imageUrl, assignee, dueDate, id, columnId } = cardDetailData;
   const formatedDate = formatDate(dueDate);
   let parsedTags = tags.map((tag: string) => JSON.parse(tag));
 
@@ -42,7 +42,13 @@ function CardDetailModal({ cardId, onCancel, columnTitle }: Props) {
     <>
       <div className={cx("card")}>
         <div className={cx("card-header")}>
-          <CardDetailHeader title={title} onClick={onCancel} />
+          <CardDetailHeader
+            title={title}
+            cardId={id}
+            columnId={columnId}
+            assigneeUserId={assignee.id}
+            onClick={onCancel}
+          />
         </div>
         <div className={cx("card-content")}>
           <CardDetailContent
