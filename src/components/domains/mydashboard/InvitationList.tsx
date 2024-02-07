@@ -16,7 +16,7 @@ export default function InvitedDashboardList() {
     queryKey: ["getReceivedDashboardInvitations"],
     queryFn: ({ pageParam }) => getReceivedDashboardInvitations(pageParam, accessToken),
     initialPageParam: null,
-    getNextPageParam: (lastPage) => lastPage.cursorId,
+    getNextPageParam: lastPage => lastPage.cursorId,
   });
 
   const targetRef = useRef(null);
