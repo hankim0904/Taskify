@@ -129,7 +129,7 @@ function TaskModal({ isEdit = false, onCancel, columnId, cardId }: Props) {
     }
   };
 
-  const ownerId = members.find((member: Member) => member.isOwner).userId;
+  const ownerId = members?.find((member: Member) => member.isOwner).userId;
 
   function getAssignee(assignee: string | undefined) {
     if (assignee === undefined) {
