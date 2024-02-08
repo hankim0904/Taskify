@@ -24,7 +24,6 @@ export default function Input({
   labelName,
   isModal = false,
   tagItem,
-
   maxLength = 100,
   ...props
 }: InputProps) {
