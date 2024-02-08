@@ -1,5 +1,5 @@
-import { useState, MouseEvent } from "react";
-import styles from "./colorList.module.scss";
+import { useState } from "react";
+import styles from "./ColorList.module.scss";
 import classNames from "classnames/bind";
 import Image from "next/image";
 
