@@ -56,10 +56,16 @@
 }
 
 .profileImage {
-  transform: translateY(-25%);
-
   @include responsive("M") {
     width: 2.6rem;
     height: 2.6rem;
   }
+}
+
+.edit {
+  text-decoration-line: underline;
+}
+
+.delete {
+  text-decoration-line: underline;
 }
