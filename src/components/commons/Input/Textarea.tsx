@@ -26,7 +26,6 @@ export default function Textarea({ isModal, placeholder, labelName, value, ...pr
         id={props.name}
         className={cx("textarea", { error: isModal && isError })}
         placeholder={placeholder}
-        defaultValue={value}
         {...field}
       />
       {isModal && <p className={cx("error-message")}>{isError && fieldState.error?.message}</p>}
