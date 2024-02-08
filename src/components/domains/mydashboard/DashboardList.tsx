@@ -80,13 +80,13 @@ export default function DashboardList({ accessToken }: { accessToken: string }) 
           <PageChangeButton
             isForward={false}
             onClick={() => {
-              setCurrentPage((currentPage) => currentPage - 1);
+              setCurrentPage(currentPage => currentPage - 1);
             }}
             disabled={currentPage <= 1}
           />
           <PageChangeButton
             onClick={() => {
-              setCurrentPage((currentPage) => currentPage + 1);
+              setCurrentPage(currentPage => currentPage + 1);
             }}
             disabled={currentPage >= totalPage}
           />

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styles from "./Sidebar.module.scss";
 import classNames from "classnames/bind";
 import Dashboard from "../../Dashboard/Dashboard";
@@ -23,26 +23,18 @@ interface DashboardData {
 interface SidebarPorps {
   handleChangeDashBoardTitle: (selectedDashboard: DashboardData) => void;
   dashboardDatas: any;
-  selectedDashboardId: any;
   setSelectedDashboard: any;
+  bottomObserver: any;
 }
 
 export default function Sidebar({
   handleChangeDashBoardTitle,
   dashboardDatas,
-  selectedDashboardId,
   setSelectedDashboard,
+  bottomObserver,
 }: SidebarPorps) {
   const [selectedIdx, setSelectedIdx] = useState(0);
   const router = useRouter();
-
-  useEffect(() => {
-    const selectedDashboard = dashboardDatas.find((data: DashboardData) => data.id === Number(selectedDashboardId));
-
-    if (selectedDashboard) {
-      setSelectedIdx(selectedDashboard.id);
-    }
-  }, [selectedDashboardId, dashboardDatas]);
 
   function handleSelectDashBoard(dashboardId: number) {
     const selectedDashboard = dashboardDatas.find((data: DashboardData) => data.id === dashboardId);
@@ -81,8 +73,7 @@ export default function Sidebar({
             className={cx("title")}
             onClick={() => {
               router.push("/mydashboard");
-            }}
-          >
+            }}>
             Dash Boards
           </span>
           <button className={cx("create-btn")} onClick={showModal}>
@@ -97,13 +88,13 @@ export default function Sidebar({
               className={cx("board-list", { selected: data.id === selectedIdx })}
               onClick={() => {
                 handleSelectDashBoard(data.id);
-              }}
-            >
+              }}>
               <Dashboard color={data.color} isHost={data.createdByMe} isSidebar={true}>
                 {data.title}
               </Dashboard>
             </div>
           ))}
+          <div ref={bottomObserver}></div>
         </div>
       </div>
     </div>
