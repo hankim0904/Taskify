@@ -27,7 +27,7 @@
   }
 }
 
-.updatedAt {
+.createdAt {
   @include text-style(1.2, 400, $gray-400);
 
   @include responsive("M") {

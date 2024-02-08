@@ -10,6 +10,7 @@ import styles from "./CardDetailComments.module.scss";
 import classNames from "classnames/bind";
 import Image from "next/image";
 import { EditStore } from "../CardDetailModal";
+import formatDateDot from "../utils/dateDotChange";
 
 const cx = classNames.bind(styles);
 
@@ -82,7 +83,7 @@ export default function CardDetailComments({
             <div className={cx("container-2")}>
               <div className={cx("container-3")}>
                 <div className={cx("nickname")}>{comment.author.nickname}</div>
-                <div className={cx("updatedAt")}>{comment.updatedAt}</div>
+                <div className={cx("createdAt")}>{formatDateDot(comment.createdAt)}</div>
               </div>
               <div className={cx("content")}>{comment.content}</div>
               {userId === comment.author.id && (

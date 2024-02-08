@@ -20,10 +20,8 @@ export default function UserDropdownMenu() {
       onClick={e => {
         e.stopPropagation();
       }}>
-      <button>
-        <span className={cx("text")}>
-          <button onClick={handleLogOut}>로그아웃</button>
-        </span>
+      <button onClick={handleLogOut}>
+        <span className={cx("text")}>로그아웃</span>
       </button>
       <button
         onClick={() => {

@@ -1,0 +1,79 @@
+.container {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.text {
+  font-size: 1.8rem;
+  font-weight: 500;
+  color: #333236;
+  line-height: normal;
+  font-style: normal;
+
+  & > span {
+    color: #5534da;
+  }
+}
+
+.select {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  position: relative;
+  border: 0.1rem solid #d9d9d9;
+  border-radius: 0.5rem;
+  padding: 1.5rem 1.6rem;
+  width: 50%;
+  cursor: pointer;
+  background: url("https://www.iconpacks.net/icons/2/free-arrow-down-icon-3101-thumb.png") calc(100% - 1rem) center
+    no-repeat;
+  background-size: 1.5rem;
+  font-size: 1.6rem;
+
+  & > img {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+  }
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  background-color: $white;
+  border: 0.1rem solid #d9d9d9;
+  border-radius: 0.5rem;
+
+  z-index: 2;
+  left: 0;
+  top: 5rem;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding-inline: 2rem;
+  padding-block: 1rem;
+
+  &:hover {
+    background-color: $gray-200;
+  }
+
+  & > img {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+  }
+}
+
+.isModalOn {
+  display: none;
+}
+
+.background-red {
+  background-color: $gray-200;
+}

@@ -59,6 +59,7 @@ export default function DashboradEditMemberBox({ title, isMemberEdit }: Props) {
     queryFn: () => getDashboardInvitations(dashboardid, page),
     enabled: !isMemberEdit,
     placeholderData: keepPreviousData,
+    staleTime: 5000 * 10000,
   });
 
   const { data: memberData } = useQuery({
@@ -66,6 +67,7 @@ export default function DashboradEditMemberBox({ title, isMemberEdit }: Props) {
     queryFn: () => getDashBoardMembers(dashboardid, page),
     enabled: isMemberEdit,
     placeholderData: keepPreviousData,
+    staleTime: 5000 * 10000,
   });
   const members = memberData?.members;
   const invitedMembers = invitationsData?.invitations.map((invitation: Invitation) => ({
@@ -73,7 +75,8 @@ export default function DashboradEditMemberBox({ title, isMemberEdit }: Props) {
     invitee: invitation.invitee,
   }));
   const memberList = isMemberEdit ? members : invitedMembers;
-  const totalPage = Math.ceil(isMemberEdit ? memberData?.totalCount / 5 : invitationsData?.totalCount / 5);
+  let totalPage = Math.ceil(isMemberEdit ? memberData?.totalCount / 5 : invitationsData?.totalCount / 5);
+  if (isNaN(totalPage)) totalPage = 1;
 
   useEffect(() => {
     const nextPage = page + 1;
@@ -93,6 +96,7 @@ export default function DashboradEditMemberBox({ title, isMemberEdit }: Props) {
 
   const deleteMemberMutation = useMutation({
     mutationFn: (membersId: number) => deleteMembers(membersId),
+
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: getDashBoardMembersQueryKey(dashboardid, page) });
     },

@@ -38,7 +38,7 @@ export default function CardList({ cardList, columnTitle }: CardListProp) {
               {isExistTag && (
                 <div className={cx("card-tag")}>
                   {tags.map((tag, index) => {
-                    const tagObj = JSON.parse(tag);
+                    const tagObj = JSON?.parse(tag);
                     return (
                       <span key={index}>
                         <DescriptionTag tagName={tagObj.name} tagStyle={tagObj.style} />

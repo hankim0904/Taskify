@@ -8,6 +8,7 @@ import getDashBoards from "@/api/getDashBoards";
 import getReceivedDashboardInvitations from "@/api/getReceivedDashboardInvitations";
 import withAuthNoneExist from "@/utils/withAuthNoneExist";
 import { GetServerSidePropsContext } from "next";
+import Head from "next/head";
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const queryClient = new QueryClient();
@@ -23,11 +24,12 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     queryFn: () => getDashBoards("pagination", accessToken, 18, 1),
   });
 
-  // TypeError: Cannot read properties of undefined (reading 'length')
-  // await queryClient.prefetchQuery({
-  //   queryKey: ["getReceivedDashboardInvitations"],
-  //   queryFn: () => getReceivedDashboardInvitations(null, accessToken),
-  // });
+  await queryClient.prefetchInfiniteQuery({
+    queryKey: ["getReceivedDashboardInvitations"],
+    queryFn: () => getReceivedDashboardInvitations(null, accessToken),
+    initialPageParam: null,
+    getNextPageParam: (lastPage: any) => lastPage.cursorId,
+  });
 
   return {
     props: {
@@ -42,13 +44,18 @@ export default withAuthNoneExist(function MydashboardPage({ dehydratedState, acc
   const currentPath = router.pathname;
 
   return (
-    <HydrationBoundary state={dehydratedState}>
-      <BaseContainer currentPath={currentPath}>
-        <MydashboardLayout
-          dashboardList={<DashboardList accessToken={accessToken} />}
-          invitedDashboardList={<InvitedDashboardList accessToken={accessToken} />}
-        />
-      </BaseContainer>
-    </HydrationBoundary>
+    <>
+      <Head>
+        <title>mydashboard</title>
+      </Head>
+      <HydrationBoundary state={dehydratedState}>
+        <BaseContainer currentPath={currentPath}>
+          <MydashboardLayout
+            dashboardList={<DashboardList accessToken={accessToken} />}
+            invitedDashboardList={<InvitedDashboardList accessToken={accessToken} />}
+          />
+        </BaseContainer>
+      </HydrationBoundary>
+    </>
   );
 });
