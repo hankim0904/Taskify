@@ -21,12 +21,6 @@ export default function Input({ placeholder, type, labelName, tagItem, isModal =
   const { field, fieldState } = useController(props);
   const [inputType, setInputType] = useState(type);
 
-  const handleKeyPress = (e: KeyboardEvent) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-    }
-  };
-
   const handleChangePasswordType = () => {
     const changedType = inputType === "password" ? "text" : "password";
     setInputType(changedType);
@@ -60,7 +54,6 @@ export default function Input({ placeholder, type, labelName, tagItem, isModal =
         placeholder={placeholder}
         maxLength={16}
         {...field}
-        onKeyDown={props.name === "tags" ? handleKeyPress : undefined}
       />
 
       {inputType !== "checkbox" && <p className={cx("error-message")}>{fieldState.error?.message}</p>}

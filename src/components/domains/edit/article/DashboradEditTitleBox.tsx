@@ -15,10 +15,23 @@ getDashBoardTittleQueryKey;
 
 const cx = classNames.bind(styles);
 
+const colorList: { [key: string]: string } = {
+  green: "#7ac555",
+  purple: "#760dde",
+  orange: "#ffa500",
+  blue: "#76a5ea",
+  pink: "#e876ea",
+};
+
+function getKeyByValue(obj: object, value: string) {
+  return Object.keys(obj).find((key) => obj[key] === value);
+}
+
 export default function DashboradEditTitleBox({ titleData }: { titleData: DashBoradData }) {
   const { control, handleSubmit, formState, setValue } = useForm();
   const { dashboardid } = useParams();
-  const [color, setColor] = useState(titleData?.color);
+  const beforeColor = getKeyByValue(colorList, titleData.color);
+  const [color, setColor] = useState(beforeColor);
   const queryClient = useQueryClient();
 
   const editDashboardMutation = useMutation({
@@ -27,14 +40,6 @@ export default function DashboradEditTitleBox({ titleData }: { titleData: DashBo
       queryClient.invalidateQueries({ queryKey: getDashBoardTittleQueryKey(dashboardid) });
     },
   });
-
-  const colorList: { [key: string]: string } = {
-    green: "#7ac555",
-    purple: "#760dde",
-    orange: "#ffa500",
-    blue: "#76a5ea",
-    pink: "#e876ea",
-  };
 
   const handleOnsubmit: SubmitHandler<FieldValues> = (data) => {
     if (!titleData.createdByMe) {
@@ -50,7 +55,7 @@ export default function DashboradEditTitleBox({ titleData }: { titleData: DashBo
     <section className={cx("dashborad-edit-box")}>
       <article className={cx("title-line")}>
         <h2 className={cx("title")}>{titleData?.title}</h2>
-        <ColorList setColor={setColor} />
+        <ColorList setColor={setColor} beforeColor={beforeColor} />
       </article>
       <form className={cx("edit-form")} onSubmit={handleSubmit(handleOnsubmit)}>
         <Input
