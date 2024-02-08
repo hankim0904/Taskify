@@ -1,6 +1,7 @@
-<img alt="dasfsafzzxczxxz" src="https://as1.ftcdn.net/v2/jpg/02/57/42/72/1000_F_257427286_Lp7c9XdPnvN46TyFKqUaZpPADJ77ZzUk.jpg">
-<p align="center">쓸 말 1</p> 
-<p align="center" color="#ccc">쓸 말 2</p> 
+<p align="center"><img width="200" heigth="280" src="https://github.com/3-9-taskify/project/assets/124851297/8ff9dc4e-dc48-417b-be56-f24bbd930f7f"></p> 
+
+<p align="center">$\huge{새로운\ 일정\ 관리,\ Taskify}$</p>
+<p align="center" color="#ccc">나만의 , 팀원들과의 , 친구들과의 새로운 일정관리📃<br/>오늘부터 시작해보는게 어떨까요?</p> 
 
 ## 📘목차
 
@@ -42,14 +43,14 @@
 
 ## 🧑‍💻 프로젝트 설치 & 실행
 ```
-git clone https://github.com/ .
+git clone https://github.com/3-9-taskify/project.git .
 
 npm i
 npm start run
 ```
 
 ## 🔗 배포링크
-[🔗Link](https://2-2-1-rolling.netlify.app/)
+[🔗Link](https://google.com/)
 
 
 
