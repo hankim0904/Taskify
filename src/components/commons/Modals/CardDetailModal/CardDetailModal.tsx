@@ -1,4 +1,5 @@
 import { useRef, useEffect, useState } from "react";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { getCardDetail, getComments } from "@/components/domains/dashboardid/api/queries";
 import { getCardDetailQueryKey, getCommentsQueryKey } from "@/components/domains/dashboardid/api/queryKeys";
@@ -34,6 +35,10 @@ export default NiceModal.create(({ cardId, columnTitle }: Props) => {
 });
 
 function CardDetailModal({ cardId, onCancel, columnTitle }: Props) {
+  const { control, handleSubmit, formState, setValue } = useForm({
+    mode: "onChange",
+  });
+
   const [editing, setEditing] = useState(false);
   const [editStore, setEditStore] = useState<EditStore>({ id: 0, content: "" });
   const bottomObserver = useRef<HTMLDivElement | null>(null);
@@ -123,6 +128,10 @@ function CardDetailModal({ cardId, onCancel, columnTitle }: Props) {
             editStore={editStore}
             setEditing={setEditing}
             setEditStore={setEditStore}
+            control={control}
+            handleSubmit={handleSubmit}
+            formState={formState}
+            setValue={setValue}
           />
         </div>
         <div className={cx("card-comments")}>
@@ -132,6 +141,7 @@ function CardDetailModal({ cardId, onCancel, columnTitle }: Props) {
               commentsData={comments.comments}
               setEditing={setEditing}
               setEditStore={setEditStore}
+              setValue={setValue}
             />
           ))}
           <div className={cx("card-ref")} ref={bottomObserver}></div>

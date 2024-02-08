@@ -22,6 +22,10 @@ interface CardDetailTextareaProps {
   editStore: EditStore;
   setEditing: React.Dispatch<React.SetStateAction<boolean>>;
   setEditStore: React.Dispatch<React.SetStateAction<EditStore>>;
+  control: any;
+  handleSubmit: any;
+  formState: any;
+  setValue: any;
 }
 
 export default function CardDetailTextarea({
@@ -32,10 +36,11 @@ export default function CardDetailTextarea({
   editStore,
   setEditing,
   setEditStore,
+  control,
+  handleSubmit,
+  formState,
+  setValue,
 }: CardDetailTextareaProps) {
-  const { control, handleSubmit, formState, setValue } = useForm({
-    mode: "onChange",
-  });
   const queryClient = useQueryClient();
 
   const mutationSuccess = () => {
