@@ -21,6 +21,7 @@ import { deleteDashBoard } from "@/api/deleteDashBoradData";
 import { useParams } from "next/navigation";
 import { putDashBoard } from "@/api/putDashBoard";
 import getDashBoards from "@/api/getDashBoards";
+import { easeInOut, motion } from "framer-motion";
 
 const cx = classNames.bind(styles);
 
@@ -106,10 +107,20 @@ export default function Edit({ dehydratedState }: { dehydratedState: DehydratedS
     <HydrationBoundary state={dehydratedState}>
       <BaseContainer currentPath={currentPath}>
         <main className={cx("main", { openModal: isOpenModal })}>
-          <button type="button" onClick={gobackButton} className={cx("backforward")}>
+          <motion.button
+            type="button"
+            onClick={gobackButton}
+            className={cx("backforward")}
+            animate={{ x: [4, 0, 4] }}
+            transition={{
+              duration: 1.5,
+              ease: easeInOut,
+              repeat: Infinity,
+            }}
+          >
             <Image src="/assets/icons/ic-arrow-forward.svg" width={20} height={20} alt="뒤로가기" />
             돌아가기
-          </button>
+          </motion.button>
           <DashboradEditTitleBox titleData={titleData} />
           <DashboradEditMemberBox isMemberEdit={true} title="구성원"></DashboradEditMemberBox>
           <DashboradEditMemberBox isMemberEdit={false} title="초대 내역"></DashboradEditMemberBox>
