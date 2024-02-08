@@ -5,23 +5,22 @@ import ResponseBtn from "../../Buttons/ResponseButton";
 import Input from "../../Input/Input";
 import Textarea from "../../Input/Textarea";
 import { ChangeEvent, KeyboardEvent, useState } from "react";
-import Dropdown from "./DropdownForTaskModals/DropdownForTaskModals";
+import DropdownForTaskModal from "./DropdownForTaskModals/DropdownForTaskModals";
 import NiceModal, { useModal } from "@ebay/nice-modal-react";
 import DateInput from "../../Input/DateInput";
 import ModalBackground from "../ModalBackground";
 import { postCardData, postUploadCardImg, putCardData } from "@/api/postCardData";
 import { useRouter } from "next/router";
-import formatDate, { convertToUTCString } from "./utill/dateChange";
+import formatDate from "./utill/dateChange";
 import { useAuth } from "@/contexts/AuthContext";
 import Image from "next/image";
 import DescriptionTag from "../../tag/DescriptionTag/DescriptionTag";
 import getRandomColor from "../../tag/DescriptionTag/getRandomColor";
-import rgbaStringToHex from "@/utils/rgbaToHex";
-import { useQuery } from "@tanstack/react-query";
-import { getCardDetailQueryKey } from "@/components/domains/dashboardid/api/queryKeys";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { getCardDetailQueryKey, getCardListQueryKey } from "@/components/domains/dashboardid/api/queryKeys";
 import { getCardDetail } from "@/components/domains/dashboardid/api/queries";
-import rgbaToHex from "@/utils/rgbaToHex";
 import getMembers from "@/api/getMembers";
+import TTest from "./TTest/TTest";
 
 const cx = classNames.bind(styles);
 
@@ -30,6 +29,7 @@ interface Props {
   onCancel: () => void;
   columnId?: number;
   cardId?: number;
+  assigneeUserId?: number;
 }
 
 interface Member {
@@ -51,54 +51,64 @@ interface FormValues {
   imageUrl?: string;
 }
 
-export default NiceModal.create(({ columnId, isEdit = false }: Props) => {
+const NULL_IMG = "https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/taskify/task_image";
+
+export default NiceModal.create(({ columnId, assigneeUserId, cardId, isEdit = false }: Props) => {
   const modal = useModal();
-  return <TaskModal isEdit={isEdit} onCancel={modal.remove} columnId={columnId} />;
+  return (
+    <TaskModal
+      isEdit={isEdit}
+      assigneeUserId={assigneeUserId}
+      cardId={cardId}
+      onCancel={modal.remove}
+      columnId={columnId}
+    />
+  );
 });
 
 //상태 값 dashboardId 로 변환해서 submit
 
-function TaskModal({ isEdit = false, onCancel, columnId, cardId }: Props) {
+function TaskModal({ isEdit = false, onCancel, assigneeUserId, columnId, cardId }: Props) {
   const router = useRouter();
   const { dashboardid } = router.query;
+  const dashboardId = Number(dashboardid);
 
   const { accessToken } = useAuth();
+  const queryClient = useQueryClient();
 
   const [tagItem, setTagItem] = useState({ name: "", style: { backgroundColor: "", color: "" } });
   const [tagList, setTagList] = useState<(typeof tagItem)[] | []>([]);
   const [startDate, setStartDate] = useState(new Date());
-  const [imgFile, setImgFile] = useState("");
+  const [imgFile, setImgFile] = useState(NULL_IMG);
 
-  const { control, setValue, handleSubmit, formState, getValues, watch } = useForm<FormValues | any>({
+  const { control, setValue, handleSubmit, formState, getValues, register } = useForm<FormValues | any>({
     mode: "onBlur",
   });
-  // const { data: cardData } = useQuery({
-  //   queryKey: getCardDetailQueryKey(cardid),
-  //   queryFn: (cardid) => getCardDetail(cardid),
-  // });
-  //프롭으로 받아도 될 것 같음
+
+  const { data: cardData } = useQuery({
+    queryKey: getCardDetailQueryKey(cardId as number),
+    queryFn: () => getCardDetail(cardId as number),
+  });
 
   const { data: memberData } = useQuery({
-    queryKey: ["memberList", dashboardid],
-    queryFn: () => getMembers(accessToken, dashboardid),
+    queryKey: ["memberList", dashboardId],
+    queryFn: () => getMembers(accessToken, dashboardId),
   });
 
   const members = memberData?.members;
 
   const initialValues: FormValues = {
     columnId,
-    dashboardId: Number(dashboardid),
+    dashboardId,
   };
 
-  // if (isEdit === true) {
-  //   initialValues = { ...card };
-  // }
+  const onKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
+    e.preventDefault;
 
-  const onKeyPress = (e: KeyboardEvent<HTMLFormElement>) => {
     const target = e.target as HTMLInputElement;
-
-    if (target.id !== "tags" || e.key !== "Enter") return;
     if (target.value.length !== 0 && e.key === "Enter") {
+      e.preventDefault;
+
       submitTagItem();
     }
   };
@@ -143,6 +153,22 @@ function TaskModal({ isEdit = false, onCancel, columnId, cardId }: Props) {
     }
   }
 
+  const addCardMutation = useMutation({
+    mutationFn: (postdata: FormValues) => postCardData(postdata),
+    onSuccess: () => {
+      onCancel();
+      queryClient.invalidateQueries({ queryKey: getCardListQueryKey(columnId as number) });
+    },
+  });
+
+  const EditCardMutation = useMutation({
+    mutationFn: (postdata: FormValues) => putCardData(cardId, postdata),
+    onSuccess: () => {
+      onCancel;
+      queryClient.invalidateQueries({ queryKey: getCardListQueryKey(columnId as number) });
+    },
+  });
+
   async function onSubmit(data: FormValues) {
     const postData = data;
 
@@ -154,22 +180,25 @@ function TaskModal({ isEdit = false, onCancel, columnId, cardId }: Props) {
     postData.tags = tagList.flatMap((tag) => JSON.stringify(tag));
     postData.imageUrl = imgFile;
 
-    const res = isEdit
-      ? await putCardData(cardId, { postData, ...initialValues })
-      : await postCardData({ ...postData, ...initialValues });
+    console.log({ ...postData, ...initialValues });
 
-    res.status === 201 && onCancel();
+    isEdit
+      ? EditCardMutation.mutate({ ...postData, ...initialValues })
+      : addCardMutation.mutate({ ...postData, ...initialValues });
   }
 
   return (
     <>
       <article className={cx("modal-container")}>
         <h2 className={cx("title")}>{isEdit ? "할 일 수정" : "할 일 생성"}</h2>
-        <form className={cx("form")} onSubmit={handleSubmit(onSubmit)} onKeyDown={(e) => onKeyPress(e)}>
+        <form className={cx("form")} onSubmit={handleSubmit(onSubmit)}>
           <div className={cx("dropdown-line")}>
-            {isEdit && <Dropdown name="column" columnId={columnId} setValue={setValue} control={control} />}
-            <Dropdown name="assignee" members={members} setValue={setValue} control={control} />
+            <TTest />
           </div>
+          {/* <div className={cx("dropdown-line")}>
+            {isEdit && <DropdownForTaskModal name='state' columnId={columnId} />}
+            <DropdownForTaskModal name="assignee"  ownerId={ownerId} members={members} />
+          </div> */}
 
           <Input
             isModal={true}
@@ -189,6 +218,7 @@ function TaskModal({ isEdit = false, onCancel, columnId, cardId }: Props) {
             rules={{ required: "설명을 입력해 주세요" }}
           />
           <DateInput labelName="마감일" startDate={startDate} control={control} name="dueDate" />
+          <label className={cx("tag-list-label")}>태그</label>
           <ul className={cx("tag-list")}>
             {tagList.map((tagItem, index) => {
               return (
@@ -197,22 +227,18 @@ function TaskModal({ isEdit = false, onCancel, columnId, cardId }: Props) {
                 </li>
               );
             })}
-            <Input
-              isModal={true}
+            <input
               type="text"
-              name="tags"
-              labelName="태그"
+              {...register("tags")}
               placeholder="입력 후 Enter"
-              control={control}
-              tagItem={tagItem}
-              rules={{
-                onChange: (e) => setTagItem({ name: e.target.value, style: getRandomColor() }),
-              }}
+              onChange={(e) => setTagItem({ name: e.target.value, style: getRandomColor(0.3) })}
+              onKeyDown={onKeyPress}
+              value={tagItem.name}
             />
           </ul>
           <div className={cx("input-file-upload")} onChange={handelLoadImg}>
             <Input isModal={true} type="file" name="imageUrl" labelName="이미지" placeholder="" control={control} />
-            {imgFile && (
+            {imgFile !== NULL_IMG && (
               <Image className={cx("input-file-img")} src={imgFile} width={80} height={80} alt="카드 이미지 업로드" />
             )}
           </div>

@@ -46,17 +46,17 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     queryClient.prefetchQuery({
       queryKey: A.getDashBoardTittleQueryKey(dashboardId),
       queryFn: () => A.getDashBoardTittle(dashboardId, accessToken),
-      staleTime: 5 * 1000,
+      staleTime: 5000 * 1000,
     }),
     queryClient.prefetchQuery({
       queryKey: A.getDashBoardMembersQueryKey(dashboardId, page),
       queryFn: () => A.getDashBoardMembers(dashboardId, page, accessToken),
-      staleTime: 5 * 1000,
+      staleTime: 5000 * 1000,
     }),
     queryClient.prefetchQuery({
       queryKey: A.getDashboardInvitationsQueryKey(dashboardId, page),
       queryFn: () => A.getDashboardInvitations(dashboardId, page, accessToken),
-      staleTime: 5 * 1000,
+      staleTime: 5000 * 1000,
     }),
     await queryClient.prefetchQuery({
       queryKey: ["sideBarDashboardList", 1, 18],

@@ -17,6 +17,8 @@ interface Props extends UseControllerProps {
   setValue: UseFormSetValue<FieldValues>;
   columnId?: number;
   members?: Member[];
+  ownerId?: number;
+  name: string;
 }
 
 interface Member {
@@ -31,12 +33,17 @@ interface State {
   title: string;
 }
 
-export default function Dropdown({ setValue, columnId, members, ...props }: Props) {
-  const { field } = useController(props);
-  const [selectedItemId, setSelectedItemId] = useState(0.1);
-  const [openSelectList, setOpenSelectList] = useState(false);
+export default function DropdownForTaskModal({ name, ownerId, members }: Props) {
   const router = useRouter();
   const { dashboardid } = router.query;
+  const [selectedItemId, setSelectedItemId] = useState(ownerId);
+  const [openSelectList, setOpenSelectList] = useState(false);
+  const [value, setValue] = useState();
+
+  const { data: testList } = useQuery({
+    queryKey: ["memberList", dashboardid],
+  });
+
   // const states = columnListData?.
 
   const { data: columnListData } = useQuery({
@@ -46,20 +53,26 @@ export default function Dropdown({ setValue, columnId, members, ...props }: Prop
   const states = columnListData?.data;
 
   function handleSelectItem(id: number, name: string) {
-    setSelectedItemId(id === selectedItemId ? 0.1 : id);
+    setSelectedItemId(id === selectedItemId ? ownerId : id);
 
-    field.value === name ? setValue(props.name, "") : setValue(props.name, name);
+    setValue({ name: id });
+
+    if (filteredList?.length === 1) {
+      field.value === name && setValue(props.name, "");
+    }
   }
 
-  const searchInput = useWatch<FieldValues, string>({
-    control: props.control,
-    name: props.name,
-    defaultValue: "",
-  });
+  // const searchInput = useWatch<FieldValues, string>({
+  //   control: props.control,
+  //   name: props.name,
+  //   defaultValue: "",
+  // });
 
-  const filteredList = members?.filter((member: Member) =>
-    member.nickname.toLowerCase().includes(searchInput.toLowerCase())
-  );
+  // const filteredList = members?.filter((member: Member) =>
+  //   member.nickname.toLowerCase().includes(searchInput.toLowerCase())
+  // );
+
+  const filteredList = members;
 
   function handleOpenSelectList() {
     setOpenSelectList((prev) => !prev);
@@ -67,24 +80,48 @@ export default function Dropdown({ setValue, columnId, members, ...props }: Prop
 
   return (
     <div className={cx("dropdown-area")}>
-      <label className={cx("label")}>{props.name === "assignee" ? "담당자" : "상태"}</label>
-      <input
-        className={cx("input")}
-        list="member"
-        type="text"
-        placeholder={props.name === "assignee" ? "이름을 입력해 주세요" : "상태"}
-        {...field}
-      />
-      <Image
-        onClick={handleOpenSelectList}
-        className={cx("dropdown-btn")}
-        width={26}
-        height={26}
-        alt="목록 열기"
-        src="/assets/icons/ic-arrow-drop-down.svg"
-      />
+      <label className={cx("label")}>{name === "assignee" ? "담당자" : "상태"}</label>
+      <div className={cx("dropdown-area-input")}>
+        {/* { && (
+          <>
+            {filteredList[0].profileImageUrl ? (
+              <div className={cx("dropdown-area-input-item")}>
+                <Image
+                  className={cx("member-profileImg")}
+                  width={26}
+                  height={26}
+                  src={filteredList[0].profileImageUrl}
+                  alt="프로필 이미지"
+                />
+                <p>{filteredList[0].nickname}</p>
+              </div>
+            ) : (
+              <div>
+                <div className={cx("member-profileImg-none")}>{extractInitial(filteredList[0].nickname)}</div>
+                <p>{filteredList[0].nickname}</p>
+              </div>
+            )}
+          </>
+        )} */}
+
+        {/* <input
+          className={cx("input")}
+          list="member"
+          type="text"
+          placeholder={props.name === "assignee" ? "이름을 입력해 주세요" : "상태"}
+          {...field}
+        /> */}
+        <Image
+          onClick={handleOpenSelectList}
+          className={cx("dropdown-btn")}
+          width={26}
+          height={26}
+          alt="목록 열기"
+          src="/assets/icons/ic-arrow-drop-down.svg"
+        />
+      </div>
       <ul className={cx("members", { close: !openSelectList })}>
-        {props.name === "assignee"
+        {name === "assignee"
           ? filteredList?.map((member: Member) => (
               <li className={cx("list-item")} key={member.id}>
                 <button
