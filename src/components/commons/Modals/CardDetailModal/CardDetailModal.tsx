@@ -32,7 +32,7 @@ function CardDetailModal({ cardId, onCancel, columnTitle }: Props) {
     { queryKey: getCardDetailQueryKey(cardId), queryFn: () => getCardDetail(cardId), staleTime: 300 * 1000 },
     { queryKey: getCommentsQueryKey(cardId), queryFn: () => getComments(cardId), staleTime: 300 * 1000 },
   ];
-
+  console.log(cardId);
   const results = useQueries({ queries });
   const isLoading = results.some((result) => result.isLoading);
 

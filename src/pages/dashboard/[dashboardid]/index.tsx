@@ -1,5 +1,6 @@
 import { GetServerSidePropsContext } from "next";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 import { dehydrate, HydrationBoundary, QueryClient, DehydratedState } from "@tanstack/react-query";
 import { getColumnList } from "@/components/domains/dashboardid/api/queries";
@@ -46,6 +47,9 @@ export default withAuthNoneExist(function DashboardPage({ dehydratedState }: { d
   return (
     <HydrationBoundary state={dehydratedState}>
       <div className={cx("container")}>
+        <Head>
+          <title>대시보드</title>
+        </Head>
         <BaseContainer currentPath={currentPath}>
           <DashboardLayout columnList={<ColumnList />} addColumn={<AddColumn />} />
         </BaseContainer>
