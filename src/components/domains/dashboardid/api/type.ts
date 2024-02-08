@@ -39,3 +39,15 @@ export interface Card {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface NewComments {
+  content: string;
+  cardId: number;
+  columnId: number;
+  dashboardId: number;
+}
+
+export interface EditedComments {
+  content: string;
+  commentId: number;
+}
