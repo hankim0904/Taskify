@@ -41,7 +41,7 @@ export default function CardDetailContent({ columnTitle, tags, description, imag
       <div className={cx("main-description")}>
         <p>{description}</p>
       </div>
-      {imageUrl === "https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/taskify/task_image/" && (
+      {imageUrl !== "https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/taskify/task_image" && (
         <div className={cx("main-image")}>
           <Image fill src={imageUrl} alt="카드 이미지" style={{ objectFit: "cover" }} />
         </div>

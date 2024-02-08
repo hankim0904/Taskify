@@ -30,7 +30,7 @@ function getKeyByValue(obj: object, value: string) {
 export default function DashboradEditTitleBox({ titleData }: { titleData: DashBoradData }) {
   const { control, handleSubmit, formState, setValue } = useForm();
   const { dashboardid } = useParams();
-  const beforeColor = getKeyByValue(colorList, titleData.color);
+  const beforeColor = getKeyByValue(colorList, titleData?.color);
   const [color, setColor] = useState(beforeColor);
   const queryClient = useQueryClient();
 
