@@ -14,7 +14,7 @@ export default function InvitedDashboardList({ accessToken }: { accessToken: str
     queryKey: ["getReceivedDashboardInvitations"],
     queryFn: ({ pageParam }) => getReceivedDashboardInvitations(pageParam, accessToken),
     initialPageParam: null,
-    getNextPageParam: (lastPage) => lastPage.cursorId,
+    getNextPageParam: lastPage => lastPage.cursorId,
   });
 
   const queryClient = useQueryClient();

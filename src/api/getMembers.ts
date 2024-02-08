@@ -1,10 +1,16 @@
 import { axiosCSRInstance } from "./axiosCSRInstance";
 
-export default async function getMembers(accessToken: string, dashboardId: string | string[] | undefined) {
-  const res = await axiosCSRInstance.get(`members`, {
-    headers: { Authorization: `Bearer ${accessToken}` },
-    params: { dashboardId: dashboardId },
-  });
+export default async function getMembers(accessToken: string | null, dashboardId: string | string[] | undefined) {
+  try {
+    if (dashboardId !== undefined) {
+      const res = await axiosCSRInstance.get(`members`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+        params: { dashboardId: dashboardId },
+      });
 
-  return res.data;
+      return res.data;
+    }
+  } catch (e) {
+    console.log(e);
+  }
 }

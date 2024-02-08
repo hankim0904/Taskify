@@ -5,7 +5,7 @@ import PasswordChangeModal from "@/components/commons/Modals/PasswordChangeModal
 export default async function putChangeUserProfile(
   nickname: string,
   profileImageUrl: string | null,
-  accessToken: string
+  accessToken: string | null,
 ) {
   const confirmReloadingModal = (text: string) => {
     NiceModal.show(PasswordChangeModal, { text });
@@ -23,7 +23,7 @@ export default async function putChangeUserProfile(
           Authorization: `Bearer ${accessToken}`,
           "Content-Type": "application/json",
         },
-      }
+      },
     );
     if (res.status === 200) {
       confirmReloadingModal("변경이 완료되었습니다.");
