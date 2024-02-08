@@ -129,7 +129,8 @@ export default function Navbar({ currentPath, selectedDashboard, dashBoardTitle,
                       position: "relative",
                       right: `${index}rem`,
                       backgroundColor: "white",
-                    }}>
+                    }}
+                  >
                     <Image
                       fill
                       src={member.profileImageUrl}
@@ -143,15 +144,17 @@ export default function Navbar({ currentPath, selectedDashboard, dashBoardTitle,
                     style={{
                       position: "relative",
                       right: `${index}rem`,
-                    }}>
+                    }}
+                  >
                     <span className={cx("navbar-member-list-nickname")}>{extractFirstLetter(member.nickname)}</span>
                   </div>
-                ),
+                )
               )}
             {memberTotalCount !== undefined && memberTotalCount > displayedMembers.length && (
               <div
                 className={cx("navbar-member-list", "count")}
-                style={{ position: "relative", right: `${displayedMembers.length}rem` }}>
+                style={{ position: "relative", right: `${displayedMembers.length}rem` }}
+              >
                 <span className={cx("navbar-member-list-count")}>+{remainingMembersCount}</span>
               </div>
             )}

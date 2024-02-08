@@ -6,7 +6,7 @@ export const postCardData = async (data: unknown) => {
   return res;
 };
 
-export const putCardData = async (cardId: number, data: unknown) => {
+export const putCardData = async (cardId: number | undefined, data: unknown) => {
   const res = await axiosCSRInstance.put(`card/${cardId}`, data);
   return res;
 };

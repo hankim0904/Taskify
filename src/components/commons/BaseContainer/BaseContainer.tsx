@@ -22,7 +22,7 @@ interface DashboardData {
 
 interface BaseContainerProps {
   currentPath: string;
-  accessToken: string;
+  accessToken?: string;
   children: ReactNode;
 }
 
@@ -46,7 +46,7 @@ export default function BaseContainer({ currentPath, accessToken, children }: Ba
   });
 
   const dashboardTotalCount = data?.pages[0].totalCount;
-  const allDashboardDatas = data?.pages.flatMap(page => page.dashboards) ?? [];
+  const allDashboardDatas = data?.pages.flatMap((page) => page.dashboards) ?? [];
 
   const fetchNextDashboard = () => {
     if (dashboardTotalCount === allDashboardDatas.length) return;
