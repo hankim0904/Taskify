@@ -39,7 +39,7 @@ export default function ProfileChangeForm() {
     }
   }, [userMeData]);
 
-  const onSubmit: SubmitHandler<FieldValues> = data => {
+  const onSubmit: SubmitHandler<FieldValues> = (data) => {
     if (profileImageUrl === "" || showBasicProfile) {
       putChangeUserProfile(data.nickname, null, accessToken);
     } else {
@@ -51,7 +51,7 @@ export default function ProfileChangeForm() {
     const file = e.target.files && e.target.files[0];
     const extension = file?.name.split(".").pop();
 
-    if (!["jpg", "jpeg", "png", "gif"].includes(extension.toLowerCase())) {
+    if (!extension || !["jpg", "jpeg", "png", "gif"].includes(extension.toLowerCase())) {
       alert("이미지 파일을 선택해주세요.");
       return false;
     }
@@ -99,7 +99,9 @@ export default function ProfileChangeForm() {
                     <span className={cx("nickname")}>{extractFirstLetter(userMeData?.nickname)}</span>
                   </div>
                 )}
-                {previewImage && <Image fill src={previewImage} alt="미리 보기" style={{ objectFit: "cover" }} />}
+                {previewImage && typeof previewImage === "string" && (
+                  <Image fill src={previewImage} alt="미리 보기" style={{ objectFit: "cover" }} />
+                )}
               </div>
             ) : (
               <div className={cx("contents-basic-image")}>
@@ -114,7 +116,7 @@ export default function ProfileChangeForm() {
               <span className={cx("basic-image-btn")}>기본 이미지로 변경</span>
             </div>
             <div style={{ display: "none" }} onChange={handleUploadImage}>
-              <Input name="profile-image" labelName="" type="file" control={control} />
+              <Input name="profile-image" labelName="" type="file" control={control as any} />
             </div>
           </div>
 
@@ -128,7 +130,7 @@ export default function ProfileChangeForm() {
                 name="nickname"
                 labelName="닉네임"
                 type="text"
-                control={control}
+                control={control as any}
                 placeholder="닉네임을 입력해 주세요"
               />
             </div>

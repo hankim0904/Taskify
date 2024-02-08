@@ -1,5 +1,7 @@
 .card {
   @include pos-center();
+  max-height: 90vh;
+  overflow: scroll;
   z-index: $modal;
   max-width: 73rem;
   max-height: 100rem;
@@ -15,6 +17,10 @@
     "textarea box"
     "comments box";
   gap: 2.4rem;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 
   @include responsive("T") {
     width: calc(100% - 6.4rem);

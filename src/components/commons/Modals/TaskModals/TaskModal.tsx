@@ -5,7 +5,6 @@ import ResponseBtn from "../../Buttons/ResponseButton";
 import Input from "../../Input/Input";
 import Textarea from "../../Input/Textarea";
 import { ChangeEvent, KeyboardEvent, useState } from "react";
-import DropdownForTaskModal from "./DropdownForTaskModals/DropdownForTaskModals";
 import NiceModal, { useModal } from "@ebay/nice-modal-react";
 import DateInput from "../../Input/DateInput";
 import ModalBackground from "../ModalBackground";
@@ -91,8 +90,8 @@ function TaskModal({ isEdit = false, onCancel, assigneeUserId, columnId, cardId 
   });
 
   const { data: memberData } = useQuery({
-    queryKey: ["memberList", dashboardId],
-    queryFn: () => getMembers(accessToken, dashboardId),
+    queryKey: ["memberList", dashboardid],
+    queryFn: () => getMembers(accessToken, dashboardid),
   });
 
   const members = memberData?.members;
