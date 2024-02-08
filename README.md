@@ -1,4 +1,4 @@
-<p align="center"><img width="200" heigth="280" src="https://github.com/3-9-taskify/project/assets/124851297/8ff9dc4e-dc48-417b-be56-f24bbd930f7f"></p> 
+<p align="center"><img width="200" heigth="280" src="https://github.com/3-9-taskify/project/assets/124851297/dd62c94f-7d9e-4427-a428-847ccdaa931b"></p> 
 
 <p align="center">$\huge{새로운\ 일정\ 관리,\ Taskify}$</p>
 <p align="center" color="#ccc">나만의 , 팀원들과의 , 친구들과의 새로운 일정관리📃<br/>오늘부터 시작해보는게 어떨까요?</p> 
@@ -16,14 +16,15 @@
 > Team : Codeit-Sprint-2-Part2-Team1(김우현,김하은,박지원,손오름,지현기)   
 
 ## 🔎 사용기술  
-<img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=white">
-<img src="https://img.shields.io/badge/reactquery-61DAFB?style=for-the-badge&logo=reactquery&logoColor=white">
-
+<img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=white"><img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white">   
+<img src="https://img.shields.io/badge/Sass-CC6699?style=for-the-badge&logo=sass&logoColor=white"><img src="https://img.shields.io/badge/CSS Modules-000000?style=for-the-badge&logo=cssmodules&logoColor=white"><img src="https://img.shields.io/badge/classnames-1572b6?style=for-the-badge&logo=css3&logoColor=white">   
+<img src="https://img.shields.io/badge/Axios-5A29E4?style=for-the-badge&logo=axios&logoColor=white"><img src="https://img.shields.io/badge/React Query-FF4154?style=for-the-badge&logo=reactquery&logoColor=white">   
+<img src="https://img.shields.io/badge/NiceModal-ECD53F?style=for-the-badge&logo=react&logoColor=white"><img src="https://img.shields.io/badge/ReactHookForm-EC5990?style=for-the-badge&logo=reacthookform&logoColor=white"><img src="https://img.shields.io/badge/FramerMotion-0055FF?style=for-the-badge&logo=framer&logoColor=white"><img src="https://img.shields.io/badge/ReactDateFicker-770C56?style=for-the-badge&logo=datefns&logoColor=white"><img src="https://img.shields.io/badge/Nprogress-5CE500?style=for-the-badge&logo=progress&logoColor=white">
 
 ## 👥 팀 & 역할
 |[김우현](https://github.com/guen9310)|[김하은](https://github.com/yunsusu)|[박지원](https://github.com/rladngus133)|[손오름](https://github.com/Yoon-kyungLee)|[지현기](https://github.com/JIS0098)|
 |------|------|------|------|------|
-|<img src="https://github.com/CodeIt-Part2-Team1/FirstProject/assets/124851297/2bda01a7-48dd-4097-b0f7-5e3bf3f1f473" width="128" height="128">|<img src="https://github.com/CodeIt-Part2-Team1/FirstProject/assets/124851297/4fd7a5fb-fa4c-4d95-9467-a2d2a5e039d1" width="128" height="128">|<img src="https://cdnimage.dailian.co.kr/news/201402/news_1391494701_419313_m_1.jpg" width="128" height="128">|<img src="https://github.com/CodeIt-Part2-Team1/FirstProject/assets/124851297/d9ce5b9e-49bb-479c-87c1-90497e35f9f5" width="128" height="128">|<img src="https://coinpan.com/files/attach/images/198/429/492/210/12ceae7a20597f3d7f920a7aef65df5b.jpg" width="128" height="128">|
+|<img src="https://d2u3dcdbebyaiu.cloudfront.net/uploads/atch_img/954/7a9d537acf40250dbdbb75a0cf7b1958_res.jpeg" width="128" height="128">|<img src="https://d2u3dcdbebyaiu.cloudfront.net/uploads/atch_img/954/7a9d537acf40250dbdbb75a0cf7b1958_res.jpeg" width="128" height="128">|<img src="https://d2u3dcdbebyaiu.cloudfront.net/uploads/atch_img/954/7a9d537acf40250dbdbb75a0cf7b1958_res.jpeg" width="128" height="128">|<img src="https://d2u3dcdbebyaiu.cloudfront.net/uploads/atch_img/954/7a9d537acf40250dbdbb75a0cf7b1958_res.jpeg" width="128" height="128">|<img src="https://d2u3dcdbebyaiu.cloudfront.net/uploads/atch_img/954/7a9d537acf40250dbdbb75a0cf7b1958_res.jpeg" width="128" height="128">|
 
 **👦 김우현** : 
 - 
