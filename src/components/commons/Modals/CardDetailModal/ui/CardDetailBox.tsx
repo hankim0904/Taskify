@@ -16,9 +16,11 @@ export default function CardDetailBox({ nickname, imageUrl, formatedDueDate }: C
       <div className={cx("box-assignee", "flex")}>
         <h3 className={cx("box-assignee-title", "title")}>담당자</h3>
         <p className={cx("box-assignee-profile")}>
-          <span className={cx("box-assignee-profile-image")}>
-            <Image fill src={imageUrl} alt="담당자 프로필 이미지" style={{ objectFit: "cover" }} />
-          </span>
+          {imageUrl && (
+            <span className={cx("box-assignee-profile-image")}>
+              <Image fill src={imageUrl} alt="담당자 프로필 이미지" style={{ objectFit: "cover" }} />
+            </span>
+          )}
           <span className={cx("box-assignee-profile-detail", "detail")}>{nickname}</span>
         </p>
       </div>

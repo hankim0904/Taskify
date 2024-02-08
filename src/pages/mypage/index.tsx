@@ -17,25 +17,30 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   const queryClient = new QueryClient();
   const accessToken = context.req.cookies.accessToken || "";
 
-  await queryClient.prefetchQuery({
-    queryKey: ["sideBarDashboardList", 1, 18],
-    queryFn: () => getDashBoards("pagination", accessToken, 18, 1),
+  await queryClient.prefetchInfiniteQuery({
+    queryKey: ["sideBarDashboardList"],
+    queryFn: ({ pageParam = 1 }) => getDashBoards("pagination", accessToken, 18, pageParam),
+    initialPageParam: 1,
+    getNextPageParam: (pages: any) => {
+      return pages.length + 1;
+    },
   });
 
   return {
     props: {
       dehydratedState: dehydrate(queryClient),
+      accessToken,
     },
   };
 }
 
-function Mypage({ dehydratedState }: any) {
+function Mypage({ dehydratedState, accessToken }: any) {
   const router = useRouter();
   const currentPath = router.pathname;
 
   return (
     <HydrationBoundary state={dehydratedState}>
-      <BaseContainer currentPath={currentPath}>
+      <BaseContainer currentPath={currentPath} accessToken={accessToken}>
         <div className={cx("mypage-container")}>
           <motion.div
             className={cx("mypage-container-backward")}
@@ -47,8 +52,7 @@ function Mypage({ dehydratedState }: any) {
               duration: 1.5,
               ease: easeInOut,
               repeat: Infinity,
-            }}
-          >
+            }}>
             <Image width={20} height={20} src="/assets/icons/ic-arrow-backward.svg" alt="뒤로가기" />
             <span>돌아가기</span>
           </motion.div>

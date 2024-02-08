@@ -39,6 +39,7 @@
   margin-top: 0.6rem;
   margin-bottom: 1.2rem;
   @include text-style(1.4, 400, $black-200);
+  word-break: break-all;
 
   @include responsive("M") {
     font-size: 1.2rem;

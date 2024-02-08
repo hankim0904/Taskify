@@ -100,6 +100,7 @@ function ColumnModal({ isEdit, columnId, onCancel }: Props) {
             labelName="이름"
             placeholder="새로운 프로젝트"
             control={control}
+            maxLength={16}
             rules={{
               required: "프로젝트 이름을 입력해 주세요",
               validate: {

@@ -75,6 +75,10 @@
     .contents {
       height: 80rem;
       margin: 1.8rem 1.2rem 0 1.2rem;
+      overflow-y: scroll;
+      &::-webkit-scrollbar {
+        display: none;
+      }
 
       .board-list {
         @include flexbox;
