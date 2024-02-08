@@ -2,6 +2,7 @@ import { axiosCSRInstance } from "./axiosCSRInstance";
 import PasswordChangeModal from "@/components/commons/Modals/PasswordChangeModal/PasswordChangeModal";
 import SignModal from "@/components/commons/Modals/SignModal/SignModal";
 import NiceModal from "@ebay/nice-modal-react";
+import axios from "axios";
 
 export default async function putChangePassword(accessToken: string | null, password: string, newPassword: string) {
   const confirmReloadingModal = (text: string) => {
@@ -31,6 +32,8 @@ export default async function putChangePassword(accessToken: string | null, pass
       confirmReloadingModal("변경이 완료되었습니다.");
     }
   } catch (error) {
-    showModal(error.response.data.message);
+    if (axios.isAxiosError(error) && error.response) {
+      showModal(error.response.data.message);
+    }
   }
 }

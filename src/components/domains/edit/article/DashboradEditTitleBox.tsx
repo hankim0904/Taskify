@@ -15,22 +15,23 @@ getDashBoardTittleQueryKey;
 
 const cx = classNames.bind(styles);
 
-const colorList: { [key: string]: string } = {
-  green: "#7ac555",
-  purple: "#760dde",
-  orange: "#ffa500",
-  blue: "#76a5ea",
-  pink: "#e876ea",
-};
-
-function getKeyByValue(obj: object, value: string) {
-  return Object.keys(obj).find((key) => obj[key] === value);
-}
-
 export default function DashboradEditTitleBox({ titleData }: { titleData: DashBoradData }) {
   const { control, handleSubmit, formState, setValue } = useForm();
   const { dashboardid } = useParams();
-  const beforeColor = getKeyByValue(colorList, titleData.color);
+
+  const colorList: { [key: string]: string } = {
+    green: "#7ac555",
+    purple: "#760dde",
+    orange: "#ffa500",
+    blue: "#76a5ea",
+    pink: "#e876ea",
+  };
+
+  function getKeyByValue(obj: { [key: string]: string }, value: string) {
+    return Object.keys(obj).find((key) => obj[key] === value);
+  }
+
+  const beforeColor = getKeyByValue(colorList, titleData?.color);
   const [color, setColor] = useState(beforeColor);
   const queryClient = useQueryClient();
 
@@ -45,7 +46,7 @@ export default function DashboradEditTitleBox({ titleData }: { titleData: DashBo
     if (!titleData.createdByMe) {
       alert("사용자가 만든 대시보드가 아닙니다.");
     } else {
-      const newTitle = { title: data.dashboardName, color: colorList[color] };
+      const newTitle = { title: data.dashboardName, color: colorList[color as string] };
       editDashboardMutation.mutate(newTitle);
       setValue("dashboardName", "");
     }

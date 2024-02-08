@@ -16,7 +16,6 @@ interface InputProps extends UseControllerProps {
     name: string;
     style: {};
   };
-  imgFile?: Blob | MediaSource | undefined | string;
 }
 
 export default function Input({
@@ -25,7 +24,6 @@ export default function Input({
   labelName,
   isModal = false,
   tagItem,
-  imgFile,
   maxLength = 100,
   ...props
 }: InputProps) {
@@ -48,11 +46,13 @@ export default function Input({
         {isModal && props.rules?.required && <span className={cx("modalRequired")}> *</span>}
         {inputType === "file" && (
           <div className={cx("file-type-lable")}>
-            {imgFile ? (
-              <img alt="이미지" src={imgFile as string} />
-            ) : (
-              <Image width={28} height={28} src="/assets/icons/ic-plus-without-background.svg" alt="이미지 추가하기" />
-            )}
+            <Image
+              width={28}
+              height={28}
+              src="/assets/icons/ic-plus-without-background.svg"
+              alt="이미지 추가하기"
+              style={{ objectFit: "cover" }}
+            />
           </div>
         )}
       </label>
@@ -64,7 +64,7 @@ export default function Input({
           { checkbox: inputType === "checkbox" },
           { error: isError },
           { search: type === "search" },
-          { file: inputType === "file" },
+          { file: inputType === "file" }
         )}
         placeholder={placeholder}
         maxLength={maxLength}
@@ -73,7 +73,7 @@ export default function Input({
 
       {inputType !== "checkbox" && <p className={cx("error-message")}>{fieldState.error?.message}</p>}
 
-      {type === "password" ? (
+      {type === "password" && (
         <Image
           className={cx("eye")}
           width={16}
@@ -82,8 +82,8 @@ export default function Input({
           alt="비밀번호 보기"
           onClick={handleChangePasswordType}
         />
-      ) : null}
-      {type === "search" ? (
+      )}
+      {type === "search" && (
         <Image
           src="/assets/icons/ic-magnifier.svg"
           className={cx("searchIcon")}
@@ -91,7 +91,7 @@ export default function Input({
           height={24}
           alt="검색하기"
         />
-      ) : null}
+      )}
     </div>
   );
 }
