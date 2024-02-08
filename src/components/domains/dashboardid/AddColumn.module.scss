@@ -1,0 +1,15 @@
+.add-column {
+  width: 35.4rem;
+  padding: 6.8rem 2rem 0 2rem;
+  flex-shrink: 0;
+
+  @include responsive("T") {
+    width: 100%;
+    height: 100%;
+    padding: 2rem;
+  }
+
+  @include responsive("M") {
+    padding: 1.2rem;
+  }
+}

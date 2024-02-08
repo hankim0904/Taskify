@@ -1,0 +1,119 @@
+.dashborad-edit-box {
+  @include column-flexbox(start, start);
+  gap: 0.5rem;
+  width: 62.5rem;
+  position: relative;
+
+  border-radius: 0.8rem;
+  background: $white;
+  margin-bottom: 1.2rem;
+
+  @media screen and (max-width: $tablet-breakpoint) {
+    width: 100%;
+  }
+}
+
+.title-line {
+  @include flexbox(between, center);
+  padding: 3.2rem 2.8rem 2.4rem;
+  width: 100%;
+  position: relative;
+}
+
+.title {
+  @include text-style(2, 700, $black-200);
+}
+
+.little-title {
+  @include text-style(1.6, 400, $gray-400);
+
+  padding: 0 2.8rem 2.4rem;
+}
+
+.title-right-contents {
+  @include text-style(1.4, 400, $black-200);
+  @include flexbox(end, center);
+
+  > p {
+    margin-right: 1.6rem;
+  }
+
+  & button {
+    width: 4rem;
+
+    @media screen and (max-width: $mobile-breakpoint) {
+      width: 3.6rem;
+      height: 3.6rem;
+    }
+  }
+}
+
+.invite-btn {
+  margin-left: 1.2rem;
+
+  & button {
+    width: 10.5rem;
+    & img {
+      filter: brightness(500%);
+    }
+  }
+
+  @media screen and (max-width: $mobile-breakpoint) {
+    position: absolute;
+    top: 9.8rem;
+    right: 2.6rem;
+
+    & button {
+      width: 8.6rem;
+    }
+  }
+}
+
+.email {
+  margin-bottom: 4.4rem;
+}
+
+.list {
+  width: 100%;
+
+  &-item {
+    @include inline-flexbox(between, center);
+    @include text-style(1.6, 400, $black-200);
+
+    padding: 1.6rem 2.8rem;
+    width: 100%;
+    border-bottom: 1px solid $gray-200;
+
+    &:last-child {
+      border: none;
+    }
+
+    & button {
+      width: 8.4rem;
+
+      @media screen and (max-width: $mobile-breakpoint) {
+        width: 5.2rem;
+      }
+    }
+  }
+}
+
+.profileImg {
+  border-radius: 99rem;
+  overflow: hidden;
+
+  &-none {
+    @include flexbox();
+    width: 3.8rem;
+    height: 3.8rem;
+    background-color: #ffc85a;
+    text-align: center;
+    color: $white;
+    border-radius: 99rem;
+  }
+}
+
+.member-name {
+  @include inline-flexbox(start, center);
+  gap: 1.2rem;
+}

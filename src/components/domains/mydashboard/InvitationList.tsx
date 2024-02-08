@@ -1,0 +1,53 @@
+import styles from "./InvitationList.module.scss";
+import classNames from "classnames/bind";
+import EmptyInvitation from "./ui/EmptyInvitation";
+import IvitationTable from "./ui/InvitationTable";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import getReceivedDashboardInvitations from "@/api/getReceivedDashboardInvitations";
+import React, { useEffect, useRef } from "react";
+import LodingSpinner from "@/components/commons/LodingSpinner/LodingSpinner";
+
+const cx = classNames.bind(styles);
+
+export default function InvitedDashboardList({ accessToken }: { accessToken: string }) {
+  const { data, fetchNextPage, isFetchingNextPage } = useInfiniteQuery({
+    queryKey: ["getReceivedDashboardInvitations"],
+    queryFn: ({ pageParam }) => getReceivedDashboardInvitations(pageParam, accessToken),
+    initialPageParam: null,
+    getNextPageParam: lastPage => lastPage.cursorId,
+  });
+
+  const targetRef = useRef(null);
+
+  useEffect(() => {
+    const options = {
+      root: null,
+      threshold: 0.5,
+    };
+
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        fetchNextPage();
+      }
+    }, options);
+
+    if (targetRef.current) {
+      observer.observe(targetRef.current);
+    }
+
+    return () => {
+      if (targetRef.current) {
+        observer.unobserve(targetRef.current);
+      }
+    };
+  }, []);
+
+  return (
+    <article className={cx("invitation")}>
+      <h1 className={cx("invitation-title")}>초대받은 대시보드</h1>
+      {data && data.pages[0].invitations.length !== 0 ? <IvitationTable pages={data.pages} /> : <EmptyInvitation />}
+      <div className={cx("loding-container")}>{isFetchingNextPage ? <LodingSpinner /> : ""}</div>
+      <div ref={targetRef} style={{ width: "1px", height: "1px" }} />
+    </article>
+  );
+}

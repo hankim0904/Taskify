@@ -1,0 +1,37 @@
+.modal-container {
+  @include pos-center(fixed);
+  overflow-y: auto;
+  width: 100%;
+  max-width: 54rem;
+
+  background-color: $white;
+  padding: 3.2rem 2.8rem;
+  border-radius: 0.8rem;
+  z-index: $modal;
+}
+
+.title {
+  @include text-style(2.4, 700, $black-200);
+  margin-bottom: 3.2rem;
+}
+
+.form {
+  width: 48.4rem;
+
+  @include responsive("M") {
+    width: 100%;
+  }
+}
+
+.btn-line {
+  @include flexbox(end, end);
+  margin-top: 2.8rem;
+  gap: 1.2rem;
+
+  & button {
+    width: 12rem;
+    @include responsive("M") {
+      width: 100%;
+    }
+  }
+}

@@ -1,0 +1,45 @@
+.grid {
+  display: grid;
+  grid-template-columns: 30rem 1fr;
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    "sidebar navbar"
+    "sidebar content";
+  scrollbar-gutter: stable;
+
+  @include responsive("T") {
+    grid-template-columns: 16.8rem 1fr;
+  }
+
+  @include responsive("M") {
+    grid-template-columns: 6.7rem 1fr;
+  }
+
+  &-sidebar {
+    grid-area: sidebar;
+    border-right: 0.1rem solid #d9d9d9;
+
+    .page-change {
+      @include flexbox(start, center);
+      gap: 1.6rem;
+      margin-left: 2.8rem;
+
+      &-text {
+        @include text-style(1.4, 400, $black-200);
+      }
+
+      &-btn {
+        @include flexbox(start, center);
+      }
+    }
+  }
+
+  &-navbar {
+    grid-area: navbar;
+  }
+
+  &-content {
+    grid-area: content;
+    overflow: hidden;
+  }
+}

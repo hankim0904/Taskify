@@ -1,0 +1,5 @@
+.container {
+  @include column-flexbox();
+  min-height: 100vh;
+  background-color: $gray-100;
+}

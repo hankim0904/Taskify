@@ -1,0 +1,30 @@
+.empty-invitation {
+  @include column-flexbox();
+  gap: 2.4rem;
+  padding: 6.6rem 0 12.8rem;
+
+  @include responsive("M") {
+    gap: 1.6rem;
+    padding: 10.5rem 0 15.4rem;
+  }
+
+  &-img {
+    display: block;
+    position: relative;
+    width: 10rem;
+    height: 10rem;
+
+    @include responsive("M") {
+      width: 6rem;
+      height: 6rem;
+    }
+  }
+
+  &-text {
+    @include text-style(1.8, 400, $gray-400);
+
+    @include responsive("M") {
+      @include text-style(1.4, 400, $gray-400);
+    }
+  }
+}

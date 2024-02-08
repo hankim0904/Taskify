@@ -1,0 +1,30 @@
+.background {
+  width: 100%;
+  height: 100vh;
+  background-color: $black;
+}
+
+.container {
+  @include column-flexbox();
+  width: 400px;
+  height: 100vh;
+  margin: 0 auto;
+}
+
+.errorCodeFont {
+  @include text-style(20, 700, $violet);
+}
+
+.errorFont {
+  @include text-style(2, 400, $white);
+}
+
+.gap {
+  @include column-flexbox();
+  width: 100%;
+  gap: 20px;
+}
+
+.btnContainer {
+  width: 100%;
+}

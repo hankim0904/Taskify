@@ -1,0 +1,9 @@
+.dashboard {
+  @include flexbox(start, start);
+  background-color: $gray-100;
+  overflow: auto;
+
+  @include responsive("T") {
+    @include column-flexbox(start, center);
+  }
+}

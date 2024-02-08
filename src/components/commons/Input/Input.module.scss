@@ -1,0 +1,124 @@
+.input-area {
+  @include column-flexbox(start, start);
+  gap: 0.8rem;
+  position: relative;
+  width: 100%;
+
+  &.checkbox {
+    flex-direction: row-reverse;
+    align-items: end;
+    justify-content: start;
+  }
+
+  .eye {
+    position: absolute;
+    right: 1.6rem;
+    top: 4.5rem;
+    cursor: pointer;
+  }
+
+  .searchIcon {
+    position: absolute;
+    left: 1.6rem;
+    top: 2.15rem;
+  }
+}
+
+.label {
+  @include text-style(1.6, 400, $black-200);
+  cursor: pointer;
+
+  .modalRequired {
+    color: $violet;
+  }
+
+  &.modal {
+    @include text-style(1.8, 500, $black-200);
+  }
+}
+
+.lable-file-type {
+  @include flexbox(center, center);
+  @include text-style(2, 700, $violet);
+  //padding-bottom: 0.3 rem;
+  position: absolute;
+  top: 2.8rem;
+  background-color: rgba(245, 245, 245, 1);
+  width: 7.6rem;
+  height: 7.6rem;
+  border-radius: 0.6rem;
+}
+
+.input {
+  @include flexbox(start, center);
+  @include text-style(1.6);
+
+  width: 100%;
+  height: 5rem;
+  padding: 1.5rem 1.6rem;
+  border-radius: 0.8rem;
+  border: 0.1rem solid $gray-300;
+  background-color: $white;
+
+  &:focus {
+    outline: none;
+    border: 0.1rem solid $violet;
+  }
+
+  &.error {
+    border: 0.1rem solid $red;
+  }
+
+  &.search {
+    padding-left: 4.8rem;
+  }
+
+  &.file {
+    margin-left: 1rem;
+    width: 3rem;
+  }
+
+  &.checkbox {
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+    -webkit-appearance: none;
+    appearance: none;
+    border-radius: 0.4rem;
+
+    &:checked {
+      //체크를 했을 때 적용할 스타일
+      background-color: $violet;
+      border-color: $white;
+    }
+
+    &:checked:after {
+      content: "\2713";
+      color: $white;
+      position: absolute;
+      left: 0.48rem;
+      top: -0.1rem;
+      font-size: 1.5rem;
+      font-weight: 900;
+      transform: rotate(10deg);
+    }
+
+    &:not(:checked) {
+      // 체크를 풀었을 때 적용할 스타일(.error의 스타일을 덮어쓰기 위해서)
+      background-color: $white;
+      border-color: $gray-300;
+    }
+  }
+}
+
+.input[id="tag"] {
+  display: inline-flex;
+}
+
+.input::placeholder {
+  color: $gray-400;
+}
+
+.error-message {
+  @include text-style(1.4, 400, $red);
+}

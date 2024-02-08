@@ -1,0 +1,36 @@
+.header {
+  @include flexbox(between, center);
+
+  @include responsive("M") {
+    flex-direction: column-reverse;
+    gap: 0.6rem;
+  }
+
+  &-title {
+    @include text-style(2.4, 700, $black-200);
+
+    @include responsive("M") {
+      align-self: flex-start;
+    }
+  }
+
+  &-buttons {
+    @include flexbox(normal, center);
+    gap: 2.4rem;
+
+    @include responsive("M") {
+      align-self: flex-end;
+    }
+  }
+
+  &-close {
+    position: relative;
+    width: 3.2rem;
+    height: 3.2rem;
+
+    @include responsive("M") {
+      width: 2.4rem;
+      height: 2.4rem;
+    }
+  }
+}

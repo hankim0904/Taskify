@@ -1,0 +1,139 @@
+.navbar {
+  @include flexbox(between, center);
+  padding: 2.3rem 8rem 2.3rem 4rem;
+  width: 100%;
+  border-bottom: 0.1rem solid #d9d9d9;
+
+  @include responsive("T") {
+    @include flexbox(end, center);
+    padding: 1.7rem 4rem 1.7rem 0;
+  }
+
+  @include responsive("M") {
+    padding: 1.5rem 1.2rem 1.5rem 0;
+  }
+
+  @media only screen and (max-width: 422px) {
+    @include flexbox(between, center);
+  }
+
+  &-title {
+    @include flexbox(start, center);
+    gap: 0.8rem;
+    flex: 1;
+    width: 30rem;
+
+    @include text-style(2, 700, $black-200);
+    @include responsive("T") {
+      display: none;
+    }
+
+    .dashboard-name {
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+
+      @include text-style(2, 700, $black-200);
+    }
+    .created-icon {
+      display: inline-block;
+      position: relative;
+      width: 2rem;
+      height: 1.6rem;
+    }
+  }
+
+  &-utils {
+    @include flexbox;
+  }
+
+  &-action-btns {
+    @include flexbox;
+    gap: 1.6rem;
+    padding: 0 4rem;
+
+    @include responsive("T") {
+      gap: 1.2rem;
+      padding-right: 3.2rem;
+    }
+
+    @include responsive("M") {
+      gap: 0.6rem;
+      padding: 0 1.6rem;
+    }
+
+    .manage,
+    .invite {
+      @include flexbox;
+      gap: 0.8rem;
+      padding: 1rem 1.6rem;
+      border-radius: 0.8rem;
+      border: 0.1rem solid $gray-300;
+
+      @include responsive("M") {
+        padding: 0.7rem 1.2rem;
+
+        .img {
+          display: none;
+        }
+      }
+
+      .text {
+        @include text-style(1.6, 500, $gray-500);
+
+        @include responsive("T") {
+          @include text-style(1.4, 500, $gray-500);
+        }
+
+        @include responsive("M") {
+          white-space: nowrap;
+        }
+      }
+    }
+  }
+
+  &-member {
+    @include flexbox;
+
+    &-list {
+      width: 3.8rem;
+      height: 3.8rem;
+      border: 0.2rem solid $white;
+      border-radius: 50%;
+      background-color: #ffc85a;
+
+      &.only-me {
+        margin-right: 3.2rem;
+
+        @include responsive("T") {
+          margin-right: 2.4rem;
+        }
+
+        @include responsive("M") {
+          margin-right: 1.2rem;
+        }
+      }
+
+      &.count {
+        background-color: #f4d7da;
+      }
+
+      &-img {
+        border-radius: 50%;
+      }
+
+      &-nickname {
+        @include pos-center(absolute);
+        @include text-style(1.6, 600, $white);
+      }
+
+      &-count {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        @include text-style(1.6, 500, #d25b68);
+      }
+    }
+  }
+}

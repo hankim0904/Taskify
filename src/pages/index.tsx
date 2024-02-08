@@ -1,21 +1,28 @@
-import Link from "next/link";
-import Button from "@/components/commons/button/ResponseButton";
+import classNames from "classnames/bind";
+import React from "react";
+import styles from "@/pages/index.module.scss";
+import Navbar from "@/components/domains/landing/Navbar";
+import Container from "@/components/domains/landing/Container";
+import Header from "@/components/domains/landing/Header";
+import Main from "@/components/domains/landing/Main";
+import Footer from "@/components/domains/landing/Footer";
+import withAuthExist from "@/utils/withAuthExist";
+import Head from "next/head";
 
-export default function Home() {
+const cx = classNames.bind(styles);
+
+export default withAuthExist(function index() {
   return (
-    <>
-      <div style={{ padding: "10px", display: "flex", flexDirection: "column", gap: "10px" }}>
-        <div>
-          <Link href="/button-example">
-            <Button state="reject">button-example</Button>
-          </Link>
-        </div>
-        <div>
-          <Link href="/scss-example">
-            <Button state="reject">scss-example</Button>
-          </Link>
-        </div>
-      </div>
-    </>
+    <div className={cx("container")}>
+      <Head>
+        <title>Taskify</title>
+      </Head>
+      <Navbar />
+      <Container>
+        <Header />
+        <Main />
+      </Container>
+      <Footer />
+    </div>
   );
-}
+});

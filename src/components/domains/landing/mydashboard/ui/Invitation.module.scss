@@ -1,0 +1,50 @@
+.invitation {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-areas: "title inviter btn";
+  align-items: center;
+
+  @include responsive("M") {
+    grid-template-columns: none;
+    grid-template-areas: "title" "inviter" "btn";
+  }
+
+  h1 {
+    display: none;
+
+    @include responsive("M") {
+      @include text-style(1.4, 400, $gray-400);
+      display: block;
+    }
+  }
+
+  &-title {
+    @include text-style(1.6, 400, $black-200);
+    padding-left: 3.6rem;
+    grid-area: title;
+
+    @include responsive("M") {
+      @include flexbox(start, center);
+      gap: 2.8rem;
+      padding-left: 0;
+    }
+  }
+
+  &-inviter {
+    @include text-style(1.6, 400, $black-200);
+    grid-area: inviter;
+
+    @include responsive("M") {
+      @include flexbox(start, center);
+      gap: 1.6rem;
+      padding-left: 0;
+      margin: 1rem 0 1.6rem;
+    }
+  }
+
+  &-btn {
+    @include flexbox(start, center);
+    gap: 1rem;
+    grid-area: btn;
+  }
+}
