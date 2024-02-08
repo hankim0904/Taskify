@@ -32,6 +32,7 @@ interface CardDetailCommentsProps {
   cardId: number;
   setEditing: React.Dispatch<React.SetStateAction<boolean>>;
   setEditStore: React.Dispatch<React.SetStateAction<EditStore>>;
+  setValue: any;
 }
 
 export default function CardDetailComments({
@@ -39,6 +40,7 @@ export default function CardDetailComments({
   cardId,
   setEditing,
   setEditStore,
+  setValue,
 }: CardDetailCommentsProps) {
   const { data: meData } = useQuery({ queryKey: getMeQueryKey(), queryFn: () => getMe() });
 
@@ -93,6 +95,7 @@ export default function CardDetailComments({
                     onClick={() => {
                       setEditing(true);
                       setEditStore({ id: comment.id, content: comment.content });
+                      setValue("comment-Textarea", comment.content);
                     }}
                   >
                     수정
