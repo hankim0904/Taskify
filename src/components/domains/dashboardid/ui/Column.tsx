@@ -34,7 +34,7 @@ export default function Column({ columnId, columnTitle }: ColumnProps) {
     queryKey: getCardListQueryKey(columnId),
     queryFn: ({ pageParam = 1 }) => getCardList(pageParam, columnId),
     initialPageParam: null,
-    getNextPageParam: (lastPage) => lastPage.cursorId,
+    getNextPageParam: lastPage => lastPage.cursorId,
   });
 
   const cardPages = cardPagesInfo?.pages ?? [];
