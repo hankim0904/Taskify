@@ -23,7 +23,6 @@ interface DashboardData {
 
 export default function DashboardList({ accessToken }: { accessToken: string }) {
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const queryClient = useQueryClient();
 
   const { data, isLoading } = useQuery({
     queryKey: ["dashboardList", currentPage],
@@ -36,16 +35,6 @@ export default function DashboardList({ accessToken }: { accessToken: string }) 
   const showModal = () => {
     NiceModal.show(DashboardCreationModal);
   };
-
-  useEffect(() => {
-    const nextPage = currentPage + 1;
-    if (data && currentPage < totalPage) {
-      queryClient.prefetchQuery({
-        queryKey: ["dashboardList", nextPage],
-        queryFn: () => getDashBoards("pagination", accessToken, 5, nextPage),
-      });
-    }
-  }, [currentPage, data]);
 
   if (isLoading) {
     return (

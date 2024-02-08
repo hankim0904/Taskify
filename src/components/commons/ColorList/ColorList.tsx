@@ -7,13 +7,18 @@ const cx = classNames.bind(styles);
 
 const colors = ["green", "purple", "orange", "blue", "pink"];
 
-export default function ColorList({ setColor }: any) {
-  const [selectedColor, setSelectedColor] = useState<string>("");
+interface Props {
+  setColor: () => void;
+  beforeColor: string;
+}
+
+export default function ColorList({ setColor, beforeColor }: any) {
+  const [selectedColor, setSelectedColor] = useState<string>(beforeColor);
 
   function handleSelectColor(color: string) {
     if (selectedColor === color) {
       setSelectedColor("");
-      setColor("");
+      setColor();
     } else {
       setSelectedColor(color);
       setColor(color);

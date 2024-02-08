@@ -52,18 +52,38 @@
 
 .tag-list {
   @include flexbox(start);
-  flex-wrap: wrap;
   width: 100%;
   gap: 0.8rem;
+  border-radius: 0.8rem;
+  border: 0.1rem solid $gray-300;
+  height: 5rem;
+  padding: 1.5rem 0.8rem;
+  overflow-x: auto;
+  overflow-y: hidden;
 
-  > input {
-    flex: 1;
+  &-label {
+    @include text-style(1.8, 500, $black-200);
+    width: 100%;
+    margin-bottom: -1rem;
+  }
+
+  & input {
+    @include text-style(1.6);
+    min-width: 5rem;
+    flex-shrink: 3;
+
+    border: none;
+  }
+
+  & input::placeholder {
+    color: $gray-400;
   }
 }
 
 .tag {
   border-radius: 0.4rem;
   overflow: hidden;
+  flex-shrink: 0;
 }
 
 .btn-line {
