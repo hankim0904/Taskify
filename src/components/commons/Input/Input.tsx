@@ -1,7 +1,7 @@
 import { UseControllerProps, useController } from "react-hook-form";
 import styles from "./Input.module.scss";
 import classNames from "classnames/bind";
-import { KeyboardEvent, SetStateAction, useState } from "react";
+import { SetStateAction, useState } from "react";
 import Image from "next/image";
 
 const cx = classNames.bind(styles);
@@ -11,13 +11,24 @@ interface InputProps extends UseControllerProps {
   labelName?: string;
   type: string;
   isModal?: boolean;
+  maxLength?: number;
   tagItem?: {
     name: string;
     style: {};
   };
+  imgFile?: Blob | MediaSource | undefined | string;
 }
 
-export default function Input({ placeholder, type, labelName, tagItem, isModal = false, ...props }: InputProps) {
+export default function Input({
+  placeholder,
+  type,
+  labelName,
+  isModal = false,
+  tagItem,
+  imgFile,
+  maxLength = 100,
+  ...props
+}: InputProps) {
   const { field, fieldState } = useController(props);
   const [inputType, setInputType] = useState(type);
 
@@ -36,8 +47,12 @@ export default function Input({ placeholder, type, labelName, tagItem, isModal =
         {labelName}
         {isModal && props.rules?.required && <span className={cx("modalRequired")}> *</span>}
         {inputType === "file" && (
-          <div className={cx("lable-file-type")}>
-            <Image width={28} height={28} src="/assets/icons/ic-plus-without-background.svg" alt="이미지 추가하기" />
+          <div className={cx("file-type-lable")}>
+            {imgFile ? (
+              <img alt="이미지" src={imgFile as string} />
+            ) : (
+              <Image width={28} height={28} src="/assets/icons/ic-plus-without-background.svg" alt="이미지 추가하기" />
+            )}
           </div>
         )}
       </label>
@@ -49,10 +64,10 @@ export default function Input({ placeholder, type, labelName, tagItem, isModal =
           { checkbox: inputType === "checkbox" },
           { error: isError },
           { search: type === "search" },
-          { file: inputType === "file" }
+          { file: inputType === "file" },
         )}
         placeholder={placeholder}
-        maxLength={16}
+        maxLength={maxLength}
         {...field}
       />
 

@@ -1,4 +1,5 @@
 .dropdown-menu {
+  @include column-flexbox;
   position: absolute;
   top: 5rem;
   padding: 1rem 2rem;

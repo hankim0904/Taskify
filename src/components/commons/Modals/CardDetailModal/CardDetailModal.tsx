@@ -1,4 +1,5 @@
-import { useQueries } from "@tanstack/react-query";
+import { useRef, useEffect, useState } from "react";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { getCardDetail, getComments } from "@/components/domains/dashboardid/api/queries";
 import { getCardDetailQueryKey, getCommentsQueryKey } from "@/components/domains/dashboardid/api/queryKeys";
 
@@ -22,26 +23,67 @@ interface Props {
   onCancel: () => void;
 }
 
+export interface EditStore {
+  id: number;
+  content: string;
+}
+
 export default NiceModal.create(({ cardId, columnTitle }: Props) => {
   const modal = useModal();
   return <CardDetailModal cardId={cardId} columnTitle={columnTitle} onCancel={modal.remove} />;
 });
 
 function CardDetailModal({ cardId, onCancel, columnTitle }: Props) {
-  const queries = [
-    { queryKey: getCardDetailQueryKey(cardId), queryFn: () => getCardDetail(cardId), staleTime: 300 * 1000 },
-    { queryKey: getCommentsQueryKey(cardId), queryFn: () => getComments(cardId), staleTime: 300 * 1000 },
-  ];
+  const [editing, setEditing] = useState(false);
+  const [editStore, setEditStore] = useState<EditStore>({ id: 0, content: "" });
+  const bottomObserver = useRef<HTMLDivElement | null>(null);
 
-  const results = useQueries({ queries });
-  const isLoading = results.some((result) => result.isLoading);
+  const { data: cardDetailData, isLoading } = useQuery({
+    queryKey: getCardDetailQueryKey(cardId),
+    queryFn: () => getCardDetail(cardId),
+    staleTime: 300 * 1000,
+  });
 
-  if (isLoading || !results[0].data || !results[1].data) return null;
+  const {
+    data: cardCommentsData,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery({
+    queryKey: getCommentsQueryKey(cardId),
+    queryFn: ({ pageParam = 1 }) => getComments(pageParam, cardId),
+    initialPageParam: null,
+    getNextPageParam: (lastPage) => lastPage?.cursorId,
+  });
 
-  const cardDetailData = results[0].data;
-  const commentsData = results[1].data;
+  const fetchNextComments = () => {
+    if (!isFetchingNextPage && hasNextPage) {
+      fetchNextPage();
+    }
+  };
 
-  const { title, description, tags, imageUrl, assignee, dueDate, id, columnId } = cardDetailData;
+  useEffect(() => {
+    if (bottomObserver.current === null) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          fetchNextComments();
+        }
+      },
+      { threshold: 0 }
+    );
+    const currentBottomObserver = bottomObserver.current;
+    observer.observe(currentBottomObserver);
+
+    return () => observer.unobserve(currentBottomObserver);
+  }, [bottomObserver, fetchNextComments]);
+
+  if (isLoading || !cardDetailData || !cardCommentsData) return null;
+
+  const { title, description, tags, imageUrl, assignee, dueDate, id, columnId, dashboardId } = cardDetailData;
+  const cardComments = cardCommentsData?.pages ?? [];
+
   const formatedDate = formatDate(dueDate);
   let parsedTags = tags.map((tag: string) => JSON.parse(tag));
 
@@ -73,10 +115,26 @@ function CardDetailModal({ cardId, onCancel, columnTitle }: Props) {
           />
         </div>
         <div className={cx("card-textarea")}>
-          <CardDetailTextarea />
+          <CardDetailTextarea
+            dashboardId={dashboardId}
+            cardId={cardId}
+            columnId={columnId}
+            editing={editing}
+            editStore={editStore}
+            setEditing={setEditing}
+            setEditStore={setEditStore}
+          />
         </div>
         <div className={cx("card-comments")}>
-          <CardDetailComments commentsData={commentsData.comments} />
+          {cardComments.map((comments) => (
+            <CardDetailComments
+              cardId={cardId}
+              commentsData={comments.comments}
+              setEditing={setEditing}
+              setEditStore={setEditStore}
+            />
+          ))}
+          <div className={cx("card-ref")} ref={bottomObserver}></div>
         </div>
       </div>
       <ModalBackground onClick={onCancel} />

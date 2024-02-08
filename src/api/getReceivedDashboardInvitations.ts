@@ -7,7 +7,7 @@ export default async function getReceivedDashboardInvitations(cursorId: number |
         Authorization: `Bearer ${accessToken}`,
       },
       params: {
-        size: 5,
+        size: 7,
         cursorId: cursorId,
       },
     });

@@ -2,6 +2,7 @@
   @include pos-center();
   z-index: $modal;
   max-width: 73rem;
+  max-height: 100rem;
   width: 73rem;
   padding: 3.2rem 2.8rem 3.2rem;
   border-radius: 0.8rem;
@@ -53,5 +54,19 @@
 
   &-comments {
     grid-area: comments;
+    overflow: scroll;
+    max-height: 20rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  &-ref {
+    height: 0.1rem;
+    flex-shrink: 0;
   }
 }

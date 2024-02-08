@@ -9,6 +9,7 @@ import withAuthNoneExist from "@/utils/withAuthNoneExist";
 import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
 import getDashBoards from "@/api/getDashBoards";
 import { GetServerSidePropsContext } from "next";
+import { easeInOut, motion } from "framer-motion";
 
 const cx = classNames.bind(styles);
 
@@ -36,15 +37,21 @@ function Mypage({ dehydratedState }: any) {
     <HydrationBoundary state={dehydratedState}>
       <BaseContainer currentPath={currentPath}>
         <div className={cx("mypage-container")}>
-          <div
+          <motion.div
             className={cx("mypage-container-backward")}
             onClick={() => {
               window.history.go(-1);
             }}
+            animate={{ x: [4, 0, 4] }}
+            transition={{
+              duration: 1.5,
+              ease: easeInOut,
+              repeat: Infinity,
+            }}
           >
             <Image width={20} height={20} src="/assets/icons/ic-arrow-backward.svg" alt="뒤로가기" />
             <span>돌아가기</span>
-          </div>
+          </motion.div>
           <ProfileChangeForm />
           <PasswordChangeForm />
         </div>

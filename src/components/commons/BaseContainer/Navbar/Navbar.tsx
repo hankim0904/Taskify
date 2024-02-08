@@ -1,7 +1,7 @@
 import Image from "next/image";
 import styles from "./Navbar.module.scss";
 import classNames from "classnames/bind";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import getMembers from "@/api/getMembers";
 import getUsersMe from "@/api/getUsersMe";
 import { useQuery } from "@tanstack/react-query";
@@ -10,6 +10,7 @@ import InviteModal from "../../Modals/InviteModal/InviteModal";
 import { useModal } from "@ebay/nice-modal-react";
 import UserProfile from "./UserProfile/UserProfile";
 import { useAuth } from "@/contexts/AuthContext";
+import extractFirstLetter from "@/utils/extractFirstLetter";
 
 const cx = classNames.bind(styles);
 
@@ -78,12 +79,6 @@ export default function Navbar({ currentPath, selectedDashboard, dashBoardTitle,
     };
   }, []);
 
-  function extractInitial(nickname: string) {
-    if (nickname) {
-      return nickname[0].toUpperCase();
-    }
-  }
-
   return (
     <div className={cx("navbar")}>
       <div className={cx("navbar-title")}>
@@ -134,8 +129,7 @@ export default function Navbar({ currentPath, selectedDashboard, dashBoardTitle,
                       position: "relative",
                       right: `${index}rem`,
                       backgroundColor: "white",
-                    }}
-                  >
+                    }}>
                     <Image
                       fill
                       src={member.profileImageUrl}
@@ -149,17 +143,15 @@ export default function Navbar({ currentPath, selectedDashboard, dashBoardTitle,
                     style={{
                       position: "relative",
                       right: `${index}rem`,
-                    }}
-                  >
-                    <span className={cx("navbar-member-list-nickname")}>{extractInitial(member.nickname)}</span>
+                    }}>
+                    <span className={cx("navbar-member-list-nickname")}>{extractFirstLetter(member.nickname)}</span>
                   </div>
-                )
+                ),
               )}
             {memberTotalCount !== undefined && memberTotalCount > displayedMembers.length && (
               <div
                 className={cx("navbar-member-list", "count")}
-                style={{ position: "relative", right: `${displayedMembers.length}rem` }}
-              >
+                style={{ position: "relative", right: `${displayedMembers.length}rem` }}>
                 <span className={cx("navbar-member-list-count")}>+{remainingMembersCount}</span>
               </div>
             )}
@@ -167,7 +159,7 @@ export default function Navbar({ currentPath, selectedDashboard, dashBoardTitle,
         </div>
       )}
 
-      <UserProfile userMeData={userMeData} extractInitial={extractInitial} />
+      <UserProfile userMeData={userMeData} extractFirstLetter={extractFirstLetter} />
     </div>
   );
 }

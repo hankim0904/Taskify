@@ -3,10 +3,11 @@ import Input from "../../Input/Input";
 import styles from "./InviteModal.module.scss";
 import classNames from "classnames/bind";
 import ResponseBtn from "../../Buttons/ResponseButton";
-import NiceModal, { NiceModalHandler, useModal } from "@ebay/nice-modal-react";
+import NiceModal, { useModal } from "@ebay/nice-modal-react";
 import ModalBackground from "../ModalBackground";
 import postDashboardInvitations from "@/api/postDashboardInvitations";
 import { useRouter } from "next/router";
+import { useAuth } from "@/contexts/AuthContext";
 
 const cx = classNames.bind(styles);
 
@@ -21,12 +22,14 @@ export default NiceModal.create(() => {
 });
 
 function InviteModal({ onCancel }: Props) {
+  const { accessToken } = useAuth();
   const { control, handleSubmit, formState } = useForm({ mode: "onBlur" });
   const rotuer = useRouter();
 
   function handleOnSubmit(data: any) {
     const dashboardId = rotuer.query.dashboardid;
-    postDashboardInvitations(dashboardId, data.columnName);
+    postDashboardInvitations(dashboardId, data.columnName, accessToken);
+    onCancel();
   }
   return (
     <>
@@ -39,6 +42,7 @@ function InviteModal({ onCancel }: Props) {
             name="columnName"
             labelName="이메일"
             placeholder="초대받을 이메일을 입력하세요"
+            maxLength={30}
             control={control}
             rules={{
               required: "이메일을 입력해 주세요",

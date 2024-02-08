@@ -7,19 +7,18 @@ import classNames from "classnames/bind";
 import getUsersMe from "@/api/getUsersMe";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import defaultImage from "./logo-codeit.png";
 import putChangeUserProfile from "@/api/putChangeUserProfile";
 import { axiosCSRInstance } from "@/api/axiosCSRInstance";
 import { useAuth } from "@/contexts/AuthContext";
+import extractFirstLetter from "@/utils/extractFirstLetter";
 
 const cx = classNames.bind(styles);
 
 export default function ProfileChangeForm() {
-  const [previewImage, setPreviewImage] = useState<string | null>("");
-  const [profileImageUrl, setProfileImageUrl] = useState("");
-  const [hide, setHide] = useState(true);
-
-  const { accessToken } = useAuth();
+  const { data: userMeData } = useQuery({
+    queryKey: ["userMe"],
+    queryFn: () => getUsersMe(accessToken),
+  });
 
   const { control, handleSubmit, setValue } = useForm({
     mode: "onChange",
@@ -28,24 +27,40 @@ export default function ProfileChangeForm() {
     },
   });
 
-  const { data: userMeData } = useQuery({
-    queryKey: ["userMe"],
-    queryFn: () => getUsersMe(),
-  });
+  const [profileImageUrl, setProfileImageUrl] = useState(userMeData?.profileImageUrl);
+  const [previewImage, setPreviewImage] = useState<string | ArrayBuffer | null>("");
+  const [showBasicProfile, setShowBasicProfile] = useState(false);
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    putChangeUserProfile(data.nickname, profileImageUrl!);
-    // error 면 submit 안됨 ,SubmitHandler<FieldValues> handleSubmit 안에 들어가는 type 입니다
+  const { accessToken } = useAuth();
+
+  useEffect(() => {
+    if (userMeData) {
+      setValue("nickname", userMeData.nickname);
+    }
+  }, [userMeData]);
+
+  const onSubmit: SubmitHandler<FieldValues> = data => {
+    if (profileImageUrl === "" || showBasicProfile) {
+      putChangeUserProfile(data.nickname, null, accessToken);
+    } else {
+      putChangeUserProfile(data.nickname, profileImageUrl, accessToken);
+    }
   };
 
   async function handleUploadImage(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files && e.target.files[0];
+    const extension = file?.name.split(".").pop();
 
+    if (!["jpg", "jpeg", "png", "gif"].includes(extension.toLowerCase())) {
+      alert("이미지 파일을 선택해주세요.");
+      return false;
+    }
     if (file) {
       const reader = new FileReader();
 
       reader.onload = () => {
         setPreviewImage(reader.result);
+        setShowBasicProfile(false);
       };
 
       reader.readAsDataURL(file);
@@ -66,7 +81,7 @@ export default function ProfileChangeForm() {
   }
 
   function handleChangeDefaultImage() {
-    setHide(!hide);
+    setShowBasicProfile(true);
   }
 
   return (
@@ -75,20 +90,20 @@ export default function ProfileChangeForm() {
         <div className={cx("title")}>프로필</div>
         <div className={cx("contents")}>
           <div className={cx("contents-upload-area")}>
-            {hide ? (
+            {!showBasicProfile ? (
               <div className={cx("contents-upload-image")}>
                 {userMeData?.profileImageUrl ? (
                   <Image fill src={userMeData?.profileImageUrl} alt="현재 이미지" style={{ objectFit: "cover" }} />
                 ) : (
                   <div className={cx("contents-basic-image")}>
-                    <span className={cx("nickname")}>유</span>
+                    <span className={cx("nickname")}>{extractFirstLetter(userMeData?.nickname)}</span>
                   </div>
                 )}
                 {previewImage && <Image fill src={previewImage} alt="미리 보기" style={{ objectFit: "cover" }} />}
               </div>
             ) : (
               <div className={cx("contents-basic-image")}>
-                <span className={cx("nickname")}>유</span>
+                <span className={cx("nickname")}>{extractFirstLetter(userMeData?.nickname)}</span>
               </div>
             )}
 

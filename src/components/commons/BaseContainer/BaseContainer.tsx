@@ -2,12 +2,12 @@ import Navbar from "./Navbar/Navbar";
 import Sidebar from "./Sidebar/Sidebar";
 import styles from "./BaseContainer.module.scss";
 import classNames from "classnames/bind";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 import getDashBoards from "@/api/getDashBoards";
-import { useQuery } from "@tanstack/react-query";
-import PageChangeButton from "../../commons/Buttons/PageChangeButton";
+import { useInfiniteQuery, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { useAuth } from "@/contexts/AuthContext";
+import { useIntersectionObserver } from "@/components/domains/dashboardid/utils/useIntersectionObserver";
 
 const cx = classNames.bind(styles);
 
@@ -28,21 +28,30 @@ interface BaseContainerProps {
 
 export default function BaseContainer({ currentPath, children }: BaseContainerProps) {
   const [isCreatedByMe, setIsCreatedByMe] = useState(false);
-  const [currentPage, setCurrentPage] = useState<number>(1);
   const [selectedDashboard, setSelectedDashboard] = useState<DashboardData | null>(null);
+  const { accessToken } = useAuth();
+  const bottomObserver = useRef<HTMLDivElement | null>(null);
 
   const router = useRouter();
   const dashboardId: string | string[] | undefined = router.query.dashboardid;
 
-  const { accessToken } = useAuth();
-
-  const { data } = useQuery({
-    queryKey: ["sideBarDashboardList", currentPage, 18],
-    queryFn: () => getDashBoards("pagination", accessToken, 18, currentPage),
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
+    queryKey: ["sideBarDashboardList"],
+    queryFn: ({ pageParam }) => getDashBoards("infiniteScroll", accessToken, 40, undefined, pageParam),
+    initialPageParam: 10,
+    getNextPageParam: lastPage => lastPage.cursorId,
   });
 
-  const totalPage = Math.ceil(data?.totalCount / 18);
-  const dashboardDatas = data?.dashboards || [];
+  console.log(data);
+
+  const dashboardDatas = data?.pages[0].dashboards || [];
+  const fetchNextCardList = () => {
+    if (!isFetchingNextPage && hasNextPage) {
+      fetchNextPage();
+    }
+  };
+
+  useIntersectionObserver(bottomObserver, fetchNextCardList, { threshold: 0 });
 
   useEffect(() => {
     const dashboardId: string | string[] | undefined = router.query.dashboardid;
@@ -50,7 +59,7 @@ export default function BaseContainer({ currentPath, children }: BaseContainerPr
       const selectedDashboard = dashboardDatas.find((data: DashboardData) => data.id === Number(dashboardId));
       setSelectedDashboard(selectedDashboard);
     }
-  }, [currentPage, router.query.dashboardid, dashboardDatas]);
+  }, [router.query.dashboardid, dashboardDatas]);
 
   const [dashBoardTitle, setDashBoardTitle] = useState(dashboardDatas[0]?.title);
 
@@ -68,25 +77,6 @@ export default function BaseContainer({ currentPath, children }: BaseContainerPr
           selectedDashboardId={dashboardId}
           setSelectedDashboard={setSelectedDashboard}
         />
-        <div className={cx("page-change")}>
-          <span className={cx("page-change-text")}>{`${totalPage} 페이지 중 ${currentPage}`}</span>
-
-          <span className={cx("page-change-btn")}>
-            <PageChangeButton
-              isForward={false}
-              onClick={() => {
-                setCurrentPage((currentPage) => currentPage - 1);
-              }}
-              disabled={currentPage <= 1}
-            />
-            <PageChangeButton
-              onClick={() => {
-                setCurrentPage((currentPage) => currentPage + 1);
-              }}
-              disabled={currentPage >= totalPage}
-            />
-          </span>
-        </div>
       </div>
       <div className={cx("grid-navbar")}>
         <Navbar
@@ -97,6 +87,7 @@ export default function BaseContainer({ currentPath, children }: BaseContainerPr
         />
       </div>
       <div className={cx("grid-content")}>{children}</div>
+      <div className={cx("column-pages-end")} ref={bottomObserver}></div>
     </div>
   );
 }

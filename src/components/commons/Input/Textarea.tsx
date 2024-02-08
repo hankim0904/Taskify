@@ -8,9 +8,10 @@ interface InputProps extends UseControllerProps {
   placeholder: string;
   labelName?: string;
   isModal: boolean;
+  value?: string;
 }
 
-export default function Textarea({ isModal, placeholder, labelName, ...props }: InputProps) {
+export default function Textarea({ isModal, placeholder, labelName, value, ...props }: InputProps) {
   const { field, fieldState } = useController(props);
 
   const isError = fieldState.invalid;
@@ -21,7 +22,13 @@ export default function Textarea({ isModal, placeholder, labelName, ...props }: 
         {labelName}
         {isModal && <span className={cx("modalRequired")}> *</span>}
       </label>
-      <textarea id={props.name} className={cx("textarea", { error: isError })} placeholder={placeholder} {...field} />
+      <textarea
+        id={props.name}
+        className={cx("textarea", { error: isModal && isError })}
+        placeholder={placeholder}
+        defaultValue={value}
+        {...field}
+      />
       {isModal && <p className={cx("error-message")}>{isError && fieldState.error?.message}</p>}
     </div>
   );
