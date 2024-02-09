@@ -39,7 +39,7 @@ export default function ProfileChangeForm() {
     }
   }, [userMeData]);
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+  const onSubmit: SubmitHandler<FieldValues> = data => {
     if (profileImageUrl === "" || showBasicProfile) {
       putChangeUserProfile(data.nickname, null, accessToken);
     } else {
@@ -91,32 +91,43 @@ export default function ProfileChangeForm() {
         <div className={cx("contents")}>
           <div className={cx("contents-upload-area")}>
             {!showBasicProfile ? (
-              <div className={cx("contents-upload-image")}>
-                {userMeData?.profileImageUrl ? (
-                  <Image fill src={userMeData?.profileImageUrl} alt="현재 이미지" style={{ objectFit: "cover" }} />
-                ) : (
-                  <div className={cx("contents-basic-image")}>
-                    <span className={cx("nickname")}>{extractFirstLetter(userMeData?.nickname)}</span>
+              <>
+                <div className={cx("contents-upload-image")}>
+                  {userMeData?.profileImageUrl ? (
+                    <Image fill src={userMeData?.profileImageUrl} alt="현재 이미지" style={{ objectFit: "cover" }} />
+                  ) : (
+                    <div className={cx("contents-basic-image")}>
+                      <span className={cx("nickname")}>{extractFirstLetter(userMeData?.nickname)}</span>
+                    </div>
+                  )}
+                  {previewImage && typeof previewImage === "string" && (
+                    <Image fill src={previewImage} alt="미리 보기" style={{ objectFit: "cover" }} />
+                  )}
+                  <label htmlFor="profile-image">
+                    <div className={cx("lable-file-type")}>
+                      <Image
+                        width={28}
+                        height={28}
+                        src="/assets/icons/ic-plus-without-background.svg"
+                        alt="이미지 추가하기"
+                        style={{ objectFit: "cover" }}
+                      />
+                    </div>
+                  </label>
+
+                  <div style={{ display: "none" }} onChange={handleUploadImage}>
+                    <Input name="profile-image" labelName="" type="file" control={control as any} />
                   </div>
-                )}
-                {previewImage && typeof previewImage === "string" && (
-                  <Image fill src={previewImage} alt="미리 보기" style={{ objectFit: "cover" }} />
-                )}
-              </div>
+                </div>
+              </>
             ) : (
               <div className={cx("contents-basic-image")}>
                 <span className={cx("nickname")}>{extractFirstLetter(userMeData?.nickname)}</span>
               </div>
             )}
 
-            <label htmlFor="profile-image">
-              <span className={cx("upload-image-btn")}>사진 선택</span>
-            </label>
             <div onClick={handleChangeDefaultImage}>
               <span className={cx("basic-image-btn")}>기본 이미지로 변경</span>
-            </div>
-            <div style={{ display: "none" }} onChange={handleUploadImage}>
-              <Input name="profile-image" labelName="" type="file" control={control as any} />
             </div>
           </div>
 

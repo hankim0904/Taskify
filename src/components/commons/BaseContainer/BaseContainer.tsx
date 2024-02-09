@@ -32,7 +32,7 @@ export default function BaseContainer({ currentPath, accessToken, children }: Ba
   const bottomObserver = useRef<HTMLDivElement | null>(null);
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
-    queryKey: ["sideBarDashboardList"],
+    queryKey: ["dashboardList"],
     queryFn: ({ pageParam = 1 }) => getDashBoards("pagination", accessToken, 18, pageParam),
     initialPageParam: 1,
     getNextPageParam: () => {

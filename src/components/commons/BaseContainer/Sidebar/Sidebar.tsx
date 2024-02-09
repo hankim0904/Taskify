@@ -16,13 +16,13 @@ interface DashboardData {
   color: string;
   createdAt: string;
   updatedAt: string;
-  createdByMe: true;
+  createdByMe: boolean;
   userId: number;
 }
 
 interface SidebarPorps {
   handleChangeDashBoardTitle: (selectedDashboard: DashboardData) => void;
-  dashboardDatas: any;
+  dashboardDatas: DashboardData[];
   bottomObserver: any;
 }
 
@@ -49,13 +49,13 @@ export default function Sidebar({ handleChangeDashBoardTitle, dashboardDatas, bo
     <div className={cx("sidebar")}>
       <div className={cx("logo")}>
         <div className={cx("logo-symbol")}>
-          <Link href="/">
+          <Link href="/mydashboard">
             <Image fill src="/assets/images/logo-symbol.png" alt="로고 심볼" />
           </Link>
         </div>
 
         <div className={cx("logo-typo")}>
-          <Link href="/">
+          <Link href="/mydashboard">
             <Image fill src="/assets/images/logo-typo.png" alt="로고 타이포" />
           </Link>
         </div>

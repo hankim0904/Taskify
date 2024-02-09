@@ -34,7 +34,7 @@ export default function UserProfile({ userMeData, extractFirstLetter }: UserProf
     <div className={cx("navbar-user")} ref={dropMenuRef} onClick={handleDropDownMenu}>
       {userMeData?.profileImageUrl ? (
         <>
-          <div className={cx("navbar-user-circle")}>
+          <div className={cx("navbar-user-circle")} style={{ backgroundColor: "transparent" }}>
             <Image fill src={userMeData?.profileImageUrl} className={cx("profile-img")} alt="내 이미지" />
           </div>
           <div className={cx("navbar-user-name")}>{userMeData?.nickname}</div>
