@@ -11,6 +11,7 @@ import { useModal } from "@ebay/nice-modal-react";
 import UserProfile from "./UserProfile/UserProfile";
 import { useAuth } from "@/contexts/AuthContext";
 import extractFirstLetter from "@/utils/extractFirstLetter";
+import getDashBoards from "@/api/getDashBoards";
 
 const cx = classNames.bind(styles);
 
@@ -29,9 +30,9 @@ interface DashboardData {
 
 interface NavbarProps {
   currentPath: string;
-  selectedDashboard: DashboardData | null;
-  dashBoardTitle: any;
-  isCreatedByMe: any;
+  dashBoardTitle: string;
+  isCreatedByMe: boolean;
+  dashboardTotalCount: number;
 }
 
 type Member = {
@@ -40,7 +41,7 @@ type Member = {
   nickname: string;
 };
 
-export default function Navbar({ currentPath, selectedDashboard, dashBoardTitle, isCreatedByMe }: NavbarProps) {
+export default function Navbar({ currentPath, dashBoardTitle, isCreatedByMe, dashboardTotalCount }: NavbarProps) {
   const [isTablet, setIsTablet] = useState(false);
   const modal = useModal(InviteModal);
   const router = useRouter();
@@ -59,8 +60,16 @@ export default function Navbar({ currentPath, selectedDashboard, dashBoardTitle,
     queryFn: () => getUsersMe(accessToken),
   });
 
+  const { data: dashboardData } = useQuery({
+    queryKey: ["navbarDashboardTitle"],
+    queryFn: () => getDashBoards("pagination", accessToken, dashboardTotalCount, 1),
+  });
+
+  const dashboardList = dashboardData?.dashboards || [];
   const displayedMembers: Member[] = memberList.slice(0, isTablet ? MAX_DISPLAY_TABLET : MAX_DISPLAY_PC);
   const remainingMembersCount: number = memberTotalCount ? memberTotalCount - displayedMembers.length : 0;
+
+  const clickedDashboard = dashboardList.find((dashboard: DashboardData) => dashboard.id === Number(dashboardId));
 
   useEffect(() => {
     const handleResize = () => {
@@ -84,11 +93,11 @@ export default function Navbar({ currentPath, selectedDashboard, dashBoardTitle,
       <div className={cx("navbar-title")}>
         {currentPath.includes("/dashboard") && (
           <>
-            <span className={cx("dashboard-name")}>{selectedDashboard?.title || dashBoardTitle}</span>
+            <span className={cx("dashboard-name")}>{clickedDashboard?.title || dashBoardTitle}</span>
 
             <span className={cx("created-icon")}>
               {isCreatedByMe && <Image fill src="/assets/icons/ic-crown.svg" alt="왕관 모양 아이콘" />}
-              {selectedDashboard?.createdByMe && <Image fill src="/assets/icons/ic-crown.svg" alt="왕관 모양 아이콘" />}
+              {clickedDashboard?.createdByMe && <Image fill src="/assets/icons/ic-crown.svg" alt="왕관 모양 아이콘" />}
             </span>
           </>
         )}
@@ -129,8 +138,7 @@ export default function Navbar({ currentPath, selectedDashboard, dashBoardTitle,
                       position: "relative",
                       right: `${index}rem`,
                       backgroundColor: "white",
-                    }}
-                  >
+                    }}>
                     <Image
                       fill
                       src={member.profileImageUrl}
@@ -144,17 +152,15 @@ export default function Navbar({ currentPath, selectedDashboard, dashBoardTitle,
                     style={{
                       position: "relative",
                       right: `${index}rem`,
-                    }}
-                  >
+                    }}>
                     <span className={cx("navbar-member-list-nickname")}>{extractFirstLetter(member.nickname)}</span>
                   </div>
-                )
+                ),
               )}
             {memberTotalCount !== undefined && memberTotalCount > displayedMembers.length && (
               <div
                 className={cx("navbar-member-list", "count")}
-                style={{ position: "relative", right: `${displayedMembers.length}rem` }}
-              >
+                style={{ position: "relative", right: `${displayedMembers.length}rem` }}>
                 <span className={cx("navbar-member-list-count")}>+{remainingMembersCount}</span>
               </div>
             )}

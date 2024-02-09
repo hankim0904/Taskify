@@ -1,7 +1,7 @@
 import styles from "./UserProfile.module.scss";
 import classNames from "classnames/bind";
 import Image from "next/image";
-import UserDropdownMenu from "./UserDropdownMenu/UserDropdownMenu";
+import UserDropdownMenu from "./UserDropdownMenu";
 import { useEffect, useRef, useState } from "react";
 
 const cx = classNames.bind(styles);

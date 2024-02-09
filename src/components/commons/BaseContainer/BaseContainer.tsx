@@ -5,7 +5,6 @@ import classNames from "classnames/bind";
 import { ReactNode, useEffect, useRef, useState } from "react";
 import getDashBoards from "@/api/getDashBoards";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { useRouter } from "next/router";
 import { useIntersectionObserver } from "@/components/domains/dashboardid/utils/useIntersectionObserver";
 
 const cx = classNames.bind(styles);
@@ -28,11 +27,7 @@ interface BaseContainerProps {
 
 export default function BaseContainer({ currentPath, accessToken, children }: BaseContainerProps) {
   const [isCreatedByMe, setIsCreatedByMe] = useState(false);
-  const [selectedDashboard, setSelectedDashboard] = useState<DashboardData | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
-
-  const router = useRouter();
-  const dashboardId: string | string[] | undefined = router.query.dashboardid;
 
   const bottomObserver = useRef<HTMLDivElement | null>(null);
 
@@ -46,7 +41,7 @@ export default function BaseContainer({ currentPath, accessToken, children }: Ba
   });
 
   const dashboardTotalCount = data?.pages[0].totalCount;
-  const allDashboardDatas = data?.pages.flatMap((page) => page.dashboards) ?? [];
+  const allDashboardDatas = data?.pages.flatMap(page => page.dashboards) ?? [];
 
   const fetchNextDashboard = () => {
     if (dashboardTotalCount === allDashboardDatas.length) return;
@@ -58,14 +53,6 @@ export default function BaseContainer({ currentPath, accessToken, children }: Ba
   };
 
   useIntersectionObserver(bottomObserver, fetchNextDashboard, { threshold: 0 });
-
-  useEffect(() => {
-    const dashboardId: string | string[] | undefined = router.query.dashboardid;
-    if (dashboardId) {
-      const selectedDashboard = allDashboardDatas.find((data: DashboardData) => data.id === Number(dashboardId));
-      setSelectedDashboard(selectedDashboard);
-    }
-  }, [router.query.dashboardid, allDashboardDatas]);
 
   const [dashBoardTitle, setDashBoardTitle] = useState("");
 
@@ -80,16 +67,15 @@ export default function BaseContainer({ currentPath, accessToken, children }: Ba
         <Sidebar
           handleChangeDashBoardTitle={handleChangeDashBoardTitle}
           dashboardDatas={allDashboardDatas}
-          setSelectedDashboard={setSelectedDashboard}
           bottomObserver={bottomObserver}
         />
       </div>
       <div className={cx("grid-navbar")}>
         <Navbar
           currentPath={currentPath}
-          selectedDashboard={selectedDashboard}
           dashBoardTitle={dashBoardTitle}
           isCreatedByMe={isCreatedByMe}
+          dashboardTotalCount={dashboardTotalCount}
         />
       </div>
       <div className={cx("grid-content")}>{children}</div>

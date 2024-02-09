@@ -23,16 +23,10 @@ interface DashboardData {
 interface SidebarPorps {
   handleChangeDashBoardTitle: (selectedDashboard: DashboardData) => void;
   dashboardDatas: any;
-  setSelectedDashboard: any;
   bottomObserver: any;
 }
 
-export default function Sidebar({
-  handleChangeDashBoardTitle,
-  dashboardDatas,
-  setSelectedDashboard,
-  bottomObserver,
-}: SidebarPorps) {
+export default function Sidebar({ handleChangeDashBoardTitle, dashboardDatas, bottomObserver }: SidebarPorps) {
   const [selectedIdx, setSelectedIdx] = useState(0);
   const router = useRouter();
 
@@ -42,7 +36,7 @@ export default function Sidebar({
     if (selectedDashboard) {
       setSelectedIdx(selectedDashboard.id);
       handleChangeDashBoardTitle(selectedDashboard);
-      setSelectedDashboard(selectedDashboard);
+
       router.push(`/dashboard/${dashboardId}`);
     }
   }
