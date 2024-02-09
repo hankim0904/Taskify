@@ -11,6 +11,8 @@ import putChangeUserProfile from "@/api/putChangeUserProfile";
 import { axiosCSRInstance } from "@/api/axiosCSRInstance";
 import { useAuth } from "@/contexts/AuthContext";
 import extractFirstLetter from "@/utils/extractFirstLetter";
+import SignModal from "@/components/commons/Modals/SignModal/SignModal";
+import NiceModal from "@ebay/nice-modal-react";
 
 const cx = classNames.bind(styles);
 
@@ -33,6 +35,10 @@ export default function ProfileChangeForm() {
 
   const { accessToken } = useAuth();
 
+  const showModal = (text: string) => {
+    NiceModal.show(SignModal, { text });
+  };
+
   useEffect(() => {
     if (userMeData) {
       setValue("nickname", userMeData.nickname);
@@ -50,11 +56,18 @@ export default function ProfileChangeForm() {
   async function handleUploadImage(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files && e.target.files[0];
     const extension = file?.name.split(".").pop();
+    const MAX_SIZE = 1024 * 1024 * 4;
 
     if (!extension || !["jpg", "jpeg", "png", "gif"].includes(extension.toLowerCase())) {
-      alert("이미지 파일을 선택해주세요.");
+      showModal("이미지 파일을 선택해주세요.");
       return false;
     }
+
+    if (!file || file.size > MAX_SIZE) {
+      showModal("5MB 이하 파일을 선택해 주세요.");
+      return false;
+    }
+
     if (file) {
       const reader = new FileReader();
 
@@ -74,7 +87,7 @@ export default function ProfileChangeForm() {
         });
 
         setProfileImageUrl(res.data.profileImageUrl);
-      } catch (e) {
+      } catch (error) {
         throw new Error(`${e}`);
       }
     }
@@ -103,7 +116,7 @@ export default function ProfileChangeForm() {
                   {previewImage && typeof previewImage === "string" && (
                     <Image fill src={previewImage} alt="미리 보기" style={{ objectFit: "cover" }} />
                   )}
-                  <label htmlFor="profile-image">
+                  <label htmlFor="upload-image">
                     <div className={cx("lable-file-type")}>
                       <Image
                         width={28}
@@ -116,14 +129,30 @@ export default function ProfileChangeForm() {
                   </label>
 
                   <div style={{ display: "none" }} onChange={handleUploadImage}>
-                    <Input name="profile-image" labelName="" type="file" control={control as any} />
+                    <Input name="upload-image" labelName="" type="file" control={control as any} />
                   </div>
                 </div>
               </>
             ) : (
-              <div className={cx("contents-basic-image")}>
-                <span className={cx("nickname")}>{extractFirstLetter(userMeData?.nickname)}</span>
-              </div>
+              <>
+                <div className={cx("contents-basic-image")}>
+                  <span className={cx("nickname")}>{extractFirstLetter(userMeData?.nickname)}</span>
+                  <label htmlFor="basic-to-image">
+                    <div className={cx("lable-file-type")}>
+                      <Image
+                        width={28}
+                        height={28}
+                        src="/assets/icons/ic-plus-without-background.svg"
+                        alt="이미지 추가하기"
+                        style={{ objectFit: "cover" }}
+                      />
+                    </div>
+                    <div style={{ display: "none" }} onChange={handleUploadImage}>
+                      <Input name="basic-to-image" labelName="" type="file" control={control as any} />
+                    </div>
+                  </label>
+                </div>
+              </>
             )}
 
             <div onClick={handleChangeDefaultImage}>

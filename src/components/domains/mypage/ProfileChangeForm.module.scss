@@ -105,6 +105,28 @@
         height: 18.2rem;
         border-radius: 50%;
         background-color: #ffc85a;
+        cursor: pointer;
+
+        .lable-file-type {
+          @include flexbox(center, center);
+          opacity: 0;
+          position: absolute;
+          top: 0;
+          left: 0;
+          background-color: rgba(245, 245, 245, 1);
+          width: 18.2rem;
+          height: 18.2rem;
+          border-radius: 50%;
+
+          @include responsive("M") {
+            width: 10rem;
+            height: 10rem;
+          }
+        }
+
+        &:hover .lable-file-type {
+          opacity: 0.5;
+        }
 
         .nickname {
           @include pos-center(absolute);
