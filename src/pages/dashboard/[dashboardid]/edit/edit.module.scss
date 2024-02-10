@@ -14,6 +14,10 @@
 .dashborad-delete-btn {
   & button {
     width: 32rem;
+
+    @include responsive("M") {
+      width: 100%;
+    }
   }
 }
 

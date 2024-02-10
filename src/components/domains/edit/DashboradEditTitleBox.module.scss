@@ -18,7 +18,7 @@
   width: 100%;
 
   @include responsive("M") {
-    flex-wrap: wrap;
+    padding: 2.8rem 2.4rem;
     gap: 1.2rem;
     margin-bottom: -0.5rem;
   }
