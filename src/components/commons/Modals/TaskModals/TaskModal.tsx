@@ -10,7 +10,7 @@ import DateInput from "../../Input/DateInput";
 import ModalBackground from "../ModalBackground";
 import { postCardData, postUploadCardImg, putCardData } from "@/api/postCardData";
 import { useRouter } from "next/router";
-import formatDate from "./utill/dateChange";
+import PostformatDate from "./utill/dateChange";
 import { useAuth } from "@/contexts/AuthContext";
 import Image from "next/image";
 import DescriptionTag from "../../tag/DescriptionTag/DescriptionTag";
@@ -25,6 +25,7 @@ import { getCardDetail } from "@/components/domains/dashboardid/api/queries";
 import getMembers from "@/api/getMembers";
 import TaskModalDropDown from "./TaskModalDropDown/TaskModalDropDown";
 import isValidFile from "./utill/isVaildFile";
+import { ColumnListData } from "@/components/domains/dashboardid/api/type";
 
 const cx = classNames.bind(styles);
 
@@ -49,8 +50,8 @@ interface FormValues {
   columnId?: number;
   title?: string;
   description?: string;
-  dueDate?: string;
-  tags?: string[];
+  dueDate?: string | Date;
+  tags?: string | string[];
   imageUrl?: string;
 }
 
@@ -76,7 +77,7 @@ function TaskModal({ isEdit = false, onCancel, columnId, cardId }: Props) {
   const [selectMemberId, setSelectMemberId] = useState(0);
   const [selectColumnId, setSelectColumnId] = useState(columnId);
 
-  const { control, setValue, handleSubmit, formState, getValues, register } = useForm<FormValues | any>({
+  const { control, setValue, handleSubmit, formState, register } = useForm<FormValues>({
     mode: "onBlur",
   });
 
@@ -91,7 +92,7 @@ function TaskModal({ isEdit = false, onCancel, columnId, cardId }: Props) {
     enabled: isEdit,
   });
 
-  const { data: columnListData } = useQuery<any>({
+  const { data: columnListData } = useQuery<ColumnListData>({
     queryKey: getColumnListQueryKey(dashboardid),
     enabled: isEdit,
   });
@@ -188,7 +189,7 @@ function TaskModal({ isEdit = false, onCancel, columnId, cardId }: Props) {
     const postData = data;
     postData.assigneeUserId = selectMemberId;
 
-    postData.dueDate = data.dueDate ? formatDate(data.dueDate) : formatDate(startDate);
+    postData.dueDate = data.dueDate ? PostformatDate(data.dueDate) : PostformatDate(startDate);
 
     postData.tags = tagList.flatMap((tag) => JSON.stringify(tag));
     postData.imageUrl = imgFile;
@@ -218,11 +219,6 @@ function TaskModal({ isEdit = false, onCancel, columnId, cardId }: Props) {
               selectMemberId={selectMemberId}
             />
           </div>
-          {/* <div className={cx("dropdown-line")}>
-            {isEdit && <DropdownForTaskModal name='state' columnId={columnId} />}
-            <DropdownForTaskModal name="assignee"  ownerId={ownerId} members={members} />
-          </div> */}
-
           <Input
             isModal={true}
             type="text"
@@ -254,7 +250,7 @@ function TaskModal({ isEdit = false, onCancel, columnId, cardId }: Props) {
               type="text"
               {...register("tags")}
               placeholder="입력 후 Enter"
-              onChange={(e) => setTagItem({ name: e.target.value, style: getRandomColor(0.3) })}
+              onChange={(e) => setTagItem({ name: e.target.value, style: getRandomColor(0.15) })}
               onKeyDown={handelSubmitTagList}
               value={tagItem.name}
             />
@@ -263,7 +259,7 @@ function TaskModal({ isEdit = false, onCancel, columnId, cardId }: Props) {
             <Input isModal={true} type="file" name="imageUrl" labelName="이미지" placeholder="" control={control} />
             {imgFile !== NULL_IMG && (
               <Image
-                className={cx("input-file-img")}
+                className={cx("input-file-img", { existed: imgFile === cardData.imageUrl })}
                 src={imgFile}
                 width={80}
                 height={80}

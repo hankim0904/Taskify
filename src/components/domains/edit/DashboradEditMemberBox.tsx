@@ -4,20 +4,16 @@ import classNames from "classnames/bind";
 import PageChangeButton from "@/components/commons/Buttons/PageChangeButton";
 import Image from "next/image";
 import { useModal } from "@ebay/nice-modal-react";
-//import InviteModal from "@/components/commons/Modals/InviteModal/InviteModal";
-import TaskModal from "@/components/commons/Modals/TaskModals/TaskModal";
-import { MutationFunction, keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   getDashBoardMembers,
   getDashBoardMembersQueryKey,
   getDashboardInvitations,
   getDashboardInvitationsQueryKey,
-} from "../../../../api/getEditData";
+} from "@/api/getEditData";
 import { useEffect, useState } from "react";
-import ColumnModal from "@/components/commons/Modals/ColumnModals/ColumnModal";
 import { useParams } from "next/navigation";
-import { deleteDashBoard, deleteInvitations, deleteMembers } from "../../../../api/deleteDashBoradData";
-import { isElement } from "react-dom/test-utils";
+import { deleteInvitations, deleteMembers } from "../../../api/deleteDashBoradData";
 import InviteModal from "@/components/commons/Modals/InviteModal/InviteModal";
 import extractInitial from "@/utils/extractInitial";
 

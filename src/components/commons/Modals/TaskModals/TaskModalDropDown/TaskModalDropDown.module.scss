@@ -10,11 +10,8 @@
 }
 
 .text {
-  font-size: 1.8rem;
-  font-weight: 500;
-  color: #333236;
-  line-height: normal;
-  font-style: normal;
+  @include text-style(1.8, 500, $black-200);
+  white-space: nowrap;
 
   & > span {
     color: #5534da;
@@ -28,17 +25,17 @@
   position: relative;
   border: 0.1rem solid #d9d9d9;
   border-radius: 0.5rem;
-  padding: 1.5rem 1.6rem;
+  padding: 1.5rem 1.2rem;
   width: 100%;
   cursor: pointer;
   background: url("https://www.iconpacks.net/icons/2/free-arrow-down-icon-3101-thumb.png") calc(100% - 1rem) center
     no-repeat;
   background-size: 1.5rem;
-  font-size: 1.6rem;
+  font-size: 1.5rem;
 
   & > img {
-    width: 26px;
-    height: 26px;
+    width: 2.6rem;
+    height: 2.6rem;
     border-radius: 50%;
   }
 }
@@ -58,10 +55,9 @@
 }
 
 .item {
-  display: flex;
-  align-items: center;
+  @include flexbox(start);
   gap: 0.6rem;
-  padding-inline: 2rem;
+  padding-inline: 1rem;
   padding-block: 1rem;
 
   &:hover {

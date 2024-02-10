@@ -1,12 +1,11 @@
-import React, { useEffect } from "react";
+import React from "react";
 import styles from "./TaskModalDropDown.module.scss";
 import classNames from "classnames/bind";
-import { useQuery } from "@tanstack/react-query";
-import { useRouter } from "next/router";
 import { useState } from "react";
 import extractInitial from "@/utils/extractInitial";
 import Image from "next/image";
 import ProgressTag from "@/components/commons/tag/ProgressTag/ProgressTag";
+import { Column, ColumnListData } from "@/components/domains/dashboardid/api/type";
 
 const cx = classNames.bind(styles);
 
@@ -20,12 +19,12 @@ interface Member {
 }
 
 interface Props {
-  setSelectMemberId?: any;
+  setSelectMemberId?: (id: number) => void;
   selectMemberId?: number;
   members?: Member[];
   columnId?: number;
-  columnList?: any;
-  setSelectColumnId?: any;
+  columnList?: Column[];
+  setSelectColumnId?: (id: number) => void;
   selectColumnId?: number;
 }
 
@@ -39,7 +38,7 @@ export default function TaskModalDropDown({
 }: Props) {
   const [isModalOn, setIsModalOn] = useState(true);
 
-  const selectedColumn = columnList?.find((column: any) => selectColumnId === column.id);
+  const selectedColumn = columnList?.find((column: Column) => selectColumnId === column.id);
 
   const selectedMember = members?.find((member: Member) => selectMemberId === member.userId);
 
@@ -61,10 +60,10 @@ export default function TaskModalDropDown({
             {members?.map((member: Member) => (
               <div
                 key={member.id}
-                className={cx("item", { "background-red": member.id === selectMemberId })}
+                className={cx("item", { "background-red": member.userId === selectMemberId })}
                 onClick={() => {
                   setIsModalOn(!isModalOn);
-                  setSelectMemberId(member.userId);
+                  setSelectMemberId && setSelectMemberId(member.userId);
                 }}
               >
                 {member.profileImageUrl ? (
@@ -87,13 +86,13 @@ export default function TaskModalDropDown({
         <div className={cx("select")} onClick={() => setIsModalOn(!isModalOn)}>
           {selectedColumn && <ProgressTag>{selectedColumn.title}</ProgressTag>}
           <div className={cx("list", { isModalOn })}>
-            {columnList?.map((column: any) => (
+            {columnList?.map((column: Column) => (
               <ul
                 key={column.id}
                 className={cx("item", { "background-red": column.id === selectColumnId })}
                 onClick={() => {
                   setIsModalOn(!isModalOn);
-                  setSelectColumnId(column.id);
+                  setSelectColumnId && setSelectColumnId(column.id);
                 }}
               >
                 <ProgressTag>{column.title}</ProgressTag>

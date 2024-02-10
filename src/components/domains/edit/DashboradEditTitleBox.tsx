@@ -1,17 +1,15 @@
 import Input from "@/components/commons/Input/Input";
 import styles from "./DashboradEditTitleBox.module.scss";
 import classNames from "classnames/bind";
-import { ReactNode, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import ResponseBtn from "@/components/commons/Buttons/ResponseButton";
 import { FieldValues, SubmitHandler, useForm, useWatch } from "react-hook-form";
 import ColorList from "@/components/commons/ColorList/ColorList";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
-import { getDashBoardTittle, getDashBoardTittleQueryKey } from "../../../../api/getEditData";
+import { getDashBoardTittleQueryKey } from "@/api/getEditData";
 import { putDashBoard } from "@/api/putDashBoard";
 import { DashBoradData } from "@/pages/dashboard/[dashboardid]/edit";
-
-getDashBoardTittleQueryKey;
 
 const cx = classNames.bind(styles);
 
@@ -23,13 +21,14 @@ const colorList: { [key: string]: string } = {
   pink: "#e876ea",
 };
 
+function getKeyByValue(obj: { [key: string]: string }, value: string) {
+  return Object.keys(obj).find((key) => obj[key] === value) as string;
+}
+
 export default function DashboradEditTitleBox({ titleData }: { titleData: DashBoradData }) {
   const { control, handleSubmit, formState, setValue } = useForm();
   const { dashboardid } = useParams();
 
-  function getKeyByValue(obj: { [key: string]: string }, value: string) {
-    return Object.keys(obj).find((key) => obj[key] === value) as string;
-  }
   const [color, setColor] = useState("");
   const queryClient = useQueryClient();
 
