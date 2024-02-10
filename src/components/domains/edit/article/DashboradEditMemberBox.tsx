@@ -46,8 +46,6 @@ interface Invitation {
   };
 }
 
-//초대 취소시 유저 아이디 필요
-
 export default function DashboradEditMemberBox({ title, isMemberEdit }: Props) {
   const modal = useModal(InviteModal);
   const [page, setPage] = useState(1);
@@ -111,11 +109,15 @@ export default function DashboradEditMemberBox({ title, isMemberEdit }: Props) {
     },
   });
 
-  const handelDelteMember = (id: number, isOwner: boolean) => {
+  const handelDelteMember = (id: number, isOwner: boolean, name?: string) => {
     if (isMemberEdit) {
-      isOwner ? deleteMemberMutation.mutate(id) : alert("관리자만 구성원을 삭제할 수 있습니다");
+      confirm(`${name} 님을 삭제하시겠습니까?`)
+        ? isOwner
+          ? alert("관리자만 구성원을 삭제할 수 있습니다")
+          : deleteMemberMutation.mutate(id)
+        : alert("삭제를 취소했습니다");
     } else {
-      deleteInvitationMutation.mutate(id);
+      confirm(`${name} 님 초대를 취소하시겠습니까?`) ? deleteInvitationMutation.mutate(id) : false;
     }
   };
 
@@ -174,7 +176,10 @@ export default function DashboradEditMemberBox({ title, isMemberEdit }: Props) {
               <>{member.invitee?.email}</>
             )}
             {!member.isOwner && (
-              <ResponseBtn onClick={() => handelDelteMember(member.id, member.isOwner)} state="reject">
+              <ResponseBtn
+                onClick={() => handelDelteMember(member.id, member.isOwner, member.nickname || member.invitee?.email)}
+                state="reject"
+              >
                 {isMemberEdit ? "삭제" : "취소"}
               </ResponseBtn>
             )}

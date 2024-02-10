@@ -69,7 +69,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 }
 
 export default function Edit({ dehydratedState }: { dehydratedState: DehydratedState }) {
-  //const { accessToken } = useAuth();
   const router = useRouter();
   const currentPath = router.pathname;
   const isOpenModal = false;

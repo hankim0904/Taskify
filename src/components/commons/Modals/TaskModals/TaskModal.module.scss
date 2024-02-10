@@ -24,7 +24,7 @@
 }
 
 .form {
-  @include column-flexbox(start, end);
+  @include column-flexbox(start, start);
   width: 44rem;
   gap: 1.8rem;
 
@@ -48,6 +48,10 @@
   @include flexbox(start);
   width: 100%;
   gap: 1.6rem;
+
+  &.add {
+    width: 50%;
+  }
 }
 
 .tag-list {

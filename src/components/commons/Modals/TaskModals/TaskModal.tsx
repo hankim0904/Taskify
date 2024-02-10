@@ -97,9 +97,6 @@ function TaskModal({ isEdit = false, onCancel, columnId, cardId }: Props) {
   });
   const columnList = columnListData?.data ?? [];
 
-  console.log("컬럼리스트", columnList);
-
-  console.log("ccc", cardData);
   const { data: memberData } = useQuery({
     queryKey: ["memberList", dashboardid],
     queryFn: () => getMembers(accessToken, dashboardid),
@@ -118,7 +115,6 @@ function TaskModal({ isEdit = false, onCancel, columnId, cardId }: Props) {
       setValue("dueDate", new Date(cardData.dueDate));
       setSelectColumnId(cardData.columnId);
       setSelectMemberId(cardData.assignee.id);
-      // 관리자 지정하기
       const prevTags = cardData.tags.map((tag: string) => JSON.parse(tag));
       setTagList(prevTags);
       setImgFile(cardData.imageUrl);
@@ -174,7 +170,6 @@ function TaskModal({ isEdit = false, onCancel, columnId, cardId }: Props) {
     mutationFn: (postdata: FormValues) => postCardData(postdata),
     onSuccess: () => {
       onCancel();
-
       queryClient.invalidateQueries({ queryKey: getCardListQueryKey(columnId as number) });
     },
   });
@@ -185,12 +180,12 @@ function TaskModal({ isEdit = false, onCancel, columnId, cardId }: Props) {
       onCancel();
       queryClient.invalidateQueries({ queryKey: getCardListQueryKey(columnId as number) });
       queryClient.invalidateQueries({ queryKey: getCardListQueryKey(selectColumnId as number) });
+      queryClient.invalidateQueries({ queryKey: getCardDetailQueryKey(cardId as number) });
     },
   });
 
   async function onSubmit(data: FormValues) {
     const postData = data;
-    console.log("post", postData);
     postData.assigneeUserId = selectMemberId;
 
     postData.dueDate = data.dueDate ? formatDate(data.dueDate) : formatDate(startDate);
@@ -208,7 +203,7 @@ function TaskModal({ isEdit = false, onCancel, columnId, cardId }: Props) {
       <article className={cx("modal-container")}>
         <h2 className={cx("title")}>{isEdit ? "할 일 수정" : "할 일 생성"}</h2>
         <form className={cx("form")} onSubmit={handleSubmit(onSubmit)}>
-          <div className={cx("dropdown-line")}>
+          <div className={cx("dropdown-line", { add: !isEdit })}>
             {isEdit && (
               <TaskModalDropDown
                 columnId={columnId}
