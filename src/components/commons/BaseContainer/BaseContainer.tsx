@@ -2,7 +2,7 @@ import Navbar from "./Navbar/Navbar";
 import Sidebar from "./Sidebar/Sidebar";
 import styles from "./BaseContainer.module.scss";
 import classNames from "classnames/bind";
-import { ReactNode, useEffect, useRef, useState } from "react";
+import { ReactNode, useRef, useState } from "react";
 import getDashBoards from "@/api/getDashBoards";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useIntersectionObserver } from "@/components/domains/dashboardid/utils/useIntersectionObserver";
@@ -26,7 +26,6 @@ interface BaseContainerProps {
 }
 
 export default function BaseContainer({ currentPath, accessToken, children }: BaseContainerProps) {
-  const [isCreatedByMe, setIsCreatedByMe] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
 
   const bottomObserver = useRef<HTMLDivElement | null>(null);
@@ -54,29 +53,13 @@ export default function BaseContainer({ currentPath, accessToken, children }: Ba
 
   useIntersectionObserver(bottomObserver, fetchNextDashboard, { threshold: 0 });
 
-  const [dashBoardTitle, setDashBoardTitle] = useState("");
-
-  function handleChangeDashBoardTitle(selectedDashboard: DashboardData) {
-    setDashBoardTitle(selectedDashboard.title);
-    setIsCreatedByMe(selectedDashboard.createdByMe);
-  }
-
   return (
     <div className={cx("grid")}>
       <div className={cx("grid-sidebar")}>
-        <Sidebar
-          handleChangeDashBoardTitle={handleChangeDashBoardTitle}
-          dashboardDatas={allDashboardDatas}
-          bottomObserver={bottomObserver}
-        />
+        <Sidebar dashboardDatas={allDashboardDatas} bottomObserver={bottomObserver} />
       </div>
       <div className={cx("grid-navbar")}>
-        <Navbar
-          currentPath={currentPath}
-          dashBoardTitle={dashBoardTitle}
-          isCreatedByMe={isCreatedByMe}
-          dashboardTotalCount={dashboardTotalCount}
-        />
+        <Navbar currentPath={currentPath} dashboardTotalCount={dashboardTotalCount} />
       </div>
       <div className={cx("grid-content")}>{children}</div>
     </div>

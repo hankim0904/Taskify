@@ -30,8 +30,6 @@ interface DashboardData {
 
 interface NavbarProps {
   currentPath: string;
-  dashBoardTitle: string;
-  isCreatedByMe: boolean;
   dashboardTotalCount: number;
 }
 
@@ -41,7 +39,7 @@ type Member = {
   nickname: string;
 };
 
-export default function Navbar({ currentPath, dashBoardTitle, isCreatedByMe, dashboardTotalCount }: NavbarProps) {
+export default function Navbar({ currentPath, dashboardTotalCount }: NavbarProps) {
   const [isTablet, setIsTablet] = useState(false);
   const modal = useModal(InviteModal);
   const router = useRouter();
@@ -93,10 +91,9 @@ export default function Navbar({ currentPath, dashBoardTitle, isCreatedByMe, das
       <div className={cx("navbar-title")}>
         {currentPath.includes("/dashboard") && (
           <>
-            <span className={cx("dashboard-name")}>{clickedDashboard?.title || dashBoardTitle}</span>
+            <span className={cx("dashboard-name")}>{clickedDashboard?.title}</span>
 
             <span className={cx("created-icon")}>
-              {isCreatedByMe && <Image fill src="/assets/icons/ic-crown.svg" alt="왕관 모양 아이콘" />}
               {clickedDashboard?.createdByMe && <Image fill src="/assets/icons/ic-crown.svg" alt="왕관 모양 아이콘" />}
             </span>
           </>
