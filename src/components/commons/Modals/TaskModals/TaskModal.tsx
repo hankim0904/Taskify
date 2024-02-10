@@ -261,7 +261,7 @@ function TaskModal({ isEdit = false, onCancel, columnId, cardId }: Props) {
             <Input isModal={true} type="file" name="imageUrl" labelName="이미지" placeholder="" control={control} />
             {imgFile !== NULL_IMG && (
               <Image
-                className={cx("input-file-img", { existed: imgFile === cardData.imageUrl })}
+                className={cx("input-file-img", { existed: imgFile === cardData?.imageUrl })}
                 src={imgFile}
                 width={80}
                 height={80}
