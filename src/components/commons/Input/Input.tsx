@@ -45,7 +45,7 @@ export default function Input({
         {labelName}
         {isModal && props.rules?.required && <span className={cx("modalRequired")}> *</span>}
         {inputType === "file" && (
-          <div className={cx("file-type-lable")}>
+          <div className={cx("lable-file-type")}>
             <Image
               width={28}
               height={28}
