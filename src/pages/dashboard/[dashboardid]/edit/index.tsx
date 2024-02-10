@@ -21,6 +21,8 @@ import { useParams } from "next/navigation";
 import { putDashBoard } from "@/api/putDashBoard";
 import getDashBoards from "@/api/getDashBoards";
 import { easeInOut, motion } from "framer-motion";
+import { useModal } from "@ebay/nice-modal-react";
+import InviteModal from "@/components/commons/Modals/InviteModal/InviteModal";
 
 const cx = classNames.bind(styles);
 
@@ -71,7 +73,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 export default function Edit({ dehydratedState }: { dehydratedState: DehydratedState }) {
   const router = useRouter();
   const currentPath = router.pathname;
-  const isOpenModal = false;
   const { dashboardid } = useParams();
 
   const { data: titleData } = useQuery({
@@ -102,7 +103,7 @@ export default function Edit({ dehydratedState }: { dehydratedState: DehydratedS
   return (
     <HydrationBoundary state={dehydratedState}>
       <BaseContainer currentPath={currentPath}>
-        <main className={cx("main", { openModal: isOpenModal })}>
+        <main className={cx("main")}>
           <motion.button
             type="button"
             onClick={gobackButton}
