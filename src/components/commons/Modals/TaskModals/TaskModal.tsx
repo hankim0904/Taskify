@@ -163,6 +163,8 @@ function TaskModal({ isEdit = false, onCancel, columnId, cardId }: Props) {
 
       const res = await postUploadCardImg(accessToken, columnId, formData);
 
+      if (res?.status !== 201) return;
+
       return setImgFile(res?.data.imageUrl);
     }
   };
