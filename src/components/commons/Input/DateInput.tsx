@@ -18,7 +18,6 @@ interface IProps extends UseControllerProps {
 
 export default function DateInput({ labelName, startDate, ...props }: IProps) {
   const { field, fieldState } = useController(props);
-  console.log(field.value);
 
   return (
     <div className={cx("input-area")}>

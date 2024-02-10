@@ -4,7 +4,7 @@ import classNames from "classnames/bind";
 import ResponseBtn from "../../Buttons/ResponseButton";
 import Input from "../../Input/Input";
 import Textarea from "../../Input/Textarea";
-import { ChangeEvent, KeyboardEvent, useState } from "react";
+import { ChangeEvent, KeyboardEvent, useEffect, useState } from "react";
 import NiceModal, { useModal } from "@ebay/nice-modal-react";
 import DateInput from "../../Input/DateInput";
 import ModalBackground from "../ModalBackground";
@@ -16,10 +16,15 @@ import Image from "next/image";
 import DescriptionTag from "../../tag/DescriptionTag/DescriptionTag";
 import getRandomColor from "../../tag/DescriptionTag/getRandomColor";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getCardDetailQueryKey, getCardListQueryKey } from "@/components/domains/dashboardid/api/queryKeys";
+import {
+  getCardDetailQueryKey,
+  getCardListQueryKey,
+  getColumnListQueryKey,
+} from "@/components/domains/dashboardid/api/queryKeys";
 import { getCardDetail } from "@/components/domains/dashboardid/api/queries";
 import getMembers from "@/api/getMembers";
-import TTest from "./TTest/TTest";
+import TaskModalDropDown from "./TaskModalDropDown/TaskModalDropDown";
+import isValidFile from "./utill/isVaildFile";
 
 const cx = classNames.bind(styles);
 
@@ -28,7 +33,6 @@ interface Props {
   onCancel: () => void;
   columnId?: number;
   cardId?: number;
-  assigneeUserId?: number;
 }
 
 interface Member {
@@ -52,22 +56,12 @@ interface FormValues {
 
 const NULL_IMG = "https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/taskify/task_image";
 
-export default NiceModal.create(({ columnId, assigneeUserId, cardId, isEdit = false }: Props) => {
+export default NiceModal.create(({ columnId, cardId, isEdit = false }: Props) => {
   const modal = useModal();
-  return (
-    <TaskModal
-      isEdit={isEdit}
-      assigneeUserId={assigneeUserId}
-      cardId={cardId}
-      onCancel={modal.remove}
-      columnId={columnId}
-    />
-  );
+  return <TaskModal isEdit={isEdit} cardId={cardId} onCancel={modal.remove} columnId={columnId} />;
 });
 
-//상태 값 dashboardId 로 변환해서 submit
-
-function TaskModal({ isEdit = false, onCancel, assigneeUserId, columnId, cardId }: Props) {
+function TaskModal({ isEdit = false, onCancel, columnId, cardId }: Props) {
   const router = useRouter();
   const { dashboardid } = router.query;
   const dashboardId = Number(dashboardid);
@@ -79,57 +73,95 @@ function TaskModal({ isEdit = false, onCancel, assigneeUserId, columnId, cardId 
   const [tagList, setTagList] = useState<(typeof tagItem)[] | []>([]);
   const [startDate, setStartDate] = useState(new Date());
   const [imgFile, setImgFile] = useState(NULL_IMG);
+  const [selectMemberId, setSelectMemberId] = useState(0);
+  const [selectColumnId, setSelectColumnId] = useState(columnId);
 
   const { control, setValue, handleSubmit, formState, getValues, register } = useForm<FormValues | any>({
     mode: "onBlur",
   });
 
+  const initialValues: FormValues = {
+    columnId: selectColumnId,
+    dashboardId,
+  };
+
   const { data: cardData } = useQuery({
     queryKey: getCardDetailQueryKey(cardId as number),
     queryFn: () => getCardDetail(cardId as number),
+    enabled: isEdit,
   });
 
+  const { data: columnListData } = useQuery<any>({
+    queryKey: getColumnListQueryKey(dashboardid),
+    enabled: isEdit,
+  });
+  const columnList = columnListData?.data ?? [];
+
+  console.log("컬럼리스트", columnList);
+
+  console.log("ccc", cardData);
   const { data: memberData } = useQuery({
     queryKey: ["memberList", dashboardid],
     queryFn: () => getMembers(accessToken, dashboardid),
   });
 
   const members = memberData?.members;
+  useEffect(() => {
+    const host = members.find((member: Member) => member.isOwner);
+    setSelectMemberId(host?.userId);
+  }, [members]);
 
-  const initialValues: FormValues = {
-    columnId,
-    dashboardId,
-  };
+  useEffect(() => {
+    if (isEdit && cardData !== undefined) {
+      setValue("title", cardData.title);
+      setValue("description", cardData.description);
+      setValue("dueDate", new Date(cardData.dueDate));
+      setSelectColumnId(cardData.columnId);
+      setSelectMemberId(cardData.assignee.id);
+      // 관리자 지정하기
+      const prevTags = cardData.tags.map((tag: string) => JSON.parse(tag));
+      setTagList(prevTags);
+      setImgFile(cardData.imageUrl);
+    }
+  }, [isEdit, cardData]);
 
-  const onKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
-    e.preventDefault;
+  const handelSubmitTagList = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") e.preventDefault();
 
     const target = e.target as HTMLInputElement;
     if (target.value.length !== 0 && e.key === "Enter") {
-      e.preventDefault;
-
-      submitTagItem();
+      HandelAddTagList();
     }
   };
 
-  const submitTagItem = () => {
-    setTagList((prev) => [...prev, tagItem]);
+  const HandelAddTagList = () => {
+    const isDuplicate = tagList.some((tag) => tag.name === tagItem.name);
+
+    if (!isDuplicate) {
+      setTagList((prev) => [...prev, tagItem]);
+    }
+
     setTagItem({ name: "", style: { backgroundColor: "", color: "" } });
     setValue("tags", "");
   };
 
-  const handelLoadImg = async (e: ChangeEvent<HTMLInputElement>) => {
+  const handleDeleteTagClick = (tagId: string) => {
+    setTagList((prevTagList) => prevTagList.filter((tag) => tag.name !== tagId));
+  };
+
+  const handelUpLoadImg = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files && e.target.files[0];
+
+    isValidFile(file);
 
     if (file) {
       const reader = new FileReader();
-
       reader.onload = () => {
         const result = reader.result;
       };
       reader.readAsDataURL(file);
-      const formData = new FormData();
 
+      const formData = new FormData();
       formData.append("image", file);
 
       const res = await postUploadCardImg(accessToken, columnId, formData);
@@ -138,24 +170,11 @@ function TaskModal({ isEdit = false, onCancel, assigneeUserId, columnId, cardId 
     }
   };
 
-  const ownerId = members?.find((member: Member) => member.isOwner).userId;
-
-  function getAssignee(assignee: string | undefined) {
-    if (assignee === undefined) {
-      const nextAssigneeId = ownerId;
-      return nextAssigneeId;
-    } else if (assignee) {
-      const assigneeValues = getValues("assignee");
-      const member = members.find((member: Member) => member.nickname === assigneeValues);
-      const nextAssigneeId = member?.userId;
-      return nextAssigneeId;
-    }
-  }
-
   const addCardMutation = useMutation({
     mutationFn: (postdata: FormValues) => postCardData(postdata),
     onSuccess: () => {
       onCancel();
+
       queryClient.invalidateQueries({ queryKey: getCardListQueryKey(columnId as number) });
     },
   });
@@ -163,23 +182,21 @@ function TaskModal({ isEdit = false, onCancel, assigneeUserId, columnId, cardId 
   const EditCardMutation = useMutation({
     mutationFn: (postdata: FormValues) => putCardData(cardId, postdata),
     onSuccess: () => {
-      onCancel;
+      onCancel();
       queryClient.invalidateQueries({ queryKey: getCardListQueryKey(columnId as number) });
+      queryClient.invalidateQueries({ queryKey: getCardListQueryKey(selectColumnId as number) });
     },
   });
 
   async function onSubmit(data: FormValues) {
     const postData = data;
-
-    postData.assigneeUserId = getAssignee(data.assignee);
-    delete postData.assignee;
+    console.log("post", postData);
+    postData.assigneeUserId = selectMemberId;
 
     postData.dueDate = data.dueDate ? formatDate(data.dueDate) : formatDate(startDate);
 
     postData.tags = tagList.flatMap((tag) => JSON.stringify(tag));
     postData.imageUrl = imgFile;
-
-    console.log({ ...postData, ...initialValues });
 
     isEdit
       ? EditCardMutation.mutate({ ...postData, ...initialValues })
@@ -192,7 +209,19 @@ function TaskModal({ isEdit = false, onCancel, assigneeUserId, columnId, cardId 
         <h2 className={cx("title")}>{isEdit ? "할 일 수정" : "할 일 생성"}</h2>
         <form className={cx("form")} onSubmit={handleSubmit(onSubmit)}>
           <div className={cx("dropdown-line")}>
-            <TTest />
+            {isEdit && (
+              <TaskModalDropDown
+                columnId={columnId}
+                columnList={columnList}
+                selectColumnId={selectColumnId}
+                setSelectColumnId={setSelectColumnId}
+              />
+            )}
+            <TaskModalDropDown
+              members={members}
+              setSelectMemberId={setSelectMemberId}
+              selectMemberId={selectMemberId}
+            />
           </div>
           {/* <div className={cx("dropdown-line")}>
             {isEdit && <DropdownForTaskModal name='state' columnId={columnId} />}
@@ -219,10 +248,10 @@ function TaskModal({ isEdit = false, onCancel, assigneeUserId, columnId, cardId 
           <DateInput labelName="마감일" startDate={startDate} control={control} name="dueDate" />
           <label className={cx("tag-list-label")}>태그</label>
           <ul className={cx("tag-list")}>
-            {tagList.map((tagItem, index) => {
+            {tagList.map((tag, index) => {
               return (
-                <li key={index} className={cx("tag")}>
-                  <DescriptionTag tagStyle={tagItem.style} tagName={tagItem.name} />
+                <li key={index} className={cx("tag")} onClick={() => handleDeleteTagClick(tag.name)}>
+                  <DescriptionTag id={tag.name} tagStyle={tag.style} tagName={tag.name} />
                 </li>
               );
             })}
@@ -231,14 +260,21 @@ function TaskModal({ isEdit = false, onCancel, assigneeUserId, columnId, cardId 
               {...register("tags")}
               placeholder="입력 후 Enter"
               onChange={(e) => setTagItem({ name: e.target.value, style: getRandomColor(0.3) })}
-              onKeyDown={onKeyPress}
+              onKeyDown={handelSubmitTagList}
               value={tagItem.name}
             />
           </ul>
-          <div className={cx("input-file-upload")} onChange={handelLoadImg}>
+          <div className={cx("input-file-upload")} onChange={handelUpLoadImg}>
             <Input isModal={true} type="file" name="imageUrl" labelName="이미지" placeholder="" control={control} />
             {imgFile !== NULL_IMG && (
-              <Image className={cx("input-file-img")} src={imgFile} width={80} height={80} alt="카드 이미지 업로드" />
+              <Image
+                className={cx("input-file-img")}
+                src={imgFile}
+                width={80}
+                height={80}
+                alt="카드 이미지 업로드"
+                style={{ objectFit: "cover" }}
+              />
             )}
           </div>
           <div className={cx("btn-line", { edit: isEdit })}>

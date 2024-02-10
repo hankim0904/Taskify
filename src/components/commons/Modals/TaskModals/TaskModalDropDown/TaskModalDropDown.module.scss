@@ -3,6 +3,10 @@
   width: 100%;
   flex-direction: column;
   gap: 0.8rem;
+
+  &.add {
+    width: 50%;
+  }
 }
 
 .text {
@@ -25,7 +29,7 @@
   border: 0.1rem solid #d9d9d9;
   border-radius: 0.5rem;
   padding: 1.5rem 1.6rem;
-  width: 50%;
+  width: 100%;
   cursor: pointer;
   background: url("https://www.iconpacks.net/icons/2/free-arrow-down-icon-3101-thumb.png") calc(100% - 1rem) center
     no-repeat;
@@ -46,10 +50,11 @@
   background-color: $white;
   border: 0.1rem solid #d9d9d9;
   border-radius: 0.5rem;
+  width: 100%;
 
   z-index: 2;
   left: 0;
-  top: 5rem;
+  top: 6rem;
 }
 
 .item {
@@ -64,8 +69,6 @@
   }
 
   & > img {
-    width: 26px;
-    height: 26px;
     border-radius: 50%;
   }
 }
@@ -76,4 +79,14 @@
 
 .background-red {
   background-color: $gray-200;
+}
+
+.profileImg-none {
+  @include flexbox();
+  width: 2.6rem;
+  height: 2.6rem;
+  background-color: #ffc85a;
+  text-align: center;
+  color: $white;
+  border-radius: 99rem;
 }
