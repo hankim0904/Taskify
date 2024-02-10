@@ -33,6 +33,7 @@ interface Members {
   email: string;
   id: number;
   profileImageUrl: string;
+  isOwner: boolean;
   invitee?: {
     email: string;
   };
@@ -70,6 +71,7 @@ export default function DashboradEditMemberBox({ title, isMemberEdit }: Props) {
     staleTime: 5000 * 10000,
   });
   const members = memberData?.members;
+  console.log(members);
   const invitedMembers = invitationsData?.invitations.map((invitation: Invitation) => ({
     id: invitation.id,
     invitee: invitation.invitee,
@@ -109,9 +111,9 @@ export default function DashboradEditMemberBox({ title, isMemberEdit }: Props) {
     },
   });
 
-  const handelDelteMember = (id: number) => {
+  const handelDelteMember = (id: number, isOwner: boolean) => {
     if (isMemberEdit) {
-      deleteMemberMutation.mutate(id);
+      isOwner ? deleteMemberMutation.mutate(id) : alert("관리자만 구성원을 삭제할 수 있습니다");
     } else {
       deleteInvitationMutation.mutate(id);
     }
@@ -171,9 +173,11 @@ export default function DashboradEditMemberBox({ title, isMemberEdit }: Props) {
             ) : (
               <>{member.invitee?.email}</>
             )}
-            <ResponseBtn onClick={() => handelDelteMember(member.id)} state="reject">
-              {isMemberEdit ? "삭제" : "취소"}
-            </ResponseBtn>
+            {!member.isOwner && (
+              <ResponseBtn onClick={() => handelDelteMember(member.id, member.isOwner)} state="reject">
+                {isMemberEdit ? "삭제" : "취소"}
+              </ResponseBtn>
+            )}
           </li>
         ))}
       </ul>

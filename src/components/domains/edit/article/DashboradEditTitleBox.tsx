@@ -1,7 +1,7 @@
 import Input from "@/components/commons/Input/Input";
 import styles from "./DashboradEditTitleBox.module.scss";
 import classNames from "classnames/bind";
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import ResponseBtn from "@/components/commons/Buttons/ResponseButton";
 import { FieldValues, SubmitHandler, useForm, useWatch } from "react-hook-form";
 import ColorList from "@/components/commons/ColorList/ColorList";
@@ -15,32 +15,36 @@ getDashBoardTittleQueryKey;
 
 const cx = classNames.bind(styles);
 
+const colorList: { [key: string]: string } = {
+  green: "#7ac555",
+  purple: "#760dde",
+  orange: "#ffa500",
+  blue: "#76a5ea",
+  pink: "#e876ea",
+};
+
 export default function DashboradEditTitleBox({ titleData }: { titleData: DashBoradData }) {
   const { control, handleSubmit, formState, setValue } = useForm();
   const { dashboardid } = useParams();
 
-  const colorList: { [key: string]: string } = {
-    green: "#7ac555",
-    purple: "#760dde",
-    orange: "#ffa500",
-    blue: "#76a5ea",
-    pink: "#e876ea",
-  };
-
   function getKeyByValue(obj: { [key: string]: string }, value: string) {
-    return Object.keys(obj).find((key) => obj[key] === value);
+    return Object.keys(obj).find((key) => obj[key] === value) as string;
   }
-
-  const beforeColor = getKeyByValue(colorList, titleData?.color);
-  const [color, setColor] = useState(beforeColor);
+  const [color, setColor] = useState("");
   const queryClient = useQueryClient();
 
   const editDashboardMutation = useMutation({
     mutationFn: (putData: { title: string; color: string }) => putDashBoard(dashboardid, putData),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: getDashBoardTittleQueryKey(dashboardid) });
+      queryClient.invalidateQueries({ queryKey: ["sideBarDashboardList"] });
     },
   });
+
+  useEffect(() => {
+    const beforeColor: string = getKeyByValue(colorList, titleData?.color);
+    setColor(beforeColor);
+  }, [titleData]);
 
   const handleOnsubmit: SubmitHandler<FieldValues> = (data) => {
     if (!titleData.createdByMe) {
@@ -56,7 +60,7 @@ export default function DashboradEditTitleBox({ titleData }: { titleData: DashBo
     <section className={cx("dashborad-edit-box")}>
       <article className={cx("title-line")}>
         <h2 className={cx("title")}>{titleData?.title}</h2>
-        <ColorList setColor={setColor} beforeColor={beforeColor} />
+        <ColorList setColor={setColor} beforeColor={color} />
       </article>
       <form className={cx("edit-form")} onSubmit={handleSubmit(handleOnsubmit)}>
         <Input

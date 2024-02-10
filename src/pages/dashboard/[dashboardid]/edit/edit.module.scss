@@ -3,10 +3,6 @@
   height: auto;
   padding: 2rem 2rem 5.6rem;
 
-  & button {
-    width: 32rem;
-  }
-
   @media screen and (max-width: $tablet-breakpoint) {
     padding-bottom: 4.8rem;
   }
@@ -16,6 +12,12 @@
 
   &.openModal {
     position: sticky;
+  }
+}
+
+.dashborad-delete-btn {
+  & button {
+    width: 32rem;
   }
 }
 
