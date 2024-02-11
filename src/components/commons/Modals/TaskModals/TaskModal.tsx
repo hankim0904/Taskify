@@ -260,14 +260,16 @@ function TaskModal({ isEdit = false, onCancel, columnId, cardId }: Props) {
           <div className={cx("input-file-upload")} onChange={handelUpLoadImg}>
             <Input isModal={true} type="file" name="imageUrl" labelName="이미지" placeholder="" control={control} />
             {imgFile !== NULL_IMG && (
-              <Image
-                className={cx("input-file-img", { existed: imgFile === cardData?.imageUrl })}
-                src={imgFile}
-                width={80}
-                height={80}
-                alt="카드 이미지 업로드"
-                style={{ objectFit: "cover" }}
-              />
+              <label htmlFor="imageUrl" className={cx({ existed: imgFile === cardData?.imageUrl })}>
+                <Image
+                  className={cx("input-file-img", { existed: imgFile === cardData?.imageUrl })}
+                  src={imgFile}
+                  width={80}
+                  height={80}
+                  alt="카드 이미지 업로드"
+                  style={{ objectFit: "cover" }}
+                />
+              </label>
             )}
           </div>
           <div className={cx("btn-line", { edit: isEdit })}>
