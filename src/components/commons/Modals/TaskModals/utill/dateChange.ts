@@ -1,4 +1,4 @@
-export default function formatDate(dateString: Date | string) {
+export default function PostformatDate(dateString: Date | string) {
   if (dateString === undefined) return;
 
   const date = new Date(dateString);
