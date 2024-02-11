@@ -1,9 +1,15 @@
 .dashboard {
   @include flexbox(start, start);
   background-color: $gray-100;
-  overflow: auto;
+  overflow: scroll;
+  height: 100%;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 
   @include responsive("T") {
     @include column-flexbox(start, center);
+    -webkit-overflow-scrolling: touch;
   }
 }

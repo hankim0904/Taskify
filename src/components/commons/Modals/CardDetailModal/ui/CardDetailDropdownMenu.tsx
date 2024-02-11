@@ -45,7 +45,7 @@ export default function CardDetailDropdownMenu({
   };
 
   const handleOpenEditModal = () => {
-    modal.show({ assigneeUserId, columnId, cardId, isEdit: true });
+    modal.show({ columnId, cardId, isEdit: true });
     onClick();
   };
 

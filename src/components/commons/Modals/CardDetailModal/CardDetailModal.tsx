@@ -1,13 +1,10 @@
 import { useRef, useEffect, useState } from "react";
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import NiceModal, { useModal } from "@ebay/nice-modal-react";
+
 import { getCardDetail, getComments } from "@/components/domains/dashboardid/api/queries";
 import { getCardDetailQueryKey, getCommentsQueryKey } from "@/components/domains/dashboardid/api/queryKeys";
-
-import classNames from "classnames/bind";
-import styles from "./CardDetailModal.module.scss";
-
-import NiceModal, { useModal } from "@ebay/nice-modal-react";
 import ModalBackground from "../ModalBackground";
 import CardDetailHeader from "./ui/CardDetailHeader";
 import CardDetailContent from "./ui/CardDetailContent";
@@ -15,6 +12,9 @@ import CardDetailBox from "./ui/CardDetailBox";
 import { formatDate } from "@/utils/formatDate";
 import CardDetailComments from "./ui/CardDetailComments";
 import CardDetailTextarea from "./ui/CardDetailTextarea";
+
+import classNames from "classnames/bind";
+import styles from "./CardDetailModal.module.scss";
 
 const cx = classNames.bind(styles);
 
@@ -35,7 +35,7 @@ export default NiceModal.create(({ cardId, columnTitle }: Props) => {
 });
 
 function CardDetailModal({ cardId, onCancel, columnTitle }: Props) {
-  const { control, handleSubmit, formState, setValue } = useForm({
+  const methods = useForm({
     mode: "onChange",
   });
 
@@ -119,33 +119,29 @@ function CardDetailModal({ cardId, onCancel, columnTitle }: Props) {
             formatedDueDate={formatedDate}
           />
         </div>
-        <div className={cx("card-textarea")}>
-          <CardDetailTextarea
-            dashboardId={dashboardId}
-            cardId={cardId}
-            columnId={columnId}
-            editing={editing}
-            editStore={editStore}
-            setEditing={setEditing}
-            setEditStore={setEditStore}
-            control={control}
-            handleSubmit={handleSubmit}
-            formState={formState}
-            setValue={setValue}
-          />
-        </div>
-        <div className={cx("card-comments")}>
-          {cardComments.map((comments) => (
-            <CardDetailComments
+        <FormProvider {...methods}>
+          <div className={cx("card-textarea")}>
+            <CardDetailTextarea
+              dashboardId={dashboardId}
               cardId={cardId}
-              commentsData={comments.comments}
+              columnId={columnId}
+              editing={editing}
+              editStore={editStore}
               setEditing={setEditing}
-              setEditStore={setEditStore}
-              setValue={setValue}
             />
-          ))}
-          <div className={cx("card-ref")} ref={bottomObserver}></div>
-        </div>
+          </div>
+          <div className={cx("card-comments")}>
+            {cardComments.map((comments) => (
+              <CardDetailComments
+                cardId={cardId}
+                commentsData={comments.comments}
+                setEditing={setEditing}
+                setEditStore={setEditStore}
+              />
+            ))}
+            <div className={cx("card-ref")} ref={bottomObserver}></div>
+          </div>
+        </FormProvider>
       </div>
       <ModalBackground onClick={onCancel} />
     </>

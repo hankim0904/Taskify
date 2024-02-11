@@ -45,6 +45,11 @@
 
   &-utils {
     @include flexbox;
+    flex: 1;
+
+    @include responsive("T") {
+      flex: 0;
+    }
   }
 
   &-action-btns {
@@ -80,6 +85,7 @@
 
       .text {
         @include text-style(1.6, 500, $gray-500);
+        white-space: nowrap;
 
         @include responsive("T") {
           @include text-style(1.4, 500, $gray-500);

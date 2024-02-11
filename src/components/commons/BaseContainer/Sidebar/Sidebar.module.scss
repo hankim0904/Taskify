@@ -80,6 +80,10 @@
         display: none;
       }
 
+      @include responsive("T") {
+        max-height: 77svh;
+      }
+
       .board-list {
         @include flexbox;
         padding: 1.2rem;

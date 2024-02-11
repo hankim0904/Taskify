@@ -11,7 +11,7 @@ export default function UserDropdownMenu() {
 
   function handleLogOut() {
     logout();
-    router.push("/landing");
+    router.push("/");
   }
 
   return (

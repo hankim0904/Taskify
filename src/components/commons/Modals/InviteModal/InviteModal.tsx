@@ -8,6 +8,9 @@ import ModalBackground from "../ModalBackground";
 import postDashboardInvitations from "@/api/postDashboardInvitations";
 import { useRouter } from "next/router";
 import { useAuth } from "@/contexts/AuthContext";
+import Dashboardid from "@/pages/dashboard/[dashboardid]";
+import { getDashboardInvitations, getDashboardInvitationsQueryKey } from "@/api/getEditData";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const cx = classNames.bind(styles);
 
@@ -25,11 +28,21 @@ function InviteModal({ onCancel }: Props) {
   const { accessToken } = useAuth();
   const { control, handleSubmit, formState } = useForm({ mode: "onBlur" });
   const rotuer = useRouter();
+  const dashboardId = rotuer.query.dashboardid;
+
+  const queryClient = useQueryClient();
+
+  const inviteMutation = useMutation({
+    mutationFn: (data: any) => postDashboardInvitations(dashboardId, data, accessToken),
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: getDashboardInvitationsQueryKey(dashboardId, 1) });
+      onCancel();
+    },
+  });
 
   function handleOnSubmit(data: any) {
-    const dashboardId = rotuer.query.dashboardid;
-    postDashboardInvitations(dashboardId, data.columnName, accessToken);
-    onCancel();
+    inviteMutation.mutate(data.columnName);
   }
   return (
     <>
