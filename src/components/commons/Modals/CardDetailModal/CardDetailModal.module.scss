@@ -1,10 +1,9 @@
 .card {
   @include pos-center();
-  max-height: 90vh;
   overflow: scroll;
   z-index: $modal;
   max-width: 73rem;
-  max-height: 100rem;
+  max-height: 90vh;
   width: 73rem;
   padding: 3.2rem 2.8rem 3.2rem;
   border-radius: 0.8rem;
@@ -23,8 +22,10 @@
   }
 
   @include responsive("T") {
+    max-height: 80vh;
     width: calc(100% - 6.4rem);
     grid-template-columns: 1fr 18rem;
+    -webkit-overflow-scrolling: touch;
   }
 
   @include responsive("M") {
@@ -68,6 +69,10 @@
 
     &::-webkit-scrollbar {
       display: none;
+    }
+
+    @include responsive("T") {
+      -webkit-overflow-scrolling: touch;
     }
   }
 
