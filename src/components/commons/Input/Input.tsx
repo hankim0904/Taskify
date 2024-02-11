@@ -64,7 +64,7 @@ export default function Input({
           { checkbox: inputType === "checkbox" },
           { error: isError },
           { search: type === "search" },
-          { file: inputType === "file" }
+          { file: inputType === "file" },
         )}
         placeholder={placeholder}
         maxLength={maxLength}

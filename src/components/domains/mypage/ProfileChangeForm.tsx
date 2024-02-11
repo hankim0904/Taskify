@@ -12,6 +12,9 @@ import { axiosCSRInstance } from "@/api/axiosCSRInstance";
 import { useAuth } from "@/contexts/AuthContext";
 import extractFirstLetter from "@/utils/extractFirstLetter";
 
+import SignModal from "@/components/commons/Modals/SignModal/SignModal";
+import NiceModal from "@ebay/nice-modal-react";
+
 const cx = classNames.bind(styles);
 
 export default function ProfileChangeForm() {
@@ -33,6 +36,10 @@ export default function ProfileChangeForm() {
 
   const { accessToken } = useAuth();
 
+  const showModal = (text: string) => {
+    NiceModal.show(SignModal, { text });
+  };
+
   useEffect(() => {
     if (userMeData) {
       setValue("nickname", userMeData.nickname);
@@ -51,10 +58,18 @@ export default function ProfileChangeForm() {
     const file = e.target.files && e.target.files[0];
     const extension = file?.name.split(".").pop();
 
+    const MAX_SIZE = 1024 * 1024 * 4;
+
     if (!extension || !["jpg", "jpeg", "png", "gif"].includes(extension.toLowerCase())) {
-      alert("이미지 파일을 선택해주세요.");
+      showModal("이미지 파일을 선택해주세요.");
       return false;
     }
+
+    if (!file || file.size > MAX_SIZE) {
+      showModal("5MB 이하 파일을 선택해 주세요.");
+      return false;
+    }
+
     if (file) {
       const reader = new FileReader();
 
@@ -91,32 +106,59 @@ export default function ProfileChangeForm() {
         <div className={cx("contents")}>
           <div className={cx("contents-upload-area")}>
             {!showBasicProfile ? (
-              <div className={cx("contents-upload-image")}>
-                {userMeData?.profileImageUrl ? (
-                  <Image fill src={userMeData?.profileImageUrl} alt="현재 이미지" style={{ objectFit: "cover" }} />
-                ) : (
-                  <div className={cx("contents-basic-image")}>
-                    <span className={cx("nickname")}>{extractFirstLetter(userMeData?.nickname)}</span>
+              <>
+                <div className={cx("contents-upload-image")}>
+                  {userMeData?.profileImageUrl ? (
+                    <Image fill src={userMeData?.profileImageUrl} alt="현재 이미지" style={{ objectFit: "cover" }} />
+                  ) : (
+                    <div className={cx("contents-basic-image")}>
+                      <span className={cx("nickname")}>{extractFirstLetter(userMeData?.nickname)}</span>
+                    </div>
+                  )}
+                  {previewImage && typeof previewImage === "string" && (
+                    <Image fill src={previewImage} alt="미리 보기" style={{ objectFit: "cover" }} />
+                  )}
+                  <label htmlFor="upload-image">
+                    <div className={cx("lable-file-type")}>
+                      <Image
+                        width={28}
+                        height={28}
+                        src="/assets/icons/ic-plus-without-background.svg"
+                        alt="이미지 추가하기"
+                        style={{ objectFit: "cover" }}
+                      />
+                    </div>
+                  </label>
+
+                  <div style={{ display: "none" }} onChange={handleUploadImage}>
+                    <Input name="upload-image" labelName="" type="file" control={control as any} />
                   </div>
-                )}
-                {previewImage && typeof previewImage === "string" && (
-                  <Image fill src={previewImage} alt="미리 보기" style={{ objectFit: "cover" }} />
-                )}
-              </div>
+                </div>
+              </>
             ) : (
-              <div className={cx("contents-basic-image")}>
-                <span className={cx("nickname")}>{extractFirstLetter(userMeData?.nickname)}</span>
-              </div>
+              <>
+                <div className={cx("contents-basic-image")}>
+                  <span className={cx("nickname")}>{extractFirstLetter(userMeData?.nickname)}</span>
+                  <label htmlFor="basic-to-image">
+                    <div className={cx("lable-file-type")}>
+                      <Image
+                        width={28}
+                        height={28}
+                        src="/assets/icons/ic-plus-without-background.svg"
+                        alt="이미지 추가하기"
+                        style={{ objectFit: "cover" }}
+                      />
+                    </div>
+                    <div style={{ display: "none" }} onChange={handleUploadImage}>
+                      <Input name="basic-to-image" labelName="" type="file" control={control as any} />
+                    </div>
+                  </label>
+                </div>
+              </>
             )}
 
-            <label htmlFor="profile-image">
-              <span className={cx("upload-image-btn")}>사진 선택</span>
-            </label>
             <div onClick={handleChangeDefaultImage}>
               <span className={cx("basic-image-btn")}>기본 이미지로 변경</span>
-            </div>
-            <div style={{ display: "none" }} onChange={handleUploadImage}>
-              <Input name="profile-image" labelName="" type="file" control={control as any} />
             </div>
           </div>
 

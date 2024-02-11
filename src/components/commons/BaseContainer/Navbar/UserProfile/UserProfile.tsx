@@ -1,7 +1,7 @@
 import styles from "./UserProfile.module.scss";
 import classNames from "classnames/bind";
 import Image from "next/image";
-import UserDropdownMenu from "./UserDropdownMenu/UserDropdownMenu";
+import UserDropdownMenu from "./UserDropdownMenu";
 import { useEffect, useRef, useState } from "react";
 
 const cx = classNames.bind(styles);
@@ -34,7 +34,7 @@ export default function UserProfile({ userMeData, extractFirstLetter }: UserProf
     <div className={cx("navbar-user")} ref={dropMenuRef} onClick={handleDropDownMenu}>
       {userMeData?.profileImageUrl ? (
         <>
-          <div className={cx("navbar-user-circle")}>
+          <div className={cx("navbar-user-circle")} style={{ backgroundColor: "transparent" }}>
             <Image fill src={userMeData?.profileImageUrl} className={cx("profile-img")} alt="내 이미지" />
           </div>
           <div className={cx("navbar-user-name")}>{userMeData?.nickname}</div>
