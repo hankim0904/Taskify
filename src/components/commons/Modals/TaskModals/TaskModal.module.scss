@@ -46,9 +46,11 @@
   position: absolute;
   top: 2.6rem;
   border-radius: 0.6rem;
+  background-color: $white;
 
   &:hover {
     opacity: 0.2;
+    cursor: pointer;
   }
 
   // &.existed {

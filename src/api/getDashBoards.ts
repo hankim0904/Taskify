@@ -23,3 +23,4 @@ export default async function getDashBoards(
     throw new Error(`${e}`);
   }
 }
+
