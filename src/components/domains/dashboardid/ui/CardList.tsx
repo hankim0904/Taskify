@@ -8,6 +8,7 @@ import Image from "next/image";
 import DescriptionTag from "@/components/commons/tag/DescriptionTag/DescriptionTag";
 import { formatDate } from "../../../../utils/formatDate";
 import { Card } from "../api/type";
+import { motion } from "framer-motion";
 
 const cx = classNames.bind(styles);
 
@@ -27,7 +28,13 @@ export default function CardList({ cardList, columnTitle }: CardListProp) {
         );
         const isExistTag = tags.length === 0 ? false : true;
         return (
-          <div className={cx("card")} key={id} onClick={() => modal.show({ cardId: id, columnTitle })}>
+          <motion.div
+            className={cx("card")}
+            key={id}
+            onClick={() => modal.show({ cardId: id, columnTitle })}
+            whileHover={{ scale: 0.95, backgroundColor: "#fafafa" }}
+            whileTap={{ scale: 0.9 }}
+          >
             {isExistImg && (
               <div className={cx("card-img")}>
                 <Image fill src={imageUrl} alt="카드 이미지" objectFit="cover" />
@@ -63,7 +70,7 @@ export default function CardList({ cardList, columnTitle }: CardListProp) {
                 )}
               </div>
             </div>
-          </div>
+          </motion.div>
         );
       })}
     </div>

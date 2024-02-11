@@ -6,6 +6,7 @@ import classNames from "classnames/bind";
 import Dashboard from "../../Dashboard/Dashboard";
 import NiceModal from "@ebay/nice-modal-react";
 import DashboardCreationModal from "../../Modals/DashboardCreationModal/DashboardCreationModal";
+import { motion } from "framer-motion";
 
 const cx = classNames.bind(styles);
 
@@ -54,7 +55,8 @@ export default function Sidebar({ dashboardDatas, bottomObserver }: SidebarPorps
             className={cx("title")}
             onClick={() => {
               router.push("/mydashboard");
-            }}>
+            }}
+          >
             Dash Boards
           </span>
           <button className={cx("create-btn")} onClick={showModal}>
@@ -65,16 +67,19 @@ export default function Sidebar({ dashboardDatas, bottomObserver }: SidebarPorps
         <div className={cx("sidebar")}>
           <div className={cx("contents")}>
             {dashboardDatas.map((data: DashboardData) => (
-              <div
+              <motion.div
                 key={data.id}
                 className={cx("board-list", { selected: data.id === Number(dashboardId) })}
                 onClick={() => {
                   router.push(`/dashboard/${data.id}`);
-                }}>
+                }}
+                whileHover={{ backgroundColor: "#f1effd" }}
+                transition={{ duration: 0 }}
+              >
                 <Dashboard color={data.color} isHost={data.createdByMe} isSidebar={true}>
                   {data.title}
                 </Dashboard>
-              </div>
+              </motion.div>
             ))}
             <div ref={bottomObserver} style={{ height: "1px" }}></div>
           </div>
