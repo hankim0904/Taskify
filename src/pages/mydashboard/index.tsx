@@ -9,6 +9,7 @@ import getReceivedDashboardInvitations from "@/api/getReceivedDashboardInvitatio
 import withAuthNoneExist from "@/utils/withAuthNoneExist";
 import { GetServerSidePropsContext } from "next";
 import Head from "next/head";
+import getDashBoardsSSR from "@/api/getDashBoardsSSR";
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const queryClient = new QueryClient();
@@ -16,12 +17,14 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
   await queryClient.prefetchQuery({
     queryKey: ["dashboardList", 1],
-    queryFn: () => getDashBoards("pagination", accessToken, 5, 1),
+    queryFn: () => getDashBoardsSSR("pagination", accessToken, 5, 1),
   });
 
-  await queryClient.prefetchQuery({
-    queryKey: ["sideBarDashboardList", 1, 18],
-    queryFn: () => getDashBoards("pagination", accessToken, 18, 1),
+  await queryClient.prefetchInfiniteQuery({
+    queryKey: ["sideBarDashboardList"],
+    queryFn: () => getDashBoardsSSR("pagination", accessToken, 18, null),
+    initialPageParam: null,
+    getNextPageParam: (lastPage: any) => lastPage.pageParam,
   });
 
   await queryClient.prefetchInfiniteQuery({
