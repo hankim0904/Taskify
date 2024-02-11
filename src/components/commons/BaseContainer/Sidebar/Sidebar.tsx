@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useRef, useState } from "react";
 import styles from "./Sidebar.module.scss";
 import classNames from "classnames/bind";
 import Dashboard from "../../Dashboard/Dashboard";
@@ -28,17 +27,6 @@ interface SidebarPorps {
 export default function Sidebar({ dashboardDatas, bottomObserver }: SidebarPorps) {
   const router = useRouter();
   const dashboardId = router.query.dashboardid;
-  const sidebarRef = useRef(null);
-
-  function scrollToDashboard(id: any) {
-    const sidebar = sidebarRef.current;
-    const selectedDashboard = sidebar.querySelector(`.board-list[data-id="${id}"]`);
-    console.log(selectedDashboard);
-    if (selectedDashboard) {
-      selectedDashboard.scrollIntoView({ behavior: "smooth", block: "start" });
-      console.log(selectedDashboard.scrollIntoView({ behavior: "smooth", block: "start" }));
-    }
-  }
 
   function showModal() {
     NiceModal.show(DashboardCreationModal);
@@ -74,7 +62,7 @@ export default function Sidebar({ dashboardDatas, bottomObserver }: SidebarPorps
           </button>
         </div>
 
-        <div ref={sidebarRef} className={cx("sidebar")}>
+        <div className={cx("sidebar")}>
           <div className={cx("contents")}>
             {dashboardDatas.map((data: DashboardData) => (
               <div
@@ -82,7 +70,6 @@ export default function Sidebar({ dashboardDatas, bottomObserver }: SidebarPorps
                 className={cx("board-list", { selected: data.id === Number(dashboardId) })}
                 onClick={() => {
                   router.push(`/dashboard/${data.id}`);
-                  scrollToDashboard(data.id);
                 }}>
                 <Dashboard color={data.color} isHost={data.createdByMe} isSidebar={true}>
                   {data.title}
