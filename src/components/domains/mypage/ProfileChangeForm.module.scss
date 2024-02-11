@@ -52,7 +52,6 @@
       }
 
       &-upload-area {
-
         @include column-flexbox(center, center);
         gap: 1rem;
 
@@ -68,17 +67,14 @@
 
         cursor: pointer;
 
-
         @include responsive("M") {
           width: 10rem;
           height: 10rem;
-
         }
 
         img {
           border-radius: 50%;
         }
-
 
         .lable-file-type {
           @include flexbox(center, center);
@@ -100,7 +96,6 @@
         &:hover .lable-file-type {
           opacity: 0.5;
         }
-
       }
 
       &-basic-image {
@@ -132,12 +127,10 @@
           opacity: 0.5;
         }
 
-
         .nickname {
           @include pos-center(absolute);
           @include text-style(3, 600, $white);
         }
-
 
         @include responsive("M") {
           width: 100%;

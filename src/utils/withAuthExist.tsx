@@ -19,9 +19,9 @@ const withAuthExist = (WrappedComponent: React.ComponentType) => {
             });
             const firstDashboardId = response.data.dashboards[0]?.id;
             if (firstDashboardId) {
-              router.push(`dashboard/${firstDashboardId}`);
+              router.push(`/dashboard/${firstDashboardId}`);
             } else {
-              router.push("mydashboard");
+              router.push("/mydashboard");
             }
           }
         } catch (error) {

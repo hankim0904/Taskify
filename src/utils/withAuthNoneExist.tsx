@@ -12,7 +12,7 @@ const withAuthNoneExist = <P extends {}>(WrappedComponent: React.ComponentType<P
         ?.split("=")[1];
 
       if (!accessToken) {
-        router.push("signin");
+        router.push("/signin");
       }
     }, []);
 
