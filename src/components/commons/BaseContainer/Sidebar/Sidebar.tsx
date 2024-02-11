@@ -67,19 +67,17 @@ export default function Sidebar({ dashboardDatas, bottomObserver }: SidebarPorps
         <div className={cx("sidebar")}>
           <div className={cx("contents")}>
             {dashboardDatas.map((data: DashboardData) => (
-              <motion.div
+              <div
                 key={data.id}
                 className={cx("board-list", { selected: data.id === Number(dashboardId) })}
                 onClick={() => {
                   router.push(`/dashboard/${data.id}`);
                 }}
-                whileHover={{ backgroundColor: "#f1effd" }}
-                transition={{ duration: 0 }}
               >
                 <Dashboard color={data.color} isHost={data.createdByMe} isSidebar={true}>
                   {data.title}
                 </Dashboard>
-              </motion.div>
+              </div>
             ))}
             <div ref={bottomObserver} style={{ height: "1px" }}></div>
           </div>
