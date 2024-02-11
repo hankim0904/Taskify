@@ -1,7 +1,8 @@
 import Link from "next/link";
-import styles from "./Logo.module.scss";
 import Image from "next/image";
+
 import classNames from "classnames/bind";
+import styles from "./Logo.module.scss";
 
 interface LogoProp {
   message: string;

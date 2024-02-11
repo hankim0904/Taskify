@@ -1,16 +1,15 @@
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { FieldValues, SubmitHandler, useFormContext } from "react-hook-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
 
 import Textarea from "@/components/commons/Input/Textarea";
 import ResponseButton from "@/components/commons/Buttons/ResponseButton";
 import { putComments, postComments } from "@/components/domains/dashboardid/api/queries";
 import { getCommentsQueryKey } from "@/components/domains/dashboardid/api/queryKeys";
 import { EditedComments, NewComments } from "@/components/domains/dashboardid/api/type";
-
-import styles from "./CardDetailTextarea.module.scss";
-import classNames from "classnames/bind";
 import { EditStore } from "../CardDetailModal";
+
+import classNames from "classnames/bind";
+import styles from "./CardDetailTextarea.module.scss";
 
 const cx = classNames.bind(styles);
 
@@ -21,11 +20,6 @@ interface CardDetailTextareaProps {
   editing: boolean;
   editStore: EditStore;
   setEditing: React.Dispatch<React.SetStateAction<boolean>>;
-  setEditStore: React.Dispatch<React.SetStateAction<EditStore>>;
-  control: any;
-  handleSubmit: any;
-  formState: any;
-  setValue: any;
 }
 
 export default function CardDetailTextarea({
@@ -35,12 +29,8 @@ export default function CardDetailTextarea({
   editing,
   editStore,
   setEditing,
-  setEditStore,
-  control,
-  handleSubmit,
-  formState,
-  setValue,
 }: CardDetailTextareaProps) {
+  const { control, handleSubmit, formState, setValue } = useFormContext();
   const queryClient = useQueryClient();
 
   const mutationSuccess = () => {
@@ -68,7 +58,6 @@ export default function CardDetailTextarea({
     putCommentsMutation.mutate(editedComments);
     setEditing(false);
     setValue("comment-Textarea", "");
-    // setEditStore((prev) => ({ ...prev, comment: "" }));
   };
 
   const handleOnSubmitPost: SubmitHandler<FieldValues> = (data) => {
@@ -83,10 +72,6 @@ export default function CardDetailTextarea({
     setValue("comment-Textarea", "");
   };
 
-  useEffect(() => {
-    console.log("editStore changed", editStore);
-  }, [editStore]);
-
   return (
     <>
       {editing ? (
@@ -97,7 +82,6 @@ export default function CardDetailTextarea({
             placeholder="댓글 수정하기"
             isModal={false}
             control={control}
-            value={editStore.content}
             rules={{ required: true }}
           />
           <ResponseButton type="submit" disabled={!formState.isValid} state="reject">
@@ -112,7 +96,6 @@ export default function CardDetailTextarea({
             placeholder="댓글 작성하기"
             isModal={false}
             control={control}
-            value={editStore.content}
             rules={{ required: true }}
           />
           <ResponseButton type="submit" disabled={!formState.isValid} state="reject">

@@ -3,8 +3,8 @@ import { useRouter } from "next/router";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import NiceModal from "@ebay/nice-modal-react";
 
-import { useAuth } from "@/contexts/AuthContext";
 import { axiosSSRInstance } from "@/api/axiosSSRInstance";
+import { useAuth } from "@/contexts/AuthContext";
 import Input from "@/components/commons/Input/Input";
 import { SignButton } from "@/components/commons/Buttons/SignButton";
 import SignModal from "@/components/commons/Modals/SignModal/SignModal";
