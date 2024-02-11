@@ -19,7 +19,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     const expirationDate = new Date();
     expirationDate.setFullYear(expirationDate.getFullYear() + 1);
 
-    document.cookie = `accessToken=${token}; expires=${expirationDate.toUTCString()}; path=/;`;
+    document.cookie = `accessToken=${token}; expires=${expirationDate.toUTCString()}; path=/; Secure; SameSite=Strict`;
 
     setAccessToken(token);
   }, []);

@@ -8,10 +8,9 @@ interface InputProps extends UseControllerProps {
   placeholder: string;
   labelName?: string;
   isModal: boolean;
-  value?: string;
 }
 
-export default function Textarea({ isModal, placeholder, labelName, value, ...props }: InputProps) {
+export default function Textarea({ isModal, placeholder, labelName, ...props }: InputProps) {
   const { field, fieldState } = useController(props);
 
   const isError = fieldState.invalid;
