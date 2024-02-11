@@ -36,12 +36,24 @@
 .input-file-upload {
   width: 100%;
   position: relative;
+
+  // & .existed {
+  //   content: \2713;
+  // }
 }
 
 .input-file-img {
   position: absolute;
   top: 2.6rem;
   border-radius: 0.6rem;
+
+  &:hover {
+    opacity: 0.2;
+  }
+
+  // &.existed {
+  //   filter: brightness(50%);
+  // }
 }
 
 .dropdown-line {

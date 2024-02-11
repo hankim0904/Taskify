@@ -12,8 +12,10 @@ import putChangeUserProfile from "@/api/putChangeUserProfile";
 import { axiosCSRInstance } from "@/api/axiosCSRInstance";
 import { useAuth } from "@/contexts/AuthContext";
 import extractFirstLetter from "@/utils/extractFirstLetter";
+
 import SignModal from "@/components/commons/Modals/SignModal/SignModal";
 import NiceModal from "@ebay/nice-modal-react";
+
 
 const cx = classNames.bind(styles);
 
@@ -40,6 +42,7 @@ export default function ProfileChangeForm() {
     NiceModal.show(SignModal, { text });
   };
 
+
   useEffect(() => {
     if (userMeData) {
       setValue("nickname", userMeData.nickname);
@@ -47,6 +50,7 @@ export default function ProfileChangeForm() {
   }, [userMeData]);
 
   const onSubmit: SubmitHandler<FieldValues> = data => {
+
     if (profileImageUrl === "" || showBasicProfile) {
       putChangeUserProfile(data.nickname, null, accessToken);
     } else {
@@ -57,6 +61,7 @@ export default function ProfileChangeForm() {
   async function handleUploadImage(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files && e.target.files[0];
     const extension = file?.name.split(".").pop();
+
     const MAX_SIZE = 1024 * 1024 * 4;
 
     if (!extension || !["jpg", "jpeg", "png", "gif"].includes(extension.toLowerCase())) {
@@ -68,6 +73,7 @@ export default function ProfileChangeForm() {
       showModal("5MB 이하 파일을 선택해 주세요.");
       return false;
     }
+
 
     if (file) {
       const reader = new FileReader();
@@ -88,7 +94,9 @@ export default function ProfileChangeForm() {
         });
 
         setProfileImageUrl(res.data.profileImageUrl);
-      } catch (error) {
+
+      } catch (e) {
+
         throw new Error(`${e}`);
       }
     }
