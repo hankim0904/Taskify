@@ -72,8 +72,7 @@ export default function Sidebar({ dashboardDatas, bottomObserver }: SidebarPorps
                 className={cx("board-list", { selected: data.id === Number(dashboardId) })}
                 onClick={() => {
                   router.push(`/dashboard/${data.id}`);
-                }}
-              >
+                }}>
                 <Dashboard color={data.color} isHost={data.createdByMe} isSidebar={true}>
                   {data.title}
                 </Dashboard>
