@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
-import { useAuth } from "@/contexts/AuthContext";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import NiceModal from "@ebay/nice-modal-react";
 import styles from "./DashboardList.module.scss";
 import skeletonStyles from "./ui/DashboardButtonSkUi.module.scss";
@@ -80,13 +79,13 @@ export default function DashboardList({ accessToken }: { accessToken: string }) 
           <PageChangeButton
             isForward={false}
             onClick={() => {
-              setCurrentPage(currentPage => currentPage - 1);
+              setCurrentPage((currentPage) => currentPage - 1);
             }}
             disabled={currentPage <= 1}
           />
           <PageChangeButton
             onClick={() => {
-              setCurrentPage(currentPage => currentPage + 1);
+              setCurrentPage((currentPage) => currentPage + 1);
             }}
             disabled={currentPage >= totalPage}
           />

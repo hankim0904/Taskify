@@ -7,7 +7,7 @@ import ProfileChangeForm from "@/components/domains/mypage/ProfileChangeForm";
 import PasswordChangeForm from "@/components/domains/mypage/PasswordChangeForm";
 import withAuthNoneExist from "@/utils/withAuthNoneExist";
 import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
-import getDashBoards from "@/api/getDashBoards";
+import getDashBoardsSSR from "@/api/getDashBoardsSSR";
 import { GetServerSidePropsContext } from "next";
 import { easeInOut, motion } from "framer-motion";
 
@@ -18,8 +18,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   const accessToken = context.req.cookies.accessToken || "";
 
   await queryClient.prefetchInfiniteQuery({
-    queryKey: ["dashboardList"],
-    queryFn: ({ pageParam = 1 }) => getDashBoards("pagination", accessToken, 18, pageParam),
+    queryKey: ["sideBarDashboardList"],
+    queryFn: ({ pageParam = 1 }) => getDashBoardsSSR("pagination", accessToken, 18, pageParam),
     initialPageParam: 1,
     getNextPageParam: (pages: any) => {
       return pages.length + 1;
@@ -52,7 +52,8 @@ function Mypage({ dehydratedState, accessToken }: any) {
               duration: 1.5,
               ease: easeInOut,
               repeat: Infinity,
-            }}>
+            }}
+          >
             <Image width={20} height={20} src="/assets/icons/ic-arrow-backward.svg" alt="뒤로가기" />
             <span>돌아가기</span>
           </motion.div>

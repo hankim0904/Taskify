@@ -14,7 +14,7 @@ import ColumnList from "@/components/domains/dashboardid/ColumnList";
 import AddColumn from "@/components/domains/dashboardid/AddColumn";
 import BaseContainer from "@/components/commons/BaseContainer/BaseContainer";
 import withAuthNoneExist from "@/utils/withAuthNoneExist";
-import getDashBoards from "@/api/getDashBoards";
+import getDashBoardsSSR from "@/api/getDashBoardsSSR";
 
 const cx = classNames.bind(styles);
 
@@ -28,9 +28,11 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     queryFn: () => getColumnList(dashboardId, accessToken),
   });
 
-  await queryClient.prefetchQuery({
-    queryKey: ["sideBarDashboardList", 1, 18],
-    queryFn: () => getDashBoards("pagination", accessToken, 18, 1),
+  await queryClient.prefetchInfiniteQuery({
+    queryKey: ["sideBarDashboardList"],
+    queryFn: () => getDashBoardsSSR("pagination", accessToken, 18, null),
+    initialPageParam: null,
+    getNextPageParam: (lastPage: any) => lastPage.pageParam,
   });
 
   return {
