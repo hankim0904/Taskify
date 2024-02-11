@@ -6,6 +6,7 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import NiceModal from "@ebay/nice-modal-react";
 import "@/styles/base.scss";
 import NextNProgress from "nextjs-progressbar";
+import Head from "next/head";
 
 const queryClient = new QueryClient();
 
@@ -23,6 +24,10 @@ function Providers({ children }: { children: ReactNode }) {
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
+      <Head>
+        <title>Taskify</title>
+        <link rel="icon" href="/assets/images/favicon.png" />
+      </Head>
       <NextNProgress
         color="#5434D7"
         height={8}
