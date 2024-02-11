@@ -10,7 +10,7 @@
   z-index: $modal;
 
   &::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera*/
+    display: none;
   }
 
   @media screen and (max-width: $mobile-breakpoint) {
@@ -24,7 +24,7 @@
 }
 
 .form {
-  @include column-flexbox(start, end);
+  @include column-flexbox(start, start);
   width: 44rem;
   gap: 1.8rem;
 
@@ -48,6 +48,10 @@
   @include flexbox(start);
   width: 100%;
   gap: 1.6rem;
+
+  &.add {
+    width: 50%;
+  }
 }
 
 .tag-list {
@@ -61,6 +65,10 @@
   overflow-x: auto;
   overflow-y: hidden;
 
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
   &-label {
     @include text-style(1.8, 500, $black-200);
     width: 100%;
@@ -70,9 +78,13 @@
   & input {
     @include text-style(1.6);
     min-width: 5rem;
-    flex-shrink: 3;
+    flex-shrink: 2;
 
     border: none;
+
+    &::-webkit-scrollbar {
+      display: none; /* Chrome, Safari, Opera*/
+    }
   }
 
   & input::placeholder {

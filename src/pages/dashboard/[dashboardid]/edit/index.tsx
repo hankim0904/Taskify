@@ -1,7 +1,7 @@
 import styles from "./edit.module.scss";
 import classNames from "classnames/bind";
-import DashboradEditTitleBox from "@/components/domains/edit/article/DashboradEditTitleBox";
-import DashboradEditMemberBox from "@/components/domains/edit/article/DashboradEditMemberBox";
+import DashboradEditTitleBox from "@/components/domains/edit/DashboradEditTitleBox";
+import DashboradEditMemberBox from "@/components/domains/edit/DashboradEditMemberBox";
 import Image from "next/image";
 import ResponseBtn from "@/components/commons/Buttons/ResponseButton";
 import BaseContainer from "@/components/commons/BaseContainer/BaseContainer";
@@ -14,7 +14,6 @@ import {
   dehydrate,
   useMutation,
   useQuery,
-  useQueryClient,
 } from "@tanstack/react-query";
 import * as A from "@/api/getEditData";
 import { deleteDashBoard } from "@/api/deleteDashBoradData";
@@ -22,6 +21,8 @@ import { useParams } from "next/navigation";
 import { putDashBoard } from "@/api/putDashBoard";
 import getDashBoards from "@/api/getDashBoards";
 import { easeInOut, motion } from "framer-motion";
+import { useModal } from "@ebay/nice-modal-react";
+import InviteModal from "@/components/commons/Modals/InviteModal/InviteModal";
 
 const cx = classNames.bind(styles);
 
@@ -40,8 +41,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   const dashboardId = context.query.dashboardid;
   const { accessToken } = context.req.cookies;
 
-  let page = 1;
-
   await Promise.all([
     queryClient.prefetchQuery({
       queryKey: A.getDashBoardTittleQueryKey(dashboardId),
@@ -49,18 +48,18 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       staleTime: 5000 * 1000,
     }),
     queryClient.prefetchQuery({
-      queryKey: A.getDashBoardMembersQueryKey(dashboardId, page),
-      queryFn: () => A.getDashBoardMembers(dashboardId, page, accessToken),
+      queryKey: A.getDashBoardMembersQueryKey(dashboardId, 1),
+      queryFn: () => A.getDashBoardMembers(dashboardId, 1, accessToken),
       staleTime: 5000 * 1000,
     }),
     queryClient.prefetchQuery({
-      queryKey: A.getDashboardInvitationsQueryKey(dashboardId, page),
-      queryFn: () => A.getDashboardInvitations(dashboardId, page, accessToken),
+      queryKey: A.getDashboardInvitationsQueryKey(dashboardId, 1),
+      queryFn: () => A.getDashboardInvitations(dashboardId, 1, accessToken),
       staleTime: 5000 * 1000,
     }),
-    await queryClient.prefetchQuery({
+    queryClient.prefetchQuery({
       queryKey: ["sideBarDashboardList", 1, 18],
-      queryFn: () => getDashBoards("pagination", accessToken, 18, 1),
+      queryFn: () => A.getDashBoardTittle(dashboardId),
     }),
   ]);
 
@@ -72,10 +71,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 }
 
 export default function Edit({ dehydratedState }: { dehydratedState: DehydratedState }) {
-  //const { accessToken } = useAuth();
   const router = useRouter();
   const currentPath = router.pathname;
-  const isOpenModal = false;
   const { dashboardid } = useParams();
 
   const { data: titleData } = useQuery({
@@ -106,7 +103,7 @@ export default function Edit({ dehydratedState }: { dehydratedState: DehydratedS
   return (
     <HydrationBoundary state={dehydratedState}>
       <BaseContainer currentPath={currentPath}>
-        <main className={cx("main", { openModal: isOpenModal })}>
+        <main className={cx("main")}>
           <motion.button
             type="button"
             onClick={gobackButton}
@@ -124,9 +121,11 @@ export default function Edit({ dehydratedState }: { dehydratedState: DehydratedS
           <DashboradEditTitleBox titleData={titleData} />
           <DashboradEditMemberBox isMemberEdit={true} title="구성원"></DashboradEditMemberBox>
           <DashboradEditMemberBox isMemberEdit={false} title="초대 내역"></DashboradEditMemberBox>
-          <ResponseBtn state="delete" onClick={handelDeleteDashBorad} ph={2} fs={1.8}>
-            대시보드 삭제하기
-          </ResponseBtn>
+          <div className={cx("dashborad-delete-btn")}>
+            <ResponseBtn state="delete" onClick={handelDeleteDashBorad} ph={2} fs={1.8}>
+              대시보드 삭제하기
+            </ResponseBtn>
+          </div>
         </main>
       </BaseContainer>
     </HydrationBoundary>

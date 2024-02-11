@@ -4,6 +4,7 @@ import { getCardList } from "@/components/domains/dashboardid/api/queries";
 import { getCardListQueryKey } from "@/components/domains/dashboardid/api/queryKeys";
 
 import styles from "./Column.module.scss";
+import skeletonStyles from "./CardListSkUi.module.scss";
 import classNames from "classnames/bind";
 
 import { useModal } from "@ebay/nice-modal-react";
@@ -15,6 +16,7 @@ import { MixButton } from "@/components/commons/Buttons/MixButton";
 import { useIntersectionObserver } from "../utils/useIntersectionObserver";
 
 const cx = classNames.bind(styles);
+const skCx = classNames.bind(skeletonStyles);
 
 interface ColumnProps {
   columnId: number;
@@ -30,11 +32,12 @@ export default function Column({ columnId, columnTitle }: ColumnProps) {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
+    isLoading,
   } = useInfiniteQuery({
     queryKey: getCardListQueryKey(columnId),
-    queryFn: ({ pageParam = 1 }) => getCardList(pageParam, columnId),
+    queryFn: ({ pageParam }) => getCardList(pageParam, columnId),
     initialPageParam: null,
-    getNextPageParam: lastPage => lastPage.cursorId,
+    getNextPageParam: (lastPage) => lastPage.cursorId,
   });
 
   const cardPages = cardPagesInfo?.pages ?? [];
@@ -44,8 +47,22 @@ export default function Column({ columnId, columnTitle }: ColumnProps) {
       fetchNextPage();
     }
   };
-
   useIntersectionObserver(bottomObserver, fetchNextCardList, { threshold: 0 });
+
+  if (isLoading) {
+    return (
+      <section className={cx("column")}>
+        <div className={cx("column-header")}>
+          <ColumnHeader columnId={columnId} columnTitle={columnTitle} cardCount={cardCount} />
+        </div>
+        <MixButton onClick={() => modal.show({ columnId })} />
+        <div className={cx("column-pages")}>
+          <SkeletonCardList />
+          <div className={cx("column-pages-end")} ref={bottomObserver}></div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className={cx("column")}>
@@ -65,4 +82,18 @@ export default function Column({ columnId, columnTitle }: ColumnProps) {
       )}
     </section>
   );
+}
+
+function SkeletonCardList() {
+  const numberOfIttems = 5;
+
+  const items = Array.from({ length: numberOfIttems }, (_, index) => (
+    <div className={skCx("skeleton-card")}>
+      <div className={skCx("skeleton-card-img")}>
+        <div className={skCx("line")} />
+      </div>
+    </div>
+  ));
+
+  return <>{items}</>;
 }
