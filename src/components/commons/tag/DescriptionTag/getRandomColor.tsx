@@ -48,11 +48,18 @@ export default function getRandomColor(opacity: number) {
   let randomColor: string, backgroundColor: string;
 
   do {
-    randomColor = Math.floor(Math.random() * MAX_HEX_COLOR_VALUE).toString(16);
+    randomColor = Math.floor(Math.random() * MAX_HEX_COLOR_VALUE)
+      .toString(16)
+      .padStart(6, "0");
     backgroundColor = `#${randomColor}${Math.floor(opacity * 255)
       .toString(16)
       .padStart(2, "0")}`;
-  } while (randomColor === "ffffff" || backgroundColor === "#ffffff");
+  } while (
+    randomColor === "ffffff" ||
+    randomColor === "000000" ||
+    backgroundColor === "#ffffff" ||
+    backgroundColor === "#000000"
+  );
 
   return { color: `#${randomColor}`, backgroundColor };
 }

@@ -11,6 +11,6 @@ export default async function getMembers(accessToken: string | null, dashboardId
       return res.data;
     }
   } catch (e) {
-    console.log(e);
+    throw new Error(`${e}`);
   }
 }

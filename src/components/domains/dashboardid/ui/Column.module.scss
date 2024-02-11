@@ -1,6 +1,7 @@
 .column {
+  @include column-flexbox(start, start);
   width: 35.4rem;
-  height: calc(100vh - 11rem);
+  height: 100%;
   padding: 2.2rem 2rem 0 2rem;
   border-right: 0.1rem solid $gray-200;
 
@@ -19,6 +20,7 @@
 
   &-header {
     margin-bottom: 2.5rem;
+    width: 100%;
 
     @include responsive("M") {
       margin-bottom: 1.8rem;
@@ -28,9 +30,10 @@
   &-pages {
     @include column-flexbox(start, stretch);
     gap: 1.6rem;
-    height: calc(100% - 11rem);
+    width: 100%;
     margin-top: 1.6rem;
-    overflow: scroll;
+    overflow-x: hidden;
+    overflow-y: scroll;
 
     &::-webkit-scrollbar {
       display: none;
@@ -38,6 +41,7 @@
 
     @include responsive("T") {
       max-height: 21rem;
+      -webkit-overflow-scrolling: touch;
     }
 
     @include responsive("M") {

@@ -46,10 +46,10 @@ export default withAuthNoneExist(function DashboardPage({ dehydratedState }: { d
 
   return (
     <HydrationBoundary state={dehydratedState}>
+      <Head>
+        <title>대시보드</title>
+      </Head>
       <div className={cx("container")}>
-        <Head>
-          <title>대시보드</title>
-        </Head>
         <BaseContainer currentPath={currentPath}>
           <DashboardLayout columnList={<ColumnList />} addColumn={<AddColumn />} />
         </BaseContainer>

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import styles from "./Sidebar.module.scss";
 import classNames from "classnames/bind";
 import Dashboard from "../../Dashboard/Dashboard";
@@ -16,34 +16,27 @@ interface DashboardData {
   color: string;
   createdAt: string;
   updatedAt: string;
-  createdByMe: true;
+  createdByMe: boolean;
   userId: number;
 }
 
 interface SidebarPorps {
-  handleChangeDashBoardTitle: (selectedDashboard: DashboardData) => void;
-  dashboardDatas: any;
-  setSelectedDashboard: any;
+  dashboardDatas: DashboardData[];
   bottomObserver: any;
 }
 
-export default function Sidebar({
-  handleChangeDashBoardTitle,
-  dashboardDatas,
-  setSelectedDashboard,
-  bottomObserver,
-}: SidebarPorps) {
-  const [selectedIdx, setSelectedIdx] = useState(0);
+export default function Sidebar({ dashboardDatas, bottomObserver }: SidebarPorps) {
   const router = useRouter();
+  const dashboardId = router.query.dashboardid;
+  const sidebarRef = useRef(null);
 
-  function handleSelectDashBoard(dashboardId: number) {
-    const selectedDashboard = dashboardDatas.find((data: DashboardData) => data.id === dashboardId);
-
+  function scrollToDashboard(id: any) {
+    const sidebar = sidebarRef.current;
+    const selectedDashboard = sidebar.querySelector(`.board-list[data-id="${id}"]`);
+    console.log(selectedDashboard);
     if (selectedDashboard) {
-      setSelectedIdx(selectedDashboard.id);
-      handleChangeDashBoardTitle(selectedDashboard);
-      setSelectedDashboard(selectedDashboard);
-      router.push(`/dashboard/${dashboardId}`);
+      selectedDashboard.scrollIntoView({ behavior: "smooth", block: "start" });
+      console.log(selectedDashboard.scrollIntoView({ behavior: "smooth", block: "start" }));
     }
   }
 
@@ -55,13 +48,13 @@ export default function Sidebar({
     <div className={cx("sidebar")}>
       <div className={cx("logo")}>
         <div className={cx("logo-symbol")}>
-          <Link href="/">
+          <Link href="/mydashboard">
             <Image fill src="/assets/images/logo-symbol.png" alt="로고 심볼" />
           </Link>
         </div>
 
         <div className={cx("logo-typo")}>
-          <Link href="/">
+          <Link href="/mydashboard">
             <Image fill src="/assets/images/logo-typo.png" alt="로고 타이포" />
           </Link>
         </div>
@@ -81,20 +74,23 @@ export default function Sidebar({
           </button>
         </div>
 
-        <div className={cx("contents")}>
-          {dashboardDatas.map((data: DashboardData) => (
-            <div
-              key={data.id}
-              className={cx("board-list", { selected: data.id === selectedIdx })}
-              onClick={() => {
-                handleSelectDashBoard(data.id);
-              }}>
-              <Dashboard color={data.color} isHost={data.createdByMe} isSidebar={true}>
-                {data.title}
-              </Dashboard>
-            </div>
-          ))}
-          <div ref={bottomObserver}></div>
+        <div ref={sidebarRef} className={cx("sidebar")}>
+          <div className={cx("contents")}>
+            {dashboardDatas.map((data: DashboardData) => (
+              <div
+                key={data.id}
+                className={cx("board-list", { selected: data.id === Number(dashboardId) })}
+                onClick={() => {
+                  router.push(`/dashboard/${data.id}`);
+                  scrollToDashboard(data.id);
+                }}>
+                <Dashboard color={data.color} isHost={data.createdByMe} isSidebar={true}>
+                  {data.title}
+                </Dashboard>
+              </div>
+            ))}
+            <div ref={bottomObserver} style={{ height: "1px" }}></div>
+          </div>
         </div>
       </div>
     </div>
