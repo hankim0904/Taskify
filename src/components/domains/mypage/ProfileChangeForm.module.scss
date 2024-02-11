@@ -64,13 +64,12 @@
         position: relative;
         width: 18.2rem;
         height: 18.2rem;
+
         cursor: pointer;
 
         @include responsive("M") {
           width: 10rem;
           height: 10rem;
-          // left: 50%;
-          // transform: translateX(-50%);
         }
 
         img {

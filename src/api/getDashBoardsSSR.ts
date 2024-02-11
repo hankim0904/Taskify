@@ -1,13 +1,13 @@
-import { axiosCSRInstance } from "./axiosCSRInstance";
+import { axiosSSRInstance } from "./axiosSSRInstance";
 
-export default async function getDashBoards(
+export default async function getDashBoardsSSR(
   navigationMethod: "infiniteScroll" | "pagination",
   accessToken: string | null | undefined,
   size?: number,
-  pageNum?: number | null,
+  pageNum?: number | null
 ) {
   try {
-    const res = await axiosCSRInstance.get(`dashboards`, {
+    const res = await axiosSSRInstance.get(`dashboards`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },

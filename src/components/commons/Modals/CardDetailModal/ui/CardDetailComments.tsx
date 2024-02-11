@@ -1,16 +1,16 @@
-import { useQuery } from "@tanstack/react-query";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import Image from "next/image";
+import { useFormContext } from "react-hook-form";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { getMe } from "@/components/domains/dashboardid/api/queries";
 import { getMeQueryKey } from "@/components/domains/dashboardid/api/queryKeys";
 import { getCommentsQueryKey } from "@/components/domains/dashboardid/api/queryKeys";
 import { delelteComments } from "@/components/domains/dashboardid/api/queries";
-
-import styles from "./CardDetailComments.module.scss";
-import classNames from "classnames/bind";
-import Image from "next/image";
-import { EditStore } from "../CardDetailModal";
 import formatDateDot from "../utils/dateDotChange";
+import { EditStore } from "../CardDetailModal";
+
+import classNames from "classnames/bind";
+import styles from "./CardDetailComments.module.scss";
 
 const cx = classNames.bind(styles);
 
@@ -32,7 +32,6 @@ interface CardDetailCommentsProps {
   cardId: number;
   setEditing: React.Dispatch<React.SetStateAction<boolean>>;
   setEditStore: React.Dispatch<React.SetStateAction<EditStore>>;
-  setValue: any;
 }
 
 export default function CardDetailComments({
@@ -40,8 +39,8 @@ export default function CardDetailComments({
   cardId,
   setEditing,
   setEditStore,
-  setValue,
 }: CardDetailCommentsProps) {
+  const { setValue } = useFormContext();
   const { data: meData } = useQuery({ queryKey: getMeQueryKey(), queryFn: () => getMe() });
 
   const userId = meData?.id;

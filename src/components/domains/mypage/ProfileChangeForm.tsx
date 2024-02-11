@@ -11,6 +11,7 @@ import putChangeUserProfile from "@/api/putChangeUserProfile";
 import { axiosCSRInstance } from "@/api/axiosCSRInstance";
 import { useAuth } from "@/contexts/AuthContext";
 import extractFirstLetter from "@/utils/extractFirstLetter";
+
 import SignModal from "@/components/commons/Modals/SignModal/SignModal";
 import NiceModal from "@ebay/nice-modal-react";
 
@@ -56,6 +57,7 @@ export default function ProfileChangeForm() {
   async function handleUploadImage(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files && e.target.files[0];
     const extension = file?.name.split(".").pop();
+
     const MAX_SIZE = 1024 * 1024 * 4;
 
     if (!extension || !["jpg", "jpeg", "png", "gif"].includes(extension.toLowerCase())) {
@@ -87,7 +89,7 @@ export default function ProfileChangeForm() {
         });
 
         setProfileImageUrl(res.data.profileImageUrl);
-      } catch (error) {
+      } catch (e) {
         throw new Error(`${e}`);
       }
     }
