@@ -3,6 +3,7 @@
   padding: 4rem 14rem;
   width: 100%;
   max-width: 1920px;
+  margin: 0 auto;
 
   & p {
     @include text-style(1.5, 400, $gray-300);

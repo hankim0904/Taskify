@@ -25,27 +25,19 @@
 
 ## 👥 팀 & 역할
 
-| [김우현](https://github.com/guen9310)                                                                                                     | [김하은](https://github.com/yunsusu)                                                                                                      | [박지원](https://github.com/rladngus133)                                                                                                  | [손오름](https://github.com/Yoon-kyungLee)                                                                                                | [지현기](https://github.com/JIS0098)                                                                                                      |
+| [김우현](https://github.com/rladngus133)                                                                                                     | [김하은](https://github.com/hankim0904)                                                                                                      | [박지원](https://github.com/bjiwon324)                                                                                                  | [손오름](https://github.com/mrhandsup)                                                                                                | [지현기](https://github.com/ccwnc)                                                                                                      |
 | ----------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
 | <img src="https://d2u3dcdbebyaiu.cloudfront.net/uploads/atch_img/954/7a9d537acf40250dbdbb75a0cf7b1958_res.jpeg" width="128" height="128"> | <img src="https://d2u3dcdbebyaiu.cloudfront.net/uploads/atch_img/954/7a9d537acf40250dbdbb75a0cf7b1958_res.jpeg" width="128" height="128"> | <img src="https://d2u3dcdbebyaiu.cloudfront.net/uploads/atch_img/954/7a9d537acf40250dbdbb75a0cf7b1958_res.jpeg" width="128" height="128"> | <img src="https://d2u3dcdbebyaiu.cloudfront.net/uploads/atch_img/954/7a9d537acf40250dbdbb75a0cf7b1958_res.jpeg" width="128" height="128"> | <img src="https://d2u3dcdbebyaiu.cloudfront.net/uploads/atch_img/954/7a9d537acf40250dbdbb75a0cf7b1958_res.jpeg" width="128" height="128"> |
 
 **👦 김우현** :
 
--
+- **👧 김하은** :
 
-**👧 김하은** :
+- **👩‍🦰 박지원** :
 
--
+- **👦 손오름** :
 
-**👩‍🦰 박지원** :
-
--
-
-**👦 손오름** :
-
--
-
-**👦 지현기** :
+- **👦 지현기** :
 
 -
 
@@ -60,4 +52,4 @@ npm start run
 
 ## 🔗 배포링크
 
-[🔗Link](https://google.com/)
+[🔗Link](https://project-cf3j.vercel.app/)

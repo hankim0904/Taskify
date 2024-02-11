@@ -1,12 +1,12 @@
 .container {
   @include flexbox(between);
   position: fixed;
-  right: 0;
+  right: 50%;
+  transform: translate(50%);
   top: 0;
   background-color: $black;
   width: 100%;
   padding: 2rem 2.6rem;
-  margin: 0 auto;
   max-width: 1920px;
   z-index: 99;
 
