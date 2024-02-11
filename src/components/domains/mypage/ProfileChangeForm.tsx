@@ -1,4 +1,3 @@
-
 import Image from "next/image";
 import { useForm, SubmitHandler, FieldValues } from "react-hook-form";
 import Input from "@/components/commons/Input/Input";
@@ -15,7 +14,6 @@ import extractFirstLetter from "@/utils/extractFirstLetter";
 
 import SignModal from "@/components/commons/Modals/SignModal/SignModal";
 import NiceModal from "@ebay/nice-modal-react";
-
 
 const cx = classNames.bind(styles);
 
@@ -42,15 +40,13 @@ export default function ProfileChangeForm() {
     NiceModal.show(SignModal, { text });
   };
 
-
   useEffect(() => {
     if (userMeData) {
       setValue("nickname", userMeData.nickname);
     }
   }, [userMeData]);
 
-  const onSubmit: SubmitHandler<FieldValues> = data => {
-
+  const onSubmit: SubmitHandler<FieldValues> = (data) => {
     if (profileImageUrl === "" || showBasicProfile) {
       putChangeUserProfile(data.nickname, null, accessToken);
     } else {
@@ -74,7 +70,6 @@ export default function ProfileChangeForm() {
       return false;
     }
 
-
     if (file) {
       const reader = new FileReader();
 
@@ -94,9 +89,7 @@ export default function ProfileChangeForm() {
         });
 
         setProfileImageUrl(res.data.profileImageUrl);
-
       } catch (e) {
-
         throw new Error(`${e}`);
       }
     }
@@ -113,55 +106,51 @@ export default function ProfileChangeForm() {
         <div className={cx("contents")}>
           <div className={cx("contents-upload-area")}>
             {!showBasicProfile ? (
-              <>
-                <div className={cx("contents-upload-image")}>
-                  {userMeData?.profileImageUrl ? (
-                    <Image fill src={userMeData?.profileImageUrl} alt="현재 이미지" style={{ objectFit: "cover" }} />
-                  ) : (
-                    <div className={cx("contents-basic-image")}>
-                      <span className={cx("nickname")}>{extractFirstLetter(userMeData?.nickname)}</span>
-                    </div>
-                  )}
-                  {previewImage && typeof previewImage === "string" && (
-                    <Image fill src={previewImage} alt="미리 보기" style={{ objectFit: "cover" }} />
-                  )}
-                  <label htmlFor="upload-image">
-                    <div className={cx("lable-file-type")}>
-                      <Image
-                        width={28}
-                        height={28}
-                        src="/assets/icons/ic-plus-without-background.svg"
-                        alt="이미지 추가하기"
-                        style={{ objectFit: "cover" }}
-                      />
-                    </div>
-                  </label>
-
-                  <div style={{ display: "none" }} onChange={handleUploadImage}>
-                    <Input name="upload-image" labelName="" type="file" control={control as any} />
+              <div className={cx("contents-upload-image")}>
+                {userMeData?.profileImageUrl ? (
+                  <Image fill src={userMeData?.profileImageUrl} alt="현재 이미지" style={{ objectFit: "cover" }} />
+                ) : (
+                  <div className={cx("contents-basic-image")}>
+                    <span className={cx("nickname")}>{extractFirstLetter(userMeData?.nickname)}</span>
                   </div>
+                )}
+                {previewImage && typeof previewImage === "string" && (
+                  <Image fill src={previewImage} alt="미리 보기" style={{ objectFit: "cover" }} />
+                )}
+                <label htmlFor="upload-image">
+                  <div className={cx("lable-file-type")}>
+                    <Image
+                      width={28}
+                      height={28}
+                      src="/assets/icons/ic-plus-without-background.svg"
+                      alt="이미지 추가하기"
+                      style={{ objectFit: "cover" }}
+                    />
+                  </div>
+                </label>
+
+                <div style={{ display: "none" }} onChange={handleUploadImage}>
+                  <Input name="upload-image" labelName="" type="file" control={control as any} />
                 </div>
-              </>
+              </div>
             ) : (
-              <>
-                <div className={cx("contents-basic-image")}>
-                  <span className={cx("nickname")}>{extractFirstLetter(userMeData?.nickname)}</span>
-                  <label htmlFor="basic-to-image">
-                    <div className={cx("lable-file-type")}>
-                      <Image
-                        width={28}
-                        height={28}
-                        src="/assets/icons/ic-plus-without-background.svg"
-                        alt="이미지 추가하기"
-                        style={{ objectFit: "cover" }}
-                      />
-                    </div>
-                    <div style={{ display: "none" }} onChange={handleUploadImage}>
-                      <Input name="basic-to-image" labelName="" type="file" control={control as any} />
-                    </div>
-                  </label>
-                </div>
-              </>
+              <div className={cx("contents-basic-image")}>
+                <span className={cx("nickname")}>{extractFirstLetter(userMeData?.nickname)}</span>
+                <label htmlFor="basic-to-image">
+                  <div className={cx("lable-file-type")}>
+                    <Image
+                      width={28}
+                      height={28}
+                      src="/assets/icons/ic-plus-without-background.svg"
+                      alt="이미지 추가하기"
+                      style={{ objectFit: "cover" }}
+                    />
+                  </div>
+                  <div style={{ display: "none" }} onChange={handleUploadImage}>
+                    <Input name="basic-to-image" labelName="" type="file" control={control as any} />
+                  </div>
+                </label>
+              </div>
             )}
 
             <div onClick={handleChangeDefaultImage}>
