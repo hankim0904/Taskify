@@ -1,3 +1,4 @@
+
 @mixin button-style($bg-color, $border-color, $text-color) {
   background-color: $bg-color;
   padding: 0.7rem 0;
@@ -52,10 +53,11 @@
       }
 
       &-upload-area {
-        @include column-flexbox(center, none);
+
+        @include column-flexbox(center, center);
         gap: 1rem;
 
-        @include responsive("T") {
+        @include responsive("M") {
         }
       }
 
@@ -65,16 +67,41 @@
         width: 18.2rem;
         height: 18.2rem;
 
+        cursor: pointer;
+
+
         @include responsive("M") {
           width: 10rem;
           height: 10rem;
-          left: 50%;
-          transform: translateX(-50%);
+
         }
 
         img {
           border-radius: 50%;
         }
+
+
+        .lable-file-type {
+          @include flexbox(center, center);
+          opacity: 0;
+          position: absolute;
+          top: 0;
+          left: 0;
+          background-color: rgba(245, 245, 245, 1);
+          width: 18.2rem;
+          height: 18.2rem;
+          border-radius: 50%;
+
+          @include responsive("M") {
+            width: 10rem;
+            height: 10rem;
+          }
+        }
+
+        &:hover .lable-file-type {
+          opacity: 0.5;
+        }
+
       }
 
       &-basic-image {
@@ -83,14 +110,46 @@
         height: 18.2rem;
         border-radius: 50%;
         background-color: #ffc85a;
+        cursor: pointer;
+
+        .lable-file-type {
+          @include flexbox(center, center);
+          opacity: 0;
+          position: absolute;
+          top: 0;
+          left: 0;
+          background-color: rgba(245, 245, 245, 1);
+          width: 18.2rem;
+          height: 18.2rem;
+          border-radius: 50%;
+
+          @include responsive("M") {
+            width: 10rem;
+            height: 10rem;
+          }
+        }
+
+        &:hover .lable-file-type {
+          opacity: 0.5;
+        }
+
 
         .nickname {
           @include pos-center(absolute);
           @include text-style(3, 600, $white);
         }
+
+
+        @include responsive("M") {
+          width: 100%;
+          height: 100%;
+        }
       }
 
       .upload-image-btn {
+        position: absolute;
+        top: 50%;
+        left: 50%;
         @include button-style($white, $gray-300, $violet);
         cursor: pointer;
 
@@ -101,6 +160,7 @@
 
       .basic-image-btn {
         @include button-style($white, $gray-300, $gray-500);
+        padding: 1rem;
         cursor: pointer;
 
         &:hover {
@@ -149,3 +209,4 @@
     }
   }
 }
+

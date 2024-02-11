@@ -40,6 +40,7 @@
   & button {
     width: 12rem;
     @include responsive("M") {
+      margin-top: +2rem;
       width: 100%;
     }
   }
@@ -53,7 +54,8 @@
   text-decoration: underline;
 
   @include responsive("M") {
-    bottom: 10rem;
+    height: 4rem;
+    bottom: 8.3rem;
   }
 }
 

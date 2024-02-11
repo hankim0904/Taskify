@@ -4,20 +4,16 @@ import classNames from "classnames/bind";
 import PageChangeButton from "@/components/commons/Buttons/PageChangeButton";
 import Image from "next/image";
 import { useModal } from "@ebay/nice-modal-react";
-//import InviteModal from "@/components/commons/Modals/InviteModal/InviteModal";
-import TaskModal from "@/components/commons/Modals/TaskModals/TaskModal";
-import { MutationFunction, keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   getDashBoardMembers,
   getDashBoardMembersQueryKey,
   getDashboardInvitations,
   getDashboardInvitationsQueryKey,
-} from "../../../../api/getEditData";
+} from "@/api/getEditData";
 import { useEffect, useState } from "react";
-import ColumnModal from "@/components/commons/Modals/ColumnModals/ColumnModal";
 import { useParams } from "next/navigation";
-import { deleteDashBoard, deleteInvitations, deleteMembers } from "../../../../api/deleteDashBoradData";
-import { isElement } from "react-dom/test-utils";
+import { deleteInvitations, deleteMembers } from "../../../api/deleteDashBoradData";
 import InviteModal from "@/components/commons/Modals/InviteModal/InviteModal";
 import extractInitial from "@/utils/extractInitial";
 
@@ -33,6 +29,7 @@ interface Members {
   email: string;
   id: number;
   profileImageUrl: string;
+  isOwner: boolean;
   invitee?: {
     email: string;
   };
@@ -44,8 +41,6 @@ interface Invitation {
     email: string;
   };
 }
-
-//초대 취소시 유저 아이디 필요
 
 export default function DashboradEditMemberBox({ title, isMemberEdit }: Props) {
   const modal = useModal(InviteModal);
@@ -70,6 +65,7 @@ export default function DashboradEditMemberBox({ title, isMemberEdit }: Props) {
     staleTime: 5000 * 10000,
   });
   const members = memberData?.members;
+  console.log(members);
   const invitedMembers = invitationsData?.invitations.map((invitation: Invitation) => ({
     id: invitation.id,
     invitee: invitation.invitee,
@@ -109,11 +105,15 @@ export default function DashboradEditMemberBox({ title, isMemberEdit }: Props) {
     },
   });
 
-  const handelDelteMember = (id: number) => {
+  const handelDelteMember = (id: number, isOwner: boolean, name?: string) => {
     if (isMemberEdit) {
-      deleteMemberMutation.mutate(id);
+      confirm(`${name} 님을 삭제하시겠습니까?`)
+        ? isOwner
+          ? alert("관리자만 구성원을 삭제할 수 있습니다")
+          : deleteMemberMutation.mutate(id)
+        : alert("삭제를 취소했습니다");
     } else {
-      deleteInvitationMutation.mutate(id);
+      confirm(`${name} 님 초대를 취소하시겠습니까?`) ? deleteInvitationMutation.mutate(id) : false;
     }
   };
 
@@ -171,9 +171,14 @@ export default function DashboradEditMemberBox({ title, isMemberEdit }: Props) {
             ) : (
               <>{member.invitee?.email}</>
             )}
-            <ResponseBtn onClick={() => handelDelteMember(member.id)} state="reject">
-              {isMemberEdit ? "삭제" : "취소"}
-            </ResponseBtn>
+            {!member.isOwner && (
+              <ResponseBtn
+                onClick={() => handelDelteMember(member.id, member.isOwner, member.nickname || member.invitee?.email)}
+                state="reject"
+              >
+                {isMemberEdit ? "삭제" : "취소"}
+              </ResponseBtn>
+            )}
           </li>
         ))}
       </ul>

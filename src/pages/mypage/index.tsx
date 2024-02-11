@@ -18,7 +18,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   const accessToken = context.req.cookies.accessToken || "";
 
   await queryClient.prefetchInfiniteQuery({
-    queryKey: ["sideBarDashboardList"],
+    queryKey: ["dashboardList"],
     queryFn: ({ pageParam = 1 }) => getDashBoards("pagination", accessToken, 18, pageParam),
     initialPageParam: 1,
     getNextPageParam: (pages: any) => {
