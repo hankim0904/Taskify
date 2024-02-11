@@ -15,7 +15,6 @@ import extractFirstLetter from "@/utils/extractFirstLetter";
 import SignModal from "@/components/commons/Modals/SignModal/SignModal";
 import NiceModal from "@ebay/nice-modal-react";
 
-
 const cx = classNames.bind(styles);
 
 export default function ProfileChangeForm() {
@@ -41,15 +40,13 @@ export default function ProfileChangeForm() {
     NiceModal.show(SignModal, { text });
   };
 
-
   useEffect(() => {
     if (userMeData) {
       setValue("nickname", userMeData.nickname);
     }
   }, [userMeData]);
 
-  const onSubmit: SubmitHandler<FieldValues> = data => {
-
+  const onSubmit: SubmitHandler<FieldValues> = (data) => {
     if (profileImageUrl === "" || showBasicProfile) {
       putChangeUserProfile(data.nickname, null, accessToken);
     } else {
@@ -73,7 +70,6 @@ export default function ProfileChangeForm() {
       return false;
     }
 
-
     if (file) {
       const reader = new FileReader();
 
@@ -93,9 +89,7 @@ export default function ProfileChangeForm() {
         });
 
         setProfileImageUrl(res.data.profileImageUrl);
-
       } catch (e) {
-
         throw new Error(`${e}`);
       }
     }

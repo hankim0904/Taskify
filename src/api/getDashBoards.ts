@@ -4,7 +4,7 @@ export default async function getDashBoards(
   navigationMethod: "infiniteScroll" | "pagination",
   accessToken: string | null | undefined,
   size?: number,
-  pageNum?: number | null,
+  pageNum?: number | null
 ) {
   try {
     const res = await axiosCSRInstance.get(`dashboards`, {
