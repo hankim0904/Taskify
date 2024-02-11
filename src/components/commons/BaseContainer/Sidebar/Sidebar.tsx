@@ -6,6 +6,7 @@ import classNames from "classnames/bind";
 import Dashboard from "../../Dashboard/Dashboard";
 import NiceModal from "@ebay/nice-modal-react";
 import DashboardCreationModal from "../../Modals/DashboardCreationModal/DashboardCreationModal";
+import { motion } from "framer-motion";
 
 const cx = classNames.bind(styles);
 
@@ -54,7 +55,8 @@ export default function Sidebar({ dashboardDatas, bottomObserver }: SidebarPorps
             className={cx("title")}
             onClick={() => {
               router.push("/mydashboard");
-            }}>
+            }}
+          >
             Dash Boards
           </span>
           <button className={cx("create-btn")} onClick={showModal}>

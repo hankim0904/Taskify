@@ -31,7 +31,7 @@ export default function BaseContainer({ currentPath, accessToken, children }: Ba
   const bottomObserver = useRef<HTMLDivElement | null>(null);
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
-    queryKey: ["dashboardList"],
+    queryKey: ["sideBarDashboardList"],
     queryFn: ({ pageParam = 1 }) => getDashBoards("pagination", accessToken, 18, pageParam),
     initialPageParam: 1,
     getNextPageParam: () => {
@@ -40,7 +40,7 @@ export default function BaseContainer({ currentPath, accessToken, children }: Ba
   });
 
   const dashboardTotalCount = data?.pages[0].totalCount;
-  const allDashboardDatas = data?.pages.flatMap(page => page.dashboards) ?? [];
+  const allDashboardDatas = data?.pages.flatMap((page) => page.dashboards) ?? [];
 
   const fetchNextDashboard = () => {
     if (dashboardTotalCount === allDashboardDatas.length) return;
