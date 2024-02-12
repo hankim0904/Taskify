@@ -50,7 +50,10 @@ export default function Navbar({ currentPath, dashboardTotalCount, dashboardData
   const { data: memberData } = useQuery({
     queryKey: ["memberList", dashboardId],
     queryFn: () => getMembers(accessToken, dashboardId),
+
+    enabled: currentPath.includes("/dashboard"),
   });
+
   const memberList: Member[] = memberData?.members || [];
   const memberTotalCount: number | undefined = memberData?.totalCount;
 

@@ -52,8 +52,7 @@ function Mypage({ dehydratedState, accessToken }: any) {
               duration: 1.5,
               ease: easeInOut,
               repeat: Infinity,
-            }}
-          >
+            }}>
             <Image width={20} height={20} src="/assets/icons/ic-arrow-backward.svg" alt="뒤로가기" />
             <span>돌아가기</span>
           </motion.div>
