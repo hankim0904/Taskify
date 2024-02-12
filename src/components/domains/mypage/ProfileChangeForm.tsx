@@ -23,7 +23,12 @@ export default function ProfileChangeForm() {
     queryFn: () => getUsersMe(accessToken),
   });
 
-  const { control, handleSubmit, setValue } = useForm({
+  const {
+    control,
+    handleSubmit,
+    setValue,
+    formState: { isValid },
+  } = useForm({
     mode: "onChange",
     defaultValues: {
       nickname: "",
@@ -66,7 +71,7 @@ export default function ProfileChangeForm() {
     }
 
     if (!file || file.size > MAX_SIZE) {
-      showModal("5MB 이하 파일을 선택해 주세요.");
+      showModal("4MB 이하 파일을 선택해 주세요.");
       return false;
     }
 
@@ -170,12 +175,20 @@ export default function ProfileChangeForm() {
                 type="text"
                 control={control as any}
                 placeholder="닉네임을 입력해 주세요"
+                rules={{
+                  required: "닉네임을 입력해 주세요.",
+                  maxLength: { value: 10, message: "열 자 이하로 작성해 주세요." },
+                  pattern: {
+                    value: /^[0-9a-zA-Z가-힣ㄱ-ㅎㅏ-ㅣ\x20]*$/gi,
+                    message: "닉네임에 특수문자 및 이모티콘을 사용할 수 없습니다.",
+                  },
+                }}
               />
             </div>
           </div>
         </div>
         <div className={cx("contents-btn")}>
-          <ResponseBtn state="accept" type="submit" ph={0.8}>
+          <ResponseBtn state="accept" type="submit" disabled={!isValid} ph={0.8}>
             저장
           </ResponseBtn>
         </div>
