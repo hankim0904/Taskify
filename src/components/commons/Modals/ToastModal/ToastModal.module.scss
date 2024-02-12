@@ -1,0 +1,27 @@
+.container {
+  @include flexbox(start, center);
+  position: fixed;
+  bottom: 5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 52rem;
+  height: 6rem;
+  border-radius: 0.8rem;
+  background-color: rgb(0, 0, 0, 0.8);
+  padding: 2rem 3rem;
+  z-index: $modal;
+
+  &-box {
+    @include flexbox(center, center);
+    gap: 1.3rem;
+  }
+  .text {
+    @include text-style(1.6, 400, $white);
+  }
+
+  @include responsive("T") {
+    width: 52.4rem;
+    right: 20vw;
+    width: 52.4rem;
+  }
+}

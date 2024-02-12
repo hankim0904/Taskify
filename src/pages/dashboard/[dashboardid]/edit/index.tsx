@@ -18,11 +18,8 @@ import {
 import * as A from "@/api/getEditData";
 import { deleteDashBoard } from "@/api/deleteDashBoradData";
 import { useParams } from "next/navigation";
-import { putDashBoard } from "@/api/putDashBoard";
-import getDashBoards from "@/api/getDashBoards";
 import { easeInOut, motion } from "framer-motion";
-import { useModal } from "@ebay/nice-modal-react";
-import InviteModal from "@/components/commons/Modals/InviteModal/InviteModal";
+import getDashBoardsSSR from "@/api/getDashBoardsSSR";
 
 const cx = classNames.bind(styles);
 
@@ -57,9 +54,13 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       queryFn: () => A.getDashboardInvitations(dashboardId, 1, accessToken),
       staleTime: 5000 * 1000,
     }),
-    queryClient.prefetchQuery({
-      queryKey: ["sideBarDashboardList", 1, 18],
-      queryFn: () => A.getDashBoardTittle(dashboardId),
+    queryClient.prefetchInfiniteQuery({
+      queryKey: ["sideBarDashboardList"],
+      queryFn: ({ pageParam = 1 }) => getDashBoardsSSR("pagination", accessToken, 18, pageParam),
+      initialPageParam: 1,
+      getNextPageParam: (pages: any) => {
+        return pages.length + 1;
+      },
     }),
   ]);
 
