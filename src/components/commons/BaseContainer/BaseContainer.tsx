@@ -37,10 +37,11 @@ export default function BaseContainer({ currentPath, accessToken, children }: Ba
     getNextPageParam: () => {
       return currentPage + 1;
     },
+    staleTime: 60000,
   });
 
   const dashboardTotalCount = data?.pages[0].totalCount;
-  const allDashboardDatas = data?.pages.flatMap((page) => page.dashboards) ?? [];
+  const allDashboardDatas = data?.pages.flatMap(page => page.dashboards) ?? [];
 
   const fetchNextDashboard = () => {
     if (dashboardTotalCount === allDashboardDatas.length) return;
@@ -51,7 +52,7 @@ export default function BaseContainer({ currentPath, accessToken, children }: Ba
     }
   };
 
-  useIntersectionObserver(bottomObserver, fetchNextDashboard, { threshold: 0 });
+  useIntersectionObserver(bottomObserver, fetchNextDashboard, { threshold: 1 });
 
   return (
     <div className={cx("grid")}>
@@ -59,7 +60,11 @@ export default function BaseContainer({ currentPath, accessToken, children }: Ba
         <Sidebar dashboardDatas={allDashboardDatas} bottomObserver={bottomObserver} />
       </div>
       <div className={cx("grid-navbar")}>
-        <Navbar currentPath={currentPath} dashboardTotalCount={dashboardTotalCount} />
+        <Navbar
+          currentPath={currentPath}
+          dashboardTotalCount={dashboardTotalCount}
+          dashboardDatas={allDashboardDatas}
+        />
       </div>
       <div className={cx("grid-content")}>{children}</div>
     </div>
