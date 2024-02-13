@@ -20,7 +20,9 @@ import { deleteDashBoard } from "@/api/deleteDashBoradData";
 import { useParams } from "next/navigation";
 import { easeInOut, motion } from "framer-motion";
 import getDashBoardsSSR from "@/api/getDashBoardsSSR";
+
 import Head from "next/head";
+
 
 const cx = classNames.bind(styles);
 
