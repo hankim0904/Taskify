@@ -17,7 +17,7 @@ export default function PasswordChangeForm() {
     formState: { isValid },
   } = useForm({ mode: "onChange" });
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+  const onSubmit: SubmitHandler<FieldValues> = data => {
     putChangePassword(accessToken, data.currentPassword, data.newPassword);
   };
 
@@ -59,7 +59,7 @@ export default function PasswordChangeForm() {
                 placeholder="새 비밀번호 확인"
                 rules={{
                   required: "비밀번호 확인을 위해 한번 더 입력해 주세요",
-                  validate: (value) => (value === watch("newPassword") ? true : "비밀번호가 일치하지 않습니다."),
+                  validate: value => (value === watch("newPassword") ? true : "비밀번호가 일치하지 않습니다."),
                 }}
               />
             </div>

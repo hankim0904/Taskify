@@ -13,8 +13,8 @@
     display: none;
   }
 
-  @media screen and (max-width: $mobile-breakpoint) {
-    width: 90%;
+  @include responsive("M") {
+    width: 80vh;
   }
 }
 
@@ -91,6 +91,7 @@
 
   & input {
     @include text-style(1.6);
+    width: 100%;
     min-width: 5rem;
     flex-shrink: 2;
 

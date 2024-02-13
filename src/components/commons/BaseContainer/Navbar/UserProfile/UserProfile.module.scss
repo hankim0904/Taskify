@@ -36,6 +36,9 @@
   }
   &-name {
     @include text-style(1.6, 500, $black-200);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 
     @include responsive("M") {
       display: none;

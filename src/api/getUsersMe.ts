@@ -1,6 +1,6 @@
 import { axiosCSRInstance } from "./axiosCSRInstance";
 
-export default async function getUsersMe(accessToken: string | null) {
+export default async function getUsersMe(accessToken?: string | null) {
   try {
     const res = await axiosCSRInstance.get("users/me", {
       headers: {

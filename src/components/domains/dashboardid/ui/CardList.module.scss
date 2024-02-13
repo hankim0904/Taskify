@@ -132,6 +132,15 @@
       position: relative;
       border-radius: 50%;
       overflow: hidden;
+
+      &-none {
+        @include flexbox();
+        background-color: #ffc85a;
+        text-align: center;
+        color: $white;
+        width: 2.4rem;
+        height: 2.4rem;
+      }
     }
   }
 }
