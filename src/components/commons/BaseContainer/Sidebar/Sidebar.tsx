@@ -56,7 +56,8 @@ export default function Sidebar({ dashboardDatas, bottomObserver, isFetchingNext
             className={cx("title")}
             onClick={() => {
               router.push("/mydashboard");
-            }}>
+            }}
+          >
             Dash Boards
           </span>
           <button className={cx("create-btn")} onClick={showModal}>
@@ -72,7 +73,8 @@ export default function Sidebar({ dashboardDatas, bottomObserver, isFetchingNext
                 className={cx("board-list", { selected: data.id === Number(dashboardId) })}
                 onClick={() => {
                   router.push(`/dashboard/${data.id}`);
-                }}>
+                }}
+              >
                 <Dashboard color={data.color} isHost={data.createdByMe} isSidebar={true}>
                   {data.title}
                 </Dashboard>
