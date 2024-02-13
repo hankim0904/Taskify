@@ -9,6 +9,7 @@ import DescriptionTag from "@/components/commons/tag/DescriptionTag/DescriptionT
 import { formatDate } from "../../../../utils/formatDate";
 import { Card } from "../api/type";
 import { motion } from "framer-motion";
+import extractInitial from "@/utils/extractInitial";
 
 const cx = classNames.bind(styles);
 
@@ -22,7 +23,7 @@ export default function CardList({ cardList, columnTitle }: CardListProp) {
 
   return (
     <div className={cx("cards")}>
-      {cardList.map(({ id, title, tags, dueDate, assignee: { profileImageUrl }, imageUrl }) => {
+      {cardList.map(({ id, title, tags, dueDate, assignee: { profileImageUrl, nickname }, imageUrl }) => {
         const isExistImg = !(
           imageUrl === "https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/taskify/task_image"
         );
@@ -61,13 +62,16 @@ export default function CardList({ cardList, columnTitle }: CardListProp) {
                   </span>
                   <span className={cx("card-date-text")}>{formatDate(dueDate)}</span>
                 </div>
-                {profileImageUrl && (
-                  <div className={cx("card-profile")}>
-                    <span className={cx("card-profile-img")}>
+
+                <div className={cx("card-profile")}>
+                  <span className={cx("card-profile-img")}>
+                    {profileImageUrl ? (
                       <Image fill src={profileImageUrl} alt="프로필 이미지" objectFit="cover" />
-                    </span>
-                  </div>
-                )}
+                    ) : (
+                      <div className={cx("card-profile-img-none")}>{extractInitial(nickname)}</div>
+                    )}
+                  </span>
+                </div>
               </div>
             </div>
           </motion.div>

@@ -16,6 +16,7 @@ import { useParams } from "next/navigation";
 import { deleteInvitations, deleteMembers } from "../../../api/deleteDashBoradData";
 import InviteModal from "@/components/commons/Modals/InviteModal/InviteModal";
 import extractInitial from "@/utils/extractInitial";
+import getUsersMe from "@/api/getUsersMe";
 
 const cx = classNames.bind(styles);
 
@@ -49,6 +50,11 @@ export default function DashboradEditMemberBox({ title, isMemberEdit }: Props) {
 
   const { dashboardid } = useParams();
 
+  const { data: userMeData } = useQuery({
+    queryKey: ["userMe"],
+    queryFn: () => getUsersMe(),
+  });
+
   const { data: invitationsData } = useQuery({
     queryKey: getDashboardInvitationsQueryKey(dashboardid, page),
     queryFn: () => getDashboardInvitations(dashboardid, page),
@@ -65,12 +71,12 @@ export default function DashboradEditMemberBox({ title, isMemberEdit }: Props) {
     staleTime: 5000 * 10000,
   });
   const members = memberData?.members;
-  console.log(members);
   const invitedMembers = invitationsData?.invitations.map((invitation: Invitation) => ({
     id: invitation.id,
     invitee: invitation.invitee,
   }));
   const memberList = isMemberEdit ? members : invitedMembers;
+
   let totalPage = Math.ceil(isMemberEdit ? memberData?.totalCount / 5 : invitationsData?.totalCount / 5);
   if (isNaN(totalPage)) totalPage = 1;
 
@@ -105,13 +111,14 @@ export default function DashboradEditMemberBox({ title, isMemberEdit }: Props) {
     },
   });
 
-  const handelDelteMember = (id: number, isOwner: boolean, name?: string) => {
+  const handelDelteMember = (id: number, name?: string) => {
+    const myId = userMeData?.id;
+    const ownerId = members?.find((member: any) => member.isOwner)?.userId;
+
+    if (myId !== ownerId) return alert("구성원 변경권한이 없습니다");
+
     if (isMemberEdit) {
-      confirm(`${name} 님을 삭제하시겠습니까?`)
-        ? isOwner
-          ? alert("관리자만 구성원을 삭제할 수 있습니다")
-          : deleteMemberMutation.mutate(id)
-        : alert("삭제를 취소했습니다");
+      confirm(`${name} 님을 삭제하시겠습니까?`) ? deleteMemberMutation.mutate(id) : false;
     } else {
       confirm(`${name} 님 초대를 취소하시겠습니까?`) ? deleteInvitationMutation.mutate(id) : false;
     }
@@ -173,7 +180,7 @@ export default function DashboradEditMemberBox({ title, isMemberEdit }: Props) {
             )}
             {!member.isOwner && (
               <ResponseBtn
-                onClick={() => handelDelteMember(member.id, member.isOwner, member.nickname || member.invitee?.email)}
+                onClick={() => handelDelteMember(member.id, member.nickname || member.invitee?.email)}
                 state="reject"
               >
                 {isMemberEdit ? "삭제" : "취소"}
