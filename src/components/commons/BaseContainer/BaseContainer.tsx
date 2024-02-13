@@ -31,7 +31,7 @@ export default function BaseContainer({ currentPath, accessToken, children }: Ba
   });
 
   const dashboardTotalCount = data?.pages[0].totalCount;
-  const allDashboardDatas = data?.pages.flatMap(page => page.dashboards) ?? [];
+  const allDashboardDatas = data?.pages.flatMap((page) => page.dashboards) ?? [];
 
   const fetchNextDashboard = () => {
     if (dashboardTotalCount === allDashboardDatas.length) return;
@@ -42,7 +42,7 @@ export default function BaseContainer({ currentPath, accessToken, children }: Ba
     }
   };
 
-  useIntersectionObserver(bottomObserver, fetchNextDashboard, { threshold: 1 });
+  useIntersectionObserver(bottomObserver, fetchNextDashboard, { threshold: 0 });
 
   return (
     <div className={cx("grid")}>
