@@ -47,6 +47,7 @@ export default function DashboradEditMemberBox({ title, isMemberEdit }: Props) {
   const modal = useModal(InviteModal);
   const [page, setPage] = useState(1);
   const queryClient = useQueryClient();
+  const [isownerId, setIsOwnerId] = useState(0);
 
   const { dashboardid } = useParams();
 
@@ -66,7 +67,6 @@ export default function DashboradEditMemberBox({ title, isMemberEdit }: Props) {
   const { data: memberData } = useQuery({
     queryKey: getDashBoardMembersQueryKey(dashboardid, page),
     queryFn: () => getDashBoardMembers(dashboardid, page),
-    enabled: isMemberEdit,
     placeholderData: keepPreviousData,
     staleTime: 5000 * 10000,
   });
