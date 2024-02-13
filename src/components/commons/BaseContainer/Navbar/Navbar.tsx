@@ -31,6 +31,7 @@ interface DashboardData {
 interface NavbarProps {
   currentPath: string;
   dashboardTotalCount: number;
+  dashboardDatas: DashboardData[];
 }
 
 type Member = {
@@ -39,7 +40,7 @@ type Member = {
   nickname: string;
 };
 
-export default function Navbar({ currentPath, dashboardTotalCount }: NavbarProps) {
+export default function Navbar({ currentPath, dashboardTotalCount, dashboardDatas }: NavbarProps) {
   const [isTablet, setIsTablet] = useState(false);
   const modal = useModal(InviteModal);
   const router = useRouter();
@@ -49,7 +50,10 @@ export default function Navbar({ currentPath, dashboardTotalCount }: NavbarProps
   const { data: memberData } = useQuery({
     queryKey: ["memberList", dashboardId],
     queryFn: () => getMembers(accessToken, dashboardId),
+
+    enabled: currentPath.includes("/dashboard"),
   });
+
   const memberList: Member[] = memberData?.members || [];
   const memberTotalCount: number | undefined = memberData?.totalCount;
 
@@ -66,8 +70,8 @@ export default function Navbar({ currentPath, dashboardTotalCount }: NavbarProps
   const dashboardList = dashboardData?.dashboards || [];
   const displayedMembers: Member[] = memberList.slice(0, isTablet ? MAX_DISPLAY_TABLET : MAX_DISPLAY_PC);
   const remainingMembersCount: number = memberTotalCount ? memberTotalCount - displayedMembers.length : 0;
-
   const clickedDashboard = dashboardList.find((dashboard: DashboardData) => dashboard.id === Number(dashboardId));
+  const addedDashboard = dashboardDatas.find((dashboard: DashboardData) => dashboard.id === Number(dashboardId));
 
   useEffect(() => {
     const handleResize = () => {
@@ -91,10 +95,10 @@ export default function Navbar({ currentPath, dashboardTotalCount }: NavbarProps
       <div className={cx("navbar-title")}>
         {currentPath.includes("/dashboard") && (
           <>
-            <span className={cx("dashboard-name")}>{clickedDashboard?.title}</span>
-
+            <span className={cx("dashboard-name")}>{clickedDashboard?.title || addedDashboard?.title}</span>
             <span className={cx("created-icon")}>
               {clickedDashboard?.createdByMe && <Image fill src="/assets/icons/ic-crown.svg" alt="왕관 모양 아이콘" />}
+              {addedDashboard?.createdByMe && <Image fill src="/assets/icons/ic-crown.svg" alt="왕관 모양 아이콘" />}
             </span>
           </>
         )}

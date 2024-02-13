@@ -1,6 +1,6 @@
 .navbar {
   @include flexbox(between, center);
-  padding: 2.3rem 8rem 2.3rem 4rem;
+  padding: 2.3rem 4rem;
   width: 100%;
   border-bottom: 0.1rem solid #d9d9d9;
 
@@ -21,7 +21,6 @@
     @include flexbox(start, center);
     gap: 0.8rem;
     flex: 1;
-    width: 30rem;
 
     @include text-style(2, 700, $black-200);
     @include responsive("T") {
@@ -45,17 +44,12 @@
 
   &-utils {
     @include flexbox;
-    flex: 1;
-
-    @include responsive("T") {
-      flex: 0;
-    }
   }
 
   &-action-btns {
     @include flexbox;
     gap: 1.6rem;
-    padding: 0 4rem;
+    margin: 0 4rem;
 
     @include responsive("T") {
       gap: 1.2rem;
@@ -64,7 +58,7 @@
 
     @include responsive("M") {
       gap: 0.6rem;
-      padding: 0 1.6rem;
+      margin: 0 1.6rem;
     }
 
     .manage,
