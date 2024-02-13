@@ -42,7 +42,7 @@ export default function BaseContainer({ currentPath, accessToken, children }: Ba
     }
   };
 
-  useIntersectionObserver(bottomObserver, fetchNextDashboard, { threshold: 1 });
+  useIntersectionObserver(bottomObserver, fetchNextDashboard, { threshold: 0 });
 
   return (
     <div className={cx("grid")}>
