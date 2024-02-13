@@ -72,16 +72,20 @@
       }
     }
 
+    .loading {
+      position: relative;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 90px;
+    }
+
     .contents {
       max-height: 80vh;
       margin: 1.8rem 1.2rem 0 1.2rem;
       overflow-y: scroll;
       &::-webkit-scrollbar {
         display: none;
-      }
-
-      @include responsive("T") {
-        max-height: 77svh;
       }
 
       .board-list {

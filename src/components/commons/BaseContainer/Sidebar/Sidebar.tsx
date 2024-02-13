@@ -6,7 +6,7 @@ import classNames from "classnames/bind";
 import Dashboard from "../../Dashboard/Dashboard";
 import NiceModal from "@ebay/nice-modal-react";
 import DashboardCreationModal from "../../Modals/DashboardCreationModal/DashboardCreationModal";
-import { motion } from "framer-motion";
+import LodingSpinner from "../../LodingSpinner/LodingSpinner";
 
 const cx = classNames.bind(styles);
 
@@ -23,9 +23,10 @@ interface DashboardData {
 interface SidebarPorps {
   dashboardDatas: DashboardData[];
   bottomObserver: any;
+  isFetchingNextPage: any;
 }
 
-export default function Sidebar({ dashboardDatas, bottomObserver }: SidebarPorps) {
+export default function Sidebar({ dashboardDatas, bottomObserver, isFetchingNextPage }: SidebarPorps) {
   const router = useRouter();
   const dashboardId = router.query.dashboardid;
 
@@ -55,8 +56,7 @@ export default function Sidebar({ dashboardDatas, bottomObserver }: SidebarPorps
             className={cx("title")}
             onClick={() => {
               router.push("/mydashboard");
-            }}
-          >
+            }}>
             Dash Boards
           </span>
           <button className={cx("create-btn")} onClick={showModal}>
@@ -81,6 +81,7 @@ export default function Sidebar({ dashboardDatas, bottomObserver }: SidebarPorps
             <div ref={bottomObserver} style={{ height: "1px" }}></div>
           </div>
         </div>
+        {isFetchingNextPage && <div className={cx("loading")}>{<LodingSpinner />}</div>}
       </div>
     </div>
   );
