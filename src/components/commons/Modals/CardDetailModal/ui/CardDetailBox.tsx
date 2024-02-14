@@ -1,6 +1,7 @@
 import classNames from "classnames/bind";
 import styles from "./CardDetailBox.module.scss";
 import Image from "next/image";
+import extractInitial from "@/utils/extractInitial";
 
 const cx = classNames.bind(styles);
 
@@ -16,11 +17,13 @@ export default function CardDetailBox({ nickname, imageUrl, formatedDueDate }: C
       <div className={cx("box-assignee", "flex")}>
         <h3 className={cx("box-assignee-title", "title")}>담당자</h3>
         <p className={cx("box-assignee-profile")}>
-          {imageUrl && (
-            <span className={cx("box-assignee-profile-image")}>
+          <span className={cx("box-assignee-profile-image")}>
+            {imageUrl ? (
               <Image fill src={imageUrl} alt="담당자 프로필 이미지" style={{ objectFit: "cover" }} />
-            </span>
-          )}
+            ) : (
+              <div className={cx("box-assignee-profile-image-none")}>{extractInitial(nickname)}</div>
+            )}
+          </span>
           <span className={cx("box-assignee-profile-detail", "detail")}>{nickname}</span>
         </p>
       </div>

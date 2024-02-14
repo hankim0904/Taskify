@@ -9,16 +9,6 @@ import { useIntersectionObserver } from "@/components/domains/dashboardid/utils/
 
 const cx = classNames.bind(styles);
 
-interface DashboardData {
-  id: number;
-  title: string;
-  color: string;
-  createdAt: string;
-  updatedAt: string;
-  createdByMe: boolean;
-  userId: number;
-}
-
 interface BaseContainerProps {
   currentPath: string;
   accessToken?: string;
@@ -37,6 +27,7 @@ export default function BaseContainer({ currentPath, accessToken, children }: Ba
     getNextPageParam: () => {
       return currentPage + 1;
     },
+    staleTime: 60000,
   });
 
   const dashboardTotalCount = data?.pages[0].totalCount;
@@ -56,10 +47,18 @@ export default function BaseContainer({ currentPath, accessToken, children }: Ba
   return (
     <div className={cx("grid")}>
       <div className={cx("grid-sidebar")}>
-        <Sidebar dashboardDatas={allDashboardDatas} bottomObserver={bottomObserver} />
+        <Sidebar
+          dashboardDatas={allDashboardDatas}
+          bottomObserver={bottomObserver}
+          isFetchingNextPage={isFetchingNextPage}
+        />
       </div>
       <div className={cx("grid-navbar")}>
-        <Navbar currentPath={currentPath} dashboardTotalCount={dashboardTotalCount} />
+        <Navbar
+          currentPath={currentPath}
+          dashboardTotalCount={dashboardTotalCount}
+          dashboardDatas={allDashboardDatas}
+        />
       </div>
       <div className={cx("grid-content")}>{children}</div>
     </div>

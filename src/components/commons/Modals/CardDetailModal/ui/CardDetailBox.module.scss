@@ -27,9 +27,22 @@
         border-radius: 50%;
         overflow: hidden;
 
+        &-none {
+          @include flexbox();
+          background-color: #ffc85a;
+          text-align: center;
+          color: $white;
+          width: 3.4rem;
+          height: 3.4rem;
+        }
+
         @include responsive("M") {
           width: 2.6rem;
           height: 2.6rem;
+          &-none {
+            width: 2.6rem;
+            height: 2.6rem;
+          }
         }
       }
     }

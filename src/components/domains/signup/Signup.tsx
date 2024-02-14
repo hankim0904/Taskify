@@ -29,7 +29,7 @@ export default function Signup() {
     NiceModal.show(SignModal, { text, customFunction });
   };
 
-  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+  const onSubmit: SubmitHandler<FieldValues> = async data => {
     try {
       const response = await axiosSSRInstance.post("users", {
         email: data.email,
@@ -81,6 +81,10 @@ export default function Signup() {
           rules={{
             required: "닉네임을 입력해 주세요.",
             maxLength: { value: 10, message: "열 자 이하로 작성해 주세요." },
+            pattern: {
+              value: /^[0-9a-zA-Z가-힣ㄱ-ㅎㅏ-ㅣ\x20]*$/gi,
+              message: "닉네임에 특수문자 및 이모티콘을 사용할 수 없습니다.",
+            },
           }}
         />
         <Input
@@ -102,7 +106,7 @@ export default function Signup() {
           placeholder="비밀번호를 한번 더 입력해 주세요"
           rules={{
             required: "비밀번호를 한번 더 입력해 주세요.",
-            validate: (value) => (value === watch("password") ? true : "비밀번호가 일치하지 않습니다."),
+            validate: value => (value === watch("password") ? true : "비밀번호가 일치하지 않습니다."),
           }}
         />
         <Input

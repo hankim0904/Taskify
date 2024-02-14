@@ -85,10 +85,10 @@ export default function Column({ columnId, columnTitle }: ColumnProps) {
 }
 
 function SkeletonCardList() {
-  const numberOfIttems = 5;
+  const numberOfItems = 5;
 
-  const items = Array.from({ length: numberOfIttems }, (_, index) => (
-    <div className={skCx("skeleton-card")}>
+  const items = Array.from({ length: numberOfItems }, (_, index) => (
+    <div className={skCx("skeleton-card")} key={index}>
       <div className={skCx("skeleton-card-img")}>
         <div className={skCx("line")} />
       </div>

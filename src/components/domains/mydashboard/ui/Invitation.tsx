@@ -22,6 +22,7 @@ export default function Invitation({ title, inviter, path }: InvitationProp) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["dashboardList"] });
       queryClient.invalidateQueries({ queryKey: ["getReceivedDashboardInvitations"] });
+      queryClient.invalidateQueries({ queryKey: ["sideBarDashboardList"] });
     },
   });
 
