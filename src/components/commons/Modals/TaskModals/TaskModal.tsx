@@ -251,7 +251,7 @@ function TaskModal({ isEdit = false, onCancel, columnId, cardId }: Props) {
             <input
               type="text"
               {...register("tags")}
-              placeholder="입력 후 Enter"
+              placeholder="입력 후 Enter, Click 시 삭제, 중복된 태그는 생성되지 않아요"
               onChange={(e) => setTagItem({ name: e.target.value, style: getRandomColor(0.15) })}
               onKeyDown={handelSubmitTagList}
               value={tagItem.name}

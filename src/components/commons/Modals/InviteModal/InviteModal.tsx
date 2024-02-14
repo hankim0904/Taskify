@@ -8,8 +8,7 @@ import ModalBackground from "../ModalBackground";
 import postDashboardInvitations from "@/api/postDashboardInvitations";
 import { useRouter } from "next/router";
 import { useAuth } from "@/contexts/AuthContext";
-import Dashboardid from "@/pages/dashboard/[dashboardid]";
-import { getDashboardInvitations, getDashboardInvitationsQueryKey } from "@/api/getEditData";
+import { getDashboardInvitationsQueryKey } from "@/api/getEditData";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const cx = classNames.bind(styles);
@@ -34,7 +33,6 @@ function InviteModal({ onCancel }: Props) {
 
   const inviteMutation = useMutation({
     mutationFn: (data: any) => postDashboardInvitations(dashboardId, data, accessToken),
-
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: getDashboardInvitationsQueryKey(dashboardId, 1) });
       onCancel();
