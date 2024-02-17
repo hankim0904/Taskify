@@ -23,7 +23,6 @@ import getDashBoardsSSR from "@/api/getDashBoardsSSR";
 
 import Head from "next/head";
 
-
 const cx = classNames.bind(styles);
 
 export interface DashBoradData {

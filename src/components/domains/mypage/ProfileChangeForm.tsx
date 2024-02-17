@@ -52,7 +52,7 @@ export default function ProfileChangeForm() {
   }, [userMeData]);
 
   const onSubmit: SubmitHandler<FieldValues> = data => {
-
+    
     if (profileImageUrl === "" || showBasicProfile) {
       putChangeUserProfile(data.nickname, null, accessToken);
     } else {

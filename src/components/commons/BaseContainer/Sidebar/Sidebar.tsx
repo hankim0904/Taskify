@@ -56,8 +56,7 @@ export default function Sidebar({ dashboardDatas, bottomObserver, isFetchingNext
             className={cx("title")}
             onClick={() => {
               router.push("/mydashboard");
-            }}
-          >
+            }}>
             Dash Boards
           </span>
           <button className={cx("create-btn")} onClick={showModal}>
