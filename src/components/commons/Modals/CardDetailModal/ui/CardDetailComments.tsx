@@ -8,6 +8,7 @@ import { getCommentsQueryKey } from "@/components/domains/dashboardid/api/queryK
 import { delelteComments } from "@/components/domains/dashboardid/api/queries";
 import formatDateDot from "../utils/dateDotChange";
 import { EditStore } from "../CardDetailModal";
+import extractFirstLetter from "@/utils/extractFirstLetter";
 
 import classNames from "classnames/bind";
 import styles from "./CardDetailComments.module.scss";
@@ -71,7 +72,7 @@ export default function CardDetailComments({
       <div className={cx("comments-container")}>
         {commentsData.map((comment) => (
           <div key={comment.id} className={cx("container-1")}>
-            {comment.author.profileImageUrl && (
+            {comment.author.profileImageUrl ? (
               <Image
                 className={cx("profileImage")}
                 src={comment.author.profileImageUrl}
@@ -80,6 +81,10 @@ export default function CardDetailComments({
                 height={34}
                 style={{ objectFit: "cover", borderRadius: "50%" }}
               />
+            ) : (
+              <div>
+                <span className={cx("default-profileImage")}>{extractFirstLetter(comment.author.nickname)}</span>
+              </div>
             )}
             <div className={cx("container-2")}>
               <div className={cx("container-3")}>
