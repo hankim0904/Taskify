@@ -14,7 +14,7 @@
 
 > Project-Title : Taskify  
 > Project-Period : 2024-01-25 ~ 2024-02-08  
-> Team : Codeit-Sprint-2-Part2-Team1(김우현,김하은,박지원,손오름,지현기)
+> Team : Codeit-Sprint-2-Part3-Team9(김우현,김하은,박지원,손오름,지현기)
 
 ## 🔎 사용기술
 
