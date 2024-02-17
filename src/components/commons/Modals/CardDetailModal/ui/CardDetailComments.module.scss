@@ -13,6 +13,19 @@
   gap: 1rem;
 }
 
+.default-profileImage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 3.4rem;
+  height: 3.4rem;
+  border-radius: 50%;
+  background-color: #ffc85a;
+  color: $white;
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+
 .container-3 {
   display: flex;
   gap: 0.8rem;
