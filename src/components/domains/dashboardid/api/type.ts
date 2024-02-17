@@ -51,3 +51,16 @@ export interface EditedComments {
   content: string;
   commentId: number;
 }
+
+export interface FormValuesDrag {
+  cardId?: number;
+  assignee?: string;
+  assigneeUserId?: number;
+  dashboardId?: number;
+  columnId?: number;
+  title?: string;
+  description?: string;
+  dueDate?: string | Date;
+  tags?: string | string[];
+  imageUrl?: string;
+}

@@ -1,5 +1,6 @@
 import { axiosCSRInstance } from "@/api/axiosCSRInstance";
 import { axiosSSRInstance } from "./axiosSSRInstance";
+import { FormValuesDrag } from "@/components/domains/dashboardid/api/type";
 
 export const postCardData = async (data: unknown) => {
   const res = await axiosCSRInstance.post(`cards`, data);
@@ -7,6 +8,15 @@ export const postCardData = async (data: unknown) => {
 };
 
 export const putCardData = async (cardId: number | undefined, data: unknown) => {
+  console.log(cardId);
+  const res = await axiosCSRInstance.put(`cards/${cardId}`, data);
+  console.log(res);
+  return res;
+};
+
+export const putCardDataDrag = async (data: FormValuesDrag) => {
+  const cardId = data.cardId;
+  delete data.cardId;
   const res = await axiosCSRInstance.put(`cards/${cardId}`, data);
   return res;
 };

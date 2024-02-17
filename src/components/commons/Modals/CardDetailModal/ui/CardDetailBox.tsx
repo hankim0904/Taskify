@@ -21,7 +21,7 @@ export default function CardDetailBox({ nickname, imageUrl, formatedDueDate }: C
             {imageUrl ? (
               <Image fill src={imageUrl} alt="담당자 프로필 이미지" style={{ objectFit: "cover" }} />
             ) : (
-              <div className={cx("box-assignee-profile-image-none")}>{extractInitial(nickname)}</div>
+              <span className={cx("box-assignee-profile-image-none")}>{extractInitial(nickname)}</span>
             )}
           </span>
           <span className={cx("box-assignee-profile-detail", "detail")}>{nickname}</span>
