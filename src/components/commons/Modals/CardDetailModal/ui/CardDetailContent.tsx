@@ -32,8 +32,8 @@ export default function CardDetailContent({ columnTitle, tags, description, imag
         {tags.length !== 0 && <div className={cx("main-tags-line")} />}
         <span className={cx("main-tags-description")}>
           {tags.map((tag, i) => (
-            <span>
-              <DescriptionTag key={i} tagName={tag.name} tagStyle={tag.style} />
+            <span key={i}>
+              <DescriptionTag tagName={tag.name} tagStyle={tag.style} />
             </span>
           ))}
         </span>

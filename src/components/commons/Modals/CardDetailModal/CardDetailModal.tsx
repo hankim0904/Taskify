@@ -131,8 +131,9 @@ function CardDetailModal({ cardId, onCancel, columnTitle }: Props) {
             />
           </div>
           <div className={cx("card-comments")}>
-            {cardComments.map((comments) => (
+            {cardComments.map((comments, i) => (
               <CardDetailComments
+                key={i}
                 cardId={cardId}
                 commentsData={comments.comments}
                 setEditing={setEditing}

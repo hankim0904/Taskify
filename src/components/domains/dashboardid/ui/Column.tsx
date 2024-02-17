@@ -1,7 +1,8 @@
 import { useRef } from "react";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getCardList } from "@/components/domains/dashboardid/api/queries";
 import { getCardListQueryKey } from "@/components/domains/dashboardid/api/queryKeys";
+import { putCardDataDrag } from "@/api/postCardData";
 
 import styles from "./Column.module.scss";
 import skeletonStyles from "./CardListSkUi.module.scss";
@@ -14,6 +15,8 @@ import ColumnHeader from "./ColumnHeader";
 import CardList from "./CardList";
 import { MixButton } from "@/components/commons/Buttons/MixButton";
 import { useIntersectionObserver } from "../utils/useIntersectionObserver";
+import { FormValuesDrag } from "../api/type";
+import { processDropData } from "../utils/processDropData";
 
 const cx = classNames.bind(styles);
 const skCx = classNames.bind(skeletonStyles);
@@ -25,6 +28,7 @@ interface ColumnProps {
 
 export default function Column({ columnId, columnTitle }: ColumnProps) {
   const modal = useModal(TaskModal);
+  const queryClient = useQueryClient();
   const bottomObserver = useRef<HTMLDivElement | null>(null);
 
   const {
@@ -49,6 +53,26 @@ export default function Column({ columnId, columnTitle }: ColumnProps) {
   };
   useIntersectionObserver(bottomObserver, fetchNextCardList, { threshold: 0 });
 
+  const EditCardMutation = useMutation({
+    mutationFn: (putData: FormValuesDrag) => putCardDataDrag(putData),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: getCardListQueryKey(columnId as number) });
+    },
+  });
+
+  function updateCard(putData: FormValuesDrag, columnId: number) {
+    EditCardMutation.mutate(putData, {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: getCardListQueryKey(columnId as number) });
+      },
+    });
+  }
+
+  function handleDrop(e: React.DragEvent<HTMLElement>) {
+    const { putData, columnId } = processDropData(e);
+    updateCard(putData, columnId);
+  }
+
   if (isLoading) {
     return (
       <section className={cx("column")}>
@@ -65,7 +89,7 @@ export default function Column({ columnId, columnTitle }: ColumnProps) {
   }
 
   return (
-    <section className={cx("column")}>
+    <section className={cx("column")} id={String(columnId)} onDrop={handleDrop} onDragOver={(e) => e.preventDefault()}>
       <div className={cx("column-header")}>
         <ColumnHeader columnId={columnId} columnTitle={columnTitle} cardCount={cardCount} />
       </div>
